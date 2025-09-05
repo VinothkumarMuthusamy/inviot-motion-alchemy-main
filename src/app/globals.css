@@ -1,0 +1,577 @@
+
+@import "./../components/landing/ImageAssembly.css";
+
+@import "./../components/landing/HolographicProjector.css";
+@import "./../components/landing/ProfileCard.css";
+@import "./../components/landing/FlowingMenu.css";
+@tailwind base;
+
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 330 25% 98%; /* #fcfafb */
+    --foreground: 0 0% 10%; /* #1A1A1A charcoal black */
+    
+    --card: 0 0% 100%; /* #FFFFFF white */
+    --card-foreground: 0 0% 10%;
+
+    --popover: 0 0% 96%;
+    --popover-foreground: 0 0% 10%;
+
+    --primary: 339 73% 44%; /* #C41E59 vibrant magenta */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 339 73% 44%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 339 100% 72%; /* #FF6F9C light magenta */
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 339 73% 44%;
+
+    --radius: 0.5rem;
+
+    --cube-size: 300px;
+    --cube-size-half: 150px;
+  }
+  
+  @media (max-width: 768px) {
+    :root {
+      --cube-size: 200px;
+      --cube-size-half: 100px;
+    }
+  }
+
+  .dark {
+    --background: 0 0% 10%; /* #1A1A1A charcoal black */
+    --foreground: 0 0% 100%; /* #FFFFFF white */
+    
+    --card: 0 0% 12%; /* Slightly lighter than background */
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 339 73% 44%; /* #C41E59 vibrant magenta */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 339 73% 44%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 339 100% 72%; /* #FF6F9C light magenta */
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 339 73% 44%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline text-primary;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  html {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+  .container-max {
+    @apply container mx-auto max-w-6xl px-4;
+  }
+  .heading-1 {
+    @apply font-headline text-4xl sm:text-5xl md:text-6xl font-bold uppercase tracking-[0.05em];
+  }
+  .heading-2 {
+    @apply font-headline text-3xl md:text-4xl font-bold uppercase tracking-[0.05em] text-primary;
+  }
+  .heading-3 {
+    @apply font-headline text-xl md:text-2xl font-bold uppercase tracking-[0.05em];
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .parallax-bg {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .btn-glow {
+    @apply shadow-[0_0_15px_transparent] transition-all duration-300 ease-out;
+  }
+  .btn-glow:hover {
+    @apply bg-primary/90 shadow-[0_0_20px_hsl(var(--primary)/0.5)];
+  }
+  .marquee {
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    gap: 2rem;
+  }
+  .marquee-content {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-around;
+      min-width: 100%;
+      gap: 2rem;
+      animation: scroll 30s linear infinite;
+  }
+
+  @keyframes scroll {
+      from {
+          transform: translateX(0);
+      }
+      to {
+          transform: translateX(calc(-100% - 2rem));
+      }
+  }
+
+  .marquee-vertical {
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .marquee-content-vertical {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+      min-height: 100%;
+      gap: 2rem; /* Corresponds to gap-8 in Tailwind */
+      animation: scroll-vertical 40s linear infinite;
+  }
+
+  @keyframes scroll-vertical {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(calc(-100% - 2rem));
+    }
+  }
+
+
+  .scroll-snap-type-x-mandatory {
+    scroll-snap-type: x mandatory;
+  }
+  
+  .scroll-snap-align-start {
+    scroll-snap-align: start;
+  }
+
+  .ease-in-out-cubic {
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+  
+  @keyframes cardAppear {
+    from {
+      opacity: 0;
+      transform: translateY(100px) rotate(10deg);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) rotate(0);
+    }
+  }
+
+  @keyframes cardDisappear {
+    from {
+      opacity: 1;
+      transform: translateY(0) rotate(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(100px) rotate(10deg);
+    }
+  }
+}
+
+@keyframes pulse-arrows {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(10px);
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse-arrows {
+    animation: pulse-arrows 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes marqueeVertical {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.marquee-vertical {
+  animation: marqueeVertical 25s linear infinite;
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+.marquee-content-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sound Wave Animation */
+.sound-wave {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 150px;
+  gap: 8px;
+}
+
+.sound-wave > div {
+  width: 10px;
+  background: linear-gradient(to top, hsl(var(--primary) / 0.7), hsl(var(--accent) / 0.9));
+  animation: wave 1.5s infinite ease-in-out;
+  border-radius: 4px;
+}
+
+@keyframes wave {
+  0%, 100% {
+    height: 10%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+.sound-wave .sw1 { animation-delay: 0.1s; }
+.sound-wave .sw2 { animation-delay: 0.7s; }
+.sound-wave .sw3 { animation-delay: 0.4s; }
+.sound-wave .sw4 { animation-delay: 0.2s; }
+.sound-wave .sw5 { animation-delay: 0.5s; }
+.sound-wave .sw6 { animation-delay: 0.8s; }
+.sound-wave .sw7 { animation-delay: 0.3s; }
+.sound-wave .sw8 { animation-delay: 0.6s; }
+    
+
+
+
+
+
+      
+
+ 
+
+
+@keyframes fly-path-1 {
+    0% { transform: translate(-10vw, 20vh) rotate(0deg); }
+    100% { transform: translate(110vw, 20vh) rotate(0deg); }
+}
+
+
+@keyframes fly-path-2 {
+    0% { transform: translate(-10vw, 80vh) rotate(0deg); }
+    100% { transform: translate(110vw, 80vh) rotate(0deg); }
+}
+
+
+@keyframes smoke-fade {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    transform: scale(2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.airplane-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  animation-duration: 15s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.airplane-svg {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+.smoke-trail {
+  position: absolute;
+  top: 50%;
+  left: -20px; /* Position it behind the plane's tip */
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  filter: blur(15px);
+  animation: smoke-fade 1s linear infinite;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Process Rail Train Animation */
+.process-rail-section {
+  min-height: auto;
+}
+
+@media (min-width: 768px) {
+  .process-rail-section {
+    min-height: 80vh;
+  }
+}
+
+.train-container {
+  will-change: transform;
+}
+
+.train-engine, .train-carriage {
+  background-color: hsl(var(--muted));
+  border: 2px solid hsl(var(--border));
+  border-radius: 8px;
+  position: relative;
+}
+
+.train-engine {
+  width: 120px;
+  height: 80px;
+  margin-right: -2px;
+}
+
+.engine-body {
+  width: 100%;
+  height: 70%;
+  background: hsl(var(--primary));
+  border-radius: 8px 8px 0 0;
+  position: absolute;
+  bottom: 18px;
+}
+
+.engine-cab {
+  position: absolute;
+  right: 0;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  background: hsl(var(--primary) / 0.8);
+  border-radius: 4px 4px 0 0;
+  border: 2px solid hsl(var(--border));
+}
+
+.engine-chimney {
+  position: absolute;
+  left: 15px;
+  top: -15px;
+  width: 15px;
+  height: 20px;
+  background: hsl(var(--foreground));
+}
+
+.smoke {
+  position: absolute;
+  background: hsl(var(--muted-foreground));
+  border-radius: 50%;
+  opacity: 0;
+  animation: smoke-animation 3s infinite;
+}
+
+.smoke.s1 { width: 10px; height: 10px; top: -15px; left: 0; animation-delay: 0s; }
+.smoke.s2 { width: 15px; height: 15px; top: -25px; left: -5px; animation-delay: 1s; }
+.smoke.s3 { width: 8px; height: 8px; top: -12px; left: 5px; animation-delay: 2s; }
+
+@keyframes smoke-animation {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  20% { opacity: 0.5; }
+  100% { transform: translateY(-50px) scale(3); opacity: 0; }
+}
+
+.engine-wheels, .carriage-wheels {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.wheel {
+  width: 18px;
+  height: 18px;
+  background: hsl(var(--foreground));
+  border-radius: 50%;
+  border: 2px solid hsl(var(--muted-foreground));
+}
+.wheel.w-lg { width: 22px; height: 22px; }
+.wheel.w-sm { width: 16px; height: 16px; }
+
+.train-carriage-wrapper {
+  position: relative;
+  margin-left: 20px;
+}
+
+.train-carriage {
+  width: 150px;
+  height: 90px;
+  background: hsl(var(--secondary) / 0.8);
+  cursor: pointer;
+}
+
+.carriage-body {
+  width: 100%;
+  height: 70%;
+  position: absolute;
+  bottom: 18px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 5px;
+}
+
+.carriage-window {
+  width: 25px;
+  height: 25px;
+  background: hsl(var(--background));
+  border: 2px solid hsl(var(--border));
+  border-radius: 4px;
+}
+
+.step-content {
+  position: absolute;
+  bottom: 110%; /* Position above the carriage */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  padding: 1rem;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: center;
+  will-change: transform, opacity;
+  pointer-events: none; /* Allow hover on carriage below */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+}
+
+.step-content.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.icon-wrapper {
+  margin: 0 auto;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: hsl(var(--primary) / 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Custom breakpoint for extra small devices */
+@media (min-width: 475px) {
+  .xs\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Card hover effects */
+.profile-card {
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.profile-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+/* Optimize images for mobile */
+.profile-card img {
+  transition: transform 0.5s ease;
+}
+
+.profile-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Responsive font sizes */
+@media (max-width: 640px) {
+  .heading-2 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .profile-card,
+  .profile-card img,
+  html {
+    transition: none;
+    scroll-behavior: auto;
+  }
+  
+  .transform {
+    transform: none !important;
+  }
+}
