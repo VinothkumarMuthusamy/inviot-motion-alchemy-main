@@ -1,10 +1,29 @@
+
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import Image from "next/image";
-import { ChevronLeft } from 'lucide-react';
+import Header from '@/components/landing/header';
+import Footer from '@/components/landing/footer';
+import { AnimateInView } from '@/components/ui/animate-in-view';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useToast } from "@/components/ui/use-toast";
+import dynamic from 'next/dynamic';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const Toaster = dynamic(
+  () => import("@/components/ui/toaster").then((c) => c.Toaster),
+  { ssr: false }
+);
+
 
 interface EquipmentItem {
   id: string;
@@ -22,442 +41,355 @@ interface EquipmentOptions {
 
 const equipmentOptions: EquipmentOptions = {
   projector: [
-    { 
-      id: 'proj1', 
-      name: 'Epson EB-1781W', 
-      brand: 'Epson',
-      image: '/images/epson-projector.png'
-    },
-    { 
-      id: 'proj2', 
-      name: 'Sony VPL-HW45ES', 
-      brand: 'Sony',
-      image: '/images/sony-projector.png'
-    },
-    { 
-      id: 'proj3', 
-      name: 'BenQ HT3550', 
-      brand: 'BenQ',
-      image: '/images/benq-projector.png'
-    },
+    { id: 'proj1', name: 'Epson EB-1781W', brand: 'Epson', image: 'https://picsum.photos/300/200?random=1' },
+    { id: 'proj2', name: 'Sony VPL-HW45ES', brand: 'Sony', image: 'https://picsum.photos/300/200?random=2' },
+    { id: 'proj3', name: 'BenQ HT3550', brand: 'BenQ', image: 'https://picsum.photos/300/200?random=3' },
   ],
   speaker: [
-    { 
-      id: 'spk1', 
-      name: 'Bose FreeSpace 51', 
-      brand: 'Bose',
-      image: '/images/bose-speaker.png'
-    },
-    { 
-      id: 'spk2', 
-      name: 'JBL Control 25-1L', 
-      brand: 'JBL',
-      image: '/images/jbl-speaker.png'
-    },
-    { 
-      id: 'spk3', 
-      name: 'Yamaha VXS10', 
-      brand: 'Yamaha',
-      image: '/images/yamaha-speaker.png'
-    },
+    { id: 'spk1', name: 'Bose FreeSpace 51', brand: 'Bose', image: 'https://picsum.photos/200/200?random=4' },
+    { id: 'spk2', name: 'JBL Control 25-1L', brand: 'JBL', image: 'https://picsum.photos/200/200?random=5' },
+    { id: 'spk3', name: 'Yamaha VXS10', brand: 'Yamaha', image: 'https://picsum.photos/200/200?random=6' },
   ],
   display: [
-    { 
-      id: 'disp1', 
-      name: 'Samsung QM85B', 
-      brand: 'Samsung',
-      image: '/images/samsung-display.png'
-    },
-    { 
-      id: 'disp2', 
-      name: 'LG 86UR8000', 
-      brand: 'LG',
-      image: '/images/lg-display.png'
-    },
-    { 
-      id: 'disp3', 
-      name: 'Sony FW-85BZ40L', 
-      brand: 'Sony',
-      image: '/images/sony-display.png'
-    },
+    { id: 'disp1', name: 'Samsung QM85B', brand: 'Samsung', image: 'https://picsum.photos/400/300?random=7' },
+    { id: 'disp2', name: 'LG 86UR8000', brand: 'LG', image: 'https://picsum.photos/400/300?random=8' },
+    { id: 'disp3', name: 'Sony FW-85BZ40L', brand: 'Sony', image: 'https://picsum.photos/400/300?random=9' },
   ],
   microphone: [
-    { 
-      id: 'mic1', 
-      name: 'Shure MXA910', 
-      brand: 'Shure',
-      image: '/images/shure-mic.png'
-    },
-    { 
-      id: 'mic2', 
-      name: 'Sennheiser TeamConnect Ceiling 2', 
-      brand: 'Sennheiser',
-      image: '/images/sennheiser-mic.png'
-    },
-    { 
-      id: 'mic3', 
-      name: 'Audio-Technica ATND1061', 
-      brand: 'Audio-Technica',
-      image: '/images/audio-technica-mic.png'
-    },
+    { id: 'mic1', name: 'Shure MXA910', brand: 'Shure', image: 'https://picsum.photos/150/150?random=10' },
+    { id: 'mic2', name: 'Sennheiser TeamConnect Ceiling 2', brand: 'Sennheiser', image: 'https://picsum.photos/150/150?random=11' },
+    { id: 'mic3', name: 'Audio-Technica ATND1061', brand: 'Audio-Technica', image: 'https://picsum.photos/150/150?random=12' },
   ],
 };
 
-type SelectedEquipment = {
-  [key in keyof EquipmentOptions]?: string;
-};
+type EquipmentCategory = keyof EquipmentOptions;
+
+const formSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  company: z.string().optional(),
+  projector: z.string().optional(),
+  speaker: z.string().optional(),
+  display: z.string().optional(),
+  microphone: z.string().optional(),
+  notes: z.string().optional(),
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
+const animationVariants = {
+    projector: {
+        initial: { opacity: 0, y: -50, scale: 0.8 },
+        animate: { opacity: 1, y: 0, scale: 1 },
+        exit: { opacity: 0, y: 50, scale: 0.8 },
+    },
+    display: {
+        initial: { opacity: 0, scale: 0.9 },
+        animate: { opacity: 1, scale: 1 },
+        exit: { opacity: 0, scale: 0.9 },
+    },
+    speakerLeft: {
+        initial: { opacity: 0, x: -50 },
+        animate: { opacity: 1, x: 0 },
+        exit: { opacity: 0, x: -50 },
+    },
+    speakerRight: {
+        initial: { opacity: 0, x: 50 },
+        animate: { opacity: 1, x: 0 },
+        exit: { opacity: 0, x: 50 },
+    },
+    microphone: {
+        initial: { opacity: 0, y: 50, scale: 0.5 },
+        animate: { opacity: 1, y: 0, scale: 1 },
+        exit: { opacity: 0, y: -50, scale: 0.5 },
+    }
+}
 
 export default function RoomConfiguratorPage() {
-  const [selectedEquipment, setSelectedEquipment] = useState<SelectedEquipment>({});
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [company, setCompany] = useState<string>('');
-  const [notes, setNotes] = useState<string>('');
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const [isAssembled, setIsAssembled] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
-  // Set mounted state after hydration
   useEffect(() => {
     setIsMounted(true);
-    
-    // Clean up any fdprocessedid attributes that might have been added by extensions
-    const cleanupAttributes = () => {
-      document.querySelectorAll('[fdprocessedid]').forEach(el => {
-        el.removeAttribute('fdprocessedid');
-      });
-    };
-    
-    // Run cleanup after a short delay
-    const timer = setTimeout(cleanupAttributes, 100);
-    return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsAssembled(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.8 }
-    );
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      company: "",
+      notes: "",
+      projector: "",
+      speaker: "",
+      display: "",
+      microphone: "",
+    },
+  });
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
-    };
-  }, [isMounted]);
-
-  const handleSelect = (category: keyof EquipmentOptions, id: string) => {
-    setSelectedEquipment(prev => ({
-      ...prev,
-      [category]: id
-    }));
-    setIsAssembled(false);
-    setTimeout(() => setIsAssembled(true), 100);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    let emailBody = `New Room Configuration Quote Request:\n\n`;
-    emailBody += `Name: ${name}\n`;
-    emailBody += `Email: ${email}\n`;
-    emailBody += `Company: ${company}\n\n`;
-    emailBody += `Selected Equipment:\n`;
-    
-    Object.entries(selectedEquipment).forEach(([category, id]) => {
-      const items = equipmentOptions[category as keyof EquipmentOptions];
-      const selectedItem = items.find(item => item.id === id);
-      if (selectedItem) {
-        emailBody += `${category.charAt(0).toUpperCase() + category.slice(1)}: ${selectedItem.brand} ${selectedItem.name}\n`;
-      }
+  const onSubmit = (values: FormValues) => {
+    console.log(values);
+    toast({
+      title: "Quote Request Sent!",
+      description: "Thank you. We will get back to you shortly.",
     });
-    
-    emailBody += `\nAdditional Notes: ${notes}`;
-    
-    window.location.href = `mailto:quotes@resurgent.com?subject=Room Configuration Quote Request&body=${encodeURIComponent(emailBody)}`;
-    setIsSubmitted(true);
+    form.reset();
   };
-
-  const getSelectedItem = (category: keyof EquipmentOptions): EquipmentItem | null => {
-    const id = selectedEquipment[category];
-    if (!id) return null;
-    const items = equipmentOptions[category];
-    return items.find(item => item.id === id) || null;
+  
+  const getSelectedItem = (category: EquipmentCategory, id: string | undefined): EquipmentItem | undefined => {
+    if (!id) return undefined;
+    return equipmentOptions[category].find(item => item.id === id);
   };
+  
+  const selectedProjector = getSelectedItem('projector', form.watch('projector'));
+  const selectedDisplay = getSelectedItem('display', form.watch('display'));
+  const selectedSpeaker = getSelectedItem('speaker', form.watch('speaker'));
+  const selectedMicrophone = getSelectedItem('microphone', form.watch('microphone'));
+  
+  const allSelectedItems = [
+    { category: 'Projector', item: selectedProjector },
+    { category: 'Display', item: selectedDisplay },
+    { category: 'Speaker', item: selectedSpeaker },
+    { category: 'Microphone', item: selectedMicrophone }
+  ].filter(i => i.item);
 
   if (!isMounted) {
-    return (
-      <section className="section-padding bg-card">
-        <div className="container-max text-center py-20">
-          <div className="animate-pulse">Loading configuration tool...</div>
-        </div>
-      </section>
-    );
-  }
-
-  if (isSubmitted) {
-    return (
-      <section className="section-padding bg-card">
-        <div className="container-max text-center py-20">
-          <h2 className="heading-2 text-primary mb-4">Thank You!</h2>
-          <p className="text-xl mb-8">Your quote request has been submitted. We'll contact you shortly.</p>
-          <Button asChild>
-            <Link href="/" className="flex items-center justify-center gap-2">
-              <ChevronLeft className="w-4 h-4" />
-              Back to Home
-            </Link>
-          </Button>
-        </div>
-      </section>
-    );
+    return null;
   }
 
   return (
-    <>
-      {/* Navigation Bar */}
-      <nav className="bg-white shadow-sm">
-        <div className="container-max py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-primary font-bold">
-            <ChevronLeft className="w-5 h-5" />
-            <span>Back to Home</span>
-          </Link>
-          <div className="text-xl font-bold text-secondary">AV Room Configurator</div>
-          <div className="w-24"></div> {/* Spacer for balance */}
-        </div>
-      </nav>
-
-      <section className="section-padding bg-card">
-        <div className="container-max">
-          <div className="text-center mb-8">
-            <h1 className="heading-2 text-primary">Room Configurator</h1>
-            <p className="mt-2 text-lg">Design your perfect AV setup</p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-6">
-            {/* Equipment Selection - Compact Sidebar */}
-            <div className="md:col-span-1 bg-white p-4 rounded-lg shadow-md">
-              <h3 className="text-xl font-bold mb-4 text-secondary">Equipment</h3>
-              
-              <div className="space-y-4">
-                {(Object.entries(equipmentOptions) as [keyof EquipmentOptions, EquipmentItem[]][]).map(([category, items]) => (
-                  <div key={category}>
-                    <label className="block text-sm font-medium mb-1 capitalize">
-                      {category}
-                    </label>
-                    <select
-                      className="w-full p-2 text-sm border border-gray-300 rounded-md bg-white"
-                      value={selectedEquipment[category] || ''}
-                      onChange={(e) => handleSelect(category, e.target.value)}
-                    >
-                      <option value="">Select {category}</option>
-                      {items.map(item => (
-                        <option key={item.id} value={item.id}>
-                          {item.brand} - {item.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                ))}
+    <div className="flex flex-col min-h-screen bg-background">
+      <Header />
+      <main className="flex-grow pt-20">
+        <section className="section-padding bg-card">
+          <div className="container-max">
+            <AnimateInView>
+              <div className="text-center mb-12">
+                <h1 className="heading-1 text-primary">Room Configurator</h1>
+                <p className="mt-4 text-xl text-foreground/70">Design your perfect AV setup and get an instant quote.</p>
               </div>
-            </div>
+            </AnimateInView>
 
-            {/* Room Preview - Main Content Area */}
-            <div className="md:col-span-3">
-              <div className="bg-white p-6 rounded-lg shadow-md h-full">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-bold text-secondary">Room Preview</h3>
-                  <div className="text-sm text-gray-500">
-                    {Object.keys(selectedEquipment).length > 0 
-                      ? `${Object.keys(selectedEquipment).length} items selected` 
-                      : 'No equipment selected'}
-                  </div>
-                </div>
-
-                <div 
-                  className="relative w-full h-96 bg-gray-100 rounded-lg overflow-hidden border border-gray-200"
-                  ref={containerRef}
-                >
-                  {/* Room background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-200">
-                    {selectedEquipment.projector || selectedEquipment.display ? (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-3/4 h-3/4 bg-gray-300 rounded-lg shadow-inner"></div>
-                      </div>
-                    ) : null}
-                  </div>
-
-                  {/* Projector */}
-                  {selectedEquipment.projector && (
-                    <div className={`absolute w-1/5 top-[5%] left-1/2 transform -translate-x-1/2 transition-all duration-700 ${isAssembled ? 'opacity-100' : 'opacity-0 -translate-y-full'}`}>
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={getSelectedItem('projector')?.image || '/images/placeholder.png'}
-                          alt={`${getSelectedItem('projector')?.brand} projector`}
-                          fill
-                          className="object-contain"
-                          sizes="20vw"
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Display */}
-                  {selectedEquipment.display && (
-                    <div className={`absolute w-1/3 top-[15%] right-[10%] transition-all duration-700 ${isAssembled ? 'opacity-100' : 'opacity-0 translate-x-full'}`}>
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={getSelectedItem('display')?.image || '/images/placeholder.png'}
-                          alt={`${getSelectedItem('display')?.brand} display`}
-                          fill
-                          className="object-contain"
-                          sizes="33vw"
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Speakers */}
-                  {selectedEquipment.speaker && (
-                    <>
-                      <div className={`absolute w-1/6 bottom-[15%] left-[10%] transition-all duration-700 ${isAssembled ? 'opacity-100' : 'opacity-0 -translate-x-full'}`}>
-                        <div className="relative w-full h-full">
-                          <Image
-                            src={getSelectedItem('speaker')?.image || '/images/placeholder.png'}
-                            alt={`${getSelectedItem('speaker')?.brand} speaker left`}
-                            fill
-                            className="object-contain"
-                            sizes="16.6vw"
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="grid lg:grid-cols-3 gap-8">
+                  <AnimateInView direction="left" className="lg:col-span-1">
+                    <Card className="p-6 sticky top-24">
+                      <h3 className="heading-3 text-secondary mb-6">1. Select Equipment</h3>
+                      <div className="space-y-4">
+                        {(Object.keys(equipmentOptions) as EquipmentCategory[]).map((category) => (
+                          <FormField
+                            key={category}
+                            control={form.control}
+                            name={category}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="capitalize text-foreground/80">{category}</FormLabel>
+                                <Select 
+                                  onValueChange={(value) => {
+                                    field.onChange(value === 'none' ? '' : value);
+                                  }} 
+                                  value={field.value || ''}
+                                >
+                                  <FormControl>
+                                    <SelectTrigger>
+                                      <SelectValue placeholder={`Select a ${category}`} />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    <SelectItem value="none">None</SelectItem>
+                                    {equipmentOptions[category].map(item => (
+                                      <SelectItem key={item.id} value={item.id}>
+                                        {item.brand} - {item.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </FormItem>
+                            )}
                           />
-                        </div>
+                        ))}
                       </div>
-                      <div className={`absolute w-1/6 bottom-[15%] right-[10%] transition-all duration-700 ${isAssembled ? 'opacity-100' : 'opacity-0 translate-x-full'}`}>
-                        <div className="relative w-full h-full">
-                          <Image
-                            src={getSelectedItem('speaker')?.image || '/images/placeholder.png'}
-                            alt={`${getSelectedItem('speaker')?.brand} speaker right`}
-                            fill
-                            className="object-contain"
-                            sizes="16.6vw"
-                          />
-                        </div>
-                      </div>
-                    </>
-                  )}
+                    </Card>
+                  </AnimateInView>
 
-                  {/* Microphone */}
-                  {selectedEquipment.microphone && (
-                    <div className={`absolute w-16 top-[30%] left-[30%] transition-all duration-700 ${isAssembled ? 'opacity-100' : 'opacity-0 translate-y-full'}`}>
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={getSelectedItem('microphone')?.image || '/images/placeholder.png'}
-                          alt={`${getSelectedItem('microphone')?.brand} microphone`}
-                          fill
-                          className="object-contain"
-                          sizes="64px"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+                  <div className="lg:col-span-2 space-y-8">
+                    <AnimateInView direction="right">
+                      <Card className="p-6">
+                        <CardContent className="p-0">
+                          <h3 className="heading-3 text-secondary mb-6">2. Preview Your Setup</h3>
+                          <div
+                            className="relative w-full h-96 bg-background rounded-lg overflow-hidden border border-border/50"
+                          >
+                             <div className="absolute inset-0 bg-grid-slate-100/50 [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
+                             {(selectedDisplay || selectedProjector) && (
+                               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/5 h-3/5 bg-slate-700 rounded-lg shadow-inner"></div>
+                             )}
 
-          {/* Quote Request Form - Full width below */}
-          <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-2xl font-bold mb-6 text-secondary">Request a Quote</h3>
-            
-            <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-1">Name *</label>
-                <input
-                  type="text"
-                  required
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-1">Email *</label>
-                <input
-                  type="email"
-                  required
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-1">Company</label>
-                <input
-                  type="text"
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                />
-              </div>
-              
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Selected Equipment</label>
-                <div className="bg-gray-50 p-4 rounded-md">
-                  {Object.entries(selectedEquipment).length > 0 ? (
-                    <ul className="grid grid-cols-2 gap-2">
-                      {Object.entries(selectedEquipment).map(([category, id]) => {
-                        const items = equipmentOptions[category as keyof EquipmentOptions];
-                        const selectedItem = items.find(item => item.id === id);
-                        return (
-                          <li key={category} className="flex justify-between text-sm">
-                            <span className="capitalize font-medium">{category}:</span>
-                            <span className="text-right">{selectedItem?.brand} {selectedItem?.name}</span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  ) : (
-                    <p className="text-gray-500">No equipment selected yet</p>
-                  )}
+                            <AnimatePresence>
+                                {selectedProjector && (
+                                <motion.div 
+                                    key="projector"
+                                    className="absolute w-1/4 h-1/4 top-[10%] left-1/2 -translate-x-1/2"
+                                    variants={animationVariants.projector}
+                                    initial="initial"
+                                    animate="animate"
+                                    exit="exit"
+                                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                                >
+                                    <div className="relative w-full h-full">
+                                        <Image src={selectedProjector.image} alt={selectedProjector.name} fill data-ai-hint="projector" className="object-contain" />
+                                    </div>
+                                </motion.div>
+                                )}
+                                {selectedDisplay && (
+                                <motion.div 
+                                    key="display"
+                                    className="absolute w-3/5 h-3/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                                    variants={animationVariants.display}
+                                    initial="initial"
+                                    animate="animate"
+                                    exit="exit"
+                                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                                >
+                                    <div className="relative w-full h-full p-2">
+                                        <Image src={selectedDisplay.image} alt={selectedDisplay.name} fill data-ai-hint="display screen" className="object-contain" />
+                                    </div>
+                                </motion.div>
+                                )}
+                                {selectedSpeaker && (
+                                <React.Fragment key="speaker">
+                                    <motion.div 
+                                        className="absolute w-1/6 h-1/6 top-1/2 -translate-y-1/2 left-[5%]"
+                                        variants={animationVariants.speakerLeft}
+                                        initial="initial"
+                                        animate="animate"
+                                        exit="exit"
+                                        transition={{ duration: 0.5, ease: 'easeInOut' }}
+                                    >
+                                    <div className="relative w-full h-full">
+                                        <Image src={selectedSpeaker.image} alt={selectedSpeaker.name} fill data-ai-hint="audio speaker" className="object-contain" />
+                                    </div>
+                                    </motion.div>
+                                    <motion.div 
+                                        className="absolute w-1/6 h-1/6 top-1/2 -translate-y-1/2 right-[5%]"
+                                        variants={animationVariants.speakerRight}
+                                        initial="initial"
+                                        animate="animate"
+                                        exit="exit"
+                                        transition={{ duration: 0.5, ease: 'easeInOut' }}
+                                    >
+                                    <div className="relative w-full h-full">
+                                        <Image src={selectedSpeaker.image} alt={selectedSpeaker.name} fill data-ai-hint="audio speaker" className="object-contain" />
+                                    </div>
+                                    </motion.div>
+                                </React.Fragment>
+                                )}
+                                {selectedMicrophone && (
+                                    <motion.div 
+                                        key="microphone"
+                                        className="absolute top-[50%] left-1/2 -translate-x-1/2 w-1/6 h-1/6"
+                                        variants={animationVariants.microphone}
+                                        initial="initial"
+                                        animate="animate"
+                                        exit="exit"
+                                        transition={{ duration: 0.5, ease: 'easeInOut' }}
+                                    >
+                                    <div className="relative w-full h-full">
+                                        <Image src={selectedMicrophone.image} alt={selectedMicrophone.name} fill data-ai-hint="microphone" className="object-contain"/>
+                                    </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </AnimateInView>
+
+                    <AnimateInView direction="right" delay={200}>
+                       <Card className="p-6">
+                        <CardContent className="p-0">
+                          <h3 className="heading-3 text-secondary mb-6">3. Request a Quote</h3>
+                          
+                           <div className="mb-6 bg-background/50 p-4 rounded-lg border border-border/50">
+                            <h4 className="font-bold text-foreground/90 mb-2">Your Configuration:</h4>
+                            {allSelectedItems.length > 0 ? (
+                              <ul className="space-y-1">
+                                {allSelectedItems.map(({ category, item }) => (
+                                  <li key={category} className="text-sm text-foreground/80 flex justify-between">
+                                    <span className="font-medium">{category}:</span>
+                                    <span>{item!.brand} - {item!.name}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p className="text-sm text-muted-foreground italic">No equipment selected yet.</p>
+                            )}
+                          </div>
+
+                           <div className="grid md:grid-cols-2 gap-6">
+                              <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Name *</FormLabel>
+                                    <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Email *</FormLabel>
+                                    <FormControl><Input placeholder="your.email@example.com" {...field} /></FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                               <FormField
+                                control={form.control}
+                                name="company"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Company</FormLabel>
+                                    <FormControl><Input placeholder="Your Company Name" {...field} /></FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                               <FormField
+                                control={form.control}
+                                name="notes"
+                                render={({ field }) => (
+                                  <FormItem className="md:col-span-2">
+                                    <FormLabel>Additional Notes</FormLabel>
+                                    <FormControl><Textarea placeholder="Tell us more about your requirements..." {...field} /></FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <div className="md:col-span-2">
+                                <Button type="submit" size="lg" className="w-full font-headline btn-glow">
+                                  Get My Quote
+                                </Button>
+                              </div>
+                           </div>
+                        </CardContent>
+                      </Card>
+                    </AnimateInView>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Additional Notes</label>
-                <textarea
-                  rows={4}
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                />
-              </div>
-              
-              <div className="md:col-span-2">
-                <Button 
-                  type="submit" 
-                  size="lg" 
-                  className="w-full font-headline btn-glow"
-                  disabled={Object.keys(selectedEquipment).length === 0}
-                >
-                  Request Quote
-                </Button>
-              </div>
-            </form>
+              </form>
+            </Form>
           </div>
-        </div>
-      </section>
-    </>
+        </section>
+      </main>
+      <Footer />
+      <Toaster />
+    </div>
   );
 }
