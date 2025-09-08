@@ -41,7 +41,7 @@ const VisualSolutions = () => {
     <section className="pt-12 pb-16 bg-background md:pt-16 md:pb-20">
       <div className="container-max">
         <AnimateInView className="text-center mb-8 md:mb-12">
-          <h2 className="heading-2">Premium Visual Solutions</h2>
+          <h2 className="heading-2">Your Sector, Our AV Expertise</h2>
           <p className="mt-4 text-xl text-foreground/70 max-w-3xl mx-auto">
             Visual transformation for Businesses and Institutions. We provide cutting-edge display solutions tailored for every sector.
           </p>

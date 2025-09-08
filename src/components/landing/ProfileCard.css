@@ -13,12 +13,7 @@
   --icon: none;
   --behind-gradient: none;
   --inner-gradient: none;
-  --sunpillar-1: hsl(2, 100%, 73%);
-  --sunpillar-2: hsl(53, 100%, 69%);
-  --sunpillar-3: hsl(93, 100%, 69%);
-  --sunpillar-4: hsl(176, 100%, 76%);
-  --sunpillar-5: hsl(228, 100%, 74%);
-  --sunpillar-6: hsl(283, 100%, 73%);
+ 
   --sunpillar-clr-1: var(--sunpillar-1);
   --sunpillar-clr-2: var(--sunpillar-2);
   --sunpillar-clr-3: var(--sunpillar-3);
@@ -61,10 +56,9 @@
 }
 
 .pc-card {
-  height: 70svh;
-  max-height: 480px;
+  height: 200px;
+  width: 200px;
   display: grid;
-  aspect-ratio: 0.718;
   border-radius: var(--card-radius);
   position: relative;
   background-blend-mode: color-dodge, normal, normal, normal;
@@ -433,8 +427,8 @@
 
 @media (max-width: 768px) {
   .pc-card {
-    height: 60svh;
-    max-height: 420px;
+    height: 200px;
+    width: 200px;
   }
 
   .pc-details {
@@ -481,8 +475,8 @@
 
 @media (max-width: 480px) {
   .pc-card {
-    height: 55svh;
-    max-height: 350px;
+    height: 200px;
+    width: 200px;
   }
 
   .pc-details {
@@ -532,8 +526,8 @@
 
 @media (max-width: 320px) {
   .pc-card {
-    height: 50svh;
-    max-height: 300px;
+    height: 200px;
+    width: 200px;
   }
 
   .pc-details h3 {

@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Import your components
 import Header from '@/components/landing/header';
 import Hero from '@/components/landing/hero';
 import Mission from '@/components/landing/mission';
@@ -23,20 +24,36 @@ import ProcessRail from "@/components/landing/process-rail";
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [scalePhase, setScalePhase] = useState(false);
+  const contentRef = useRef(null);
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setScalePhase(true), 1000); // start scale after drop
-    const timer2 = setTimeout(() => setLoading(false), 2800); // hide loader after scale finishes
+    // Start the scale animation after initial drop
+    const timer1 = setTimeout(() => setScalePhase(true), 1000);
+    
+    // Preload the background image
+    const bgImage = new Image();
+    bgImage.src = "/assets/team-bg.jpg";
+    bgImage.onload = () => {
+      // Set a minimum display time for the loader
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    };
+
+    // Fallback in case image loading fails
+    const fallbackTimer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
 
     return () => {
       clearTimeout(timer1);
-      clearTimeout(timer2);
+      clearTimeout(fallbackTimer);
     };
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Global Background Image */}
+      {/* Global Background Image - Always present */}
       <div 
         className="fixed inset-0 z-0"
         style={{
@@ -51,15 +68,17 @@ export default function HomePage() {
       {/* Overlay to control opacity */}
       <div className="fixed inset-0 z-0 bg-white/0" />
       
+      {/* Loader */}
       <AnimatePresence>
         {loading && (
           <motion.div
             key="loader"
             className="fixed inset-0 flex items-center justify-center bg-white z-50"
             initial={{ opacity: 1 }}
-            animate={{ opacity: scalePhase ? 0 : 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: .8, ease: "easeOut" }}
+            exit={{ 
+              opacity: 0,
+              transition: { duration: 0.5, ease: "easeOut" }
+            }}
           >
             <motion.img
               src="/assets/inviot-logo.svg"
@@ -80,29 +99,28 @@ export default function HomePage() {
         )}
       </AnimatePresence>
 
-      {!loading && (
-        <>
-          <div className="relative z-10">
-            <Header />
-            <main className="flex-grow">
-              <Hero />
-              <Mission />
-              <WhyChooseUs />
-              <CounterBanner /> 
-              <VisualSolutions />
-             
-             
-              <Solutions />
-              <TrustedFeatures/>
-              <Affiliations />
-              <ProcessRail/>
-              <Leadership />
-              <Contact />
-            </main>
-            <Footer />
-          </div>
-        </>
-      )}
+      {/* Main content - Hidden while loading to prevent white space */}
+      <div 
+        ref={contentRef}
+        className="relative z-10"
+        style={{ display: loading ? 'none' : 'block' }}
+      >
+        <Header />
+        <main className="flex-grow">
+          <Hero />
+          <Mission />
+          <WhyChooseUs />
+          <CounterBanner /> 
+          <VisualSolutions />
+          <Solutions />
+          <TrustedFeatures/>
+          <Affiliations />
+          <ProcessRail/>
+          <Leadership />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }

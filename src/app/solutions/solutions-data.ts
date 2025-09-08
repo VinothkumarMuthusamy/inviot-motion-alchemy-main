@@ -31,6 +31,7 @@ export interface Solution {
         title: string;
         subtitle?: string;
         buttonText: string;
+        image?: string;
     }
 }
 
@@ -129,6 +130,7 @@ export const solutions: Solution[] = [
         cta: {
             title: "Ready to enhance your team's collaboration?",
             buttonText: "Design Your Meeting Room"
+            
         }
     },
     {
@@ -479,6 +481,7 @@ export const solutions: Solution[] = [
         cta: {
             title: "What Kind of Command and Control Center Do You Need?",
             buttonText: "Design Your Control Center"
+             
         }
     },
 ];

@@ -15,9 +15,9 @@ const Hero = () => {
   ];
   
   const headlines = [
-    "Design ",
-    "Integrate ", 
-    "Support "
+    "Beyond Technology, Into Experience ",
+    "Trusted AV Partner for Global Enterprises ", 
+    "Innovation Meets Communication "
   ];
 
   const scrollToContact = (e: React.MouseEvent<HTMLButtonElement>) => {

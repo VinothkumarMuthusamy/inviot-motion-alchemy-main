@@ -102,7 +102,7 @@ const Solutions = () => {
                 <div className={cn("flex flex-col items-center w-full px-4", isMobile ? 'relative' : 'absolute top-[18%] left-1/2 -translate-x-1/2')}>
                     <AnimateInView>
                         <h2 className="heading-2 text-center text-3xl md:text-4xl">Our Solutions</h2>
-                        <p className="mt-4 text-base md:text-lg text-black max-w-full mx-auto text-center">
+                        <p className="mt-4 text-base md:text-lg text-black max-w-3xl mx-auto text-center">
                             We improve communication and collaboration within a company by treating audiovisual, unified collaboration, and digital media as part of a larger ecosystem. Our expertise and experience help us create an environment where everyone feels empowered and engaged in their work.
                         </p>
                     </AnimateInView>
