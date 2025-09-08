@@ -158,10 +158,18 @@ export default function RoomConfiguratorPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div 
+      className="flex flex-col min-h-screen bg-background"
+      style={{
+        backgroundImage: "url('/assets/team-bg.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
       <Header />
       <main className="flex-grow pt-20">
-        <section className="section-padding bg-card">
+        <section className="section-padding bg-transparent ">
           <div className="container-max">
             <AnimateInView>
               <div className="text-center mb-12">
@@ -174,7 +182,7 @@ export default function RoomConfiguratorPage() {
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="grid lg:grid-cols-3 gap-8">
                   <AnimateInView direction="left" className="lg:col-span-1">
-                    <Card className="p-6 sticky top-24">
+                    <Card className="p-6 sticky top-24 bg-background/90 backdrop-blur-sm">
                       <h3 className="heading-3 text-secondary mb-6">1. Select Equipment</h3>
                       <div className="space-y-4">
                         {(Object.keys(equipmentOptions) as EquipmentCategory[]).map((category) => (
@@ -215,29 +223,34 @@ export default function RoomConfiguratorPage() {
 
                   <div className="lg:col-span-2 space-y-8">
                     <AnimateInView direction="right">
-                      <Card className="p-6">
+                      <Card className="p-6 bg-background/90 ">
                         <CardContent className="p-0">
                           <h3 className="heading-3 text-secondary mb-6">2. Preview Your Setup</h3>
                           <div
                             className="relative w-full h-96 bg-background rounded-lg overflow-hidden border border-border/50"
                           >
-                             <div className="absolute inset-0 bg-grid-slate-100/50 [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
-                             {(selectedDisplay || selectedProjector) && (
-                               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/5 h-3/5 bg-slate-700 rounded-lg shadow-inner"></div>
-                             )}
+                             <Image 
+                                src="https://picsum.photos/seed/room/1200/800" 
+                                alt="Conference Room Background" 
+                                layout="fill" 
+                                objectFit="cover" 
+                                className="opacity-100"
+                                data-ai-hint="conference room"
+                            />
+                            <div className="absolute inset-0 bg-black/20"></div>
 
                             <AnimatePresence>
                                 {selectedProjector && (
                                 <motion.div 
                                     key="projector"
-                                    className="absolute w-1/4 h-1/4 top-[10%] left-1/2 -translate-x-1/2"
+                                    className="absolute w-1/4 top-[10%] left-1/2 -translate-x-1/2"
                                     variants={animationVariants.projector}
                                     initial="initial"
                                     animate="animate"
                                     exit="exit"
                                     transition={{ duration: 0.5, ease: 'easeInOut' }}
                                 >
-                                    <div className="relative w-full h-full">
+                                    <div className="relative aspect-video">
                                         <Image src={selectedProjector.image} alt={selectedProjector.name} fill data-ai-hint="projector" className="object-contain" />
                                     </div>
                                 </motion.div>
@@ -260,42 +273,42 @@ export default function RoomConfiguratorPage() {
                                 {selectedSpeaker && (
                                 <React.Fragment key="speaker">
                                     <motion.div 
-                                        className="absolute w-1/6 h-1/6 top-1/2 -translate-y-1/2 left-[5%]"
+                                        className="absolute w-1/6 top-1/2 -translate-y-1/2 left-[5%]"
                                         variants={animationVariants.speakerLeft}
                                         initial="initial"
                                         animate="animate"
                                         exit="exit"
                                         transition={{ duration: 0.5, ease: 'easeInOut' }}
                                     >
-                                    <div className="relative w-full h-full">
-                                        <Image src={selectedSpeaker.image} alt={selectedSpeaker.name} fill data-ai-hint="audio speaker" className="object-contain" />
-                                    </div>
+                                      <div className="relative aspect-square">
+                                          <Image src={selectedSpeaker.image} alt={selectedSpeaker.name} fill data-ai-hint="audio speaker" className="object-contain" />
+                                      </div>
                                     </motion.div>
                                     <motion.div 
-                                        className="absolute w-1/6 h-1/6 top-1/2 -translate-y-1/2 right-[5%]"
+                                        className="absolute w-1/6 top-1/2 -translate-y-1/2 right-[5%]"
                                         variants={animationVariants.speakerRight}
                                         initial="initial"
                                         animate="animate"
                                         exit="exit"
                                         transition={{ duration: 0.5, ease: 'easeInOut' }}
                                     >
-                                    <div className="relative w-full h-full">
-                                        <Image src={selectedSpeaker.image} alt={selectedSpeaker.name} fill data-ai-hint="audio speaker" className="object-contain" />
-                                    </div>
+                                      <div className="relative aspect-square">
+                                          <Image src={selectedSpeaker.image} alt={selectedSpeaker.name} fill data-ai-hint="audio speaker" className="object-contain" />
+                                      </div>
                                     </motion.div>
                                 </React.Fragment>
                                 )}
                                 {selectedMicrophone && (
                                     <motion.div 
                                         key="microphone"
-                                        className="absolute top-[50%] left-1/2 -translate-x-1/2 w-1/6 h-1/6"
+                                        className="absolute top-[60%] left-1/2 -translate-x-1/2 w-1/6"
                                         variants={animationVariants.microphone}
                                         initial="initial"
                                         animate="animate"
                                         exit="exit"
                                         transition={{ duration: 0.5, ease: 'easeInOut' }}
                                     >
-                                    <div className="relative w-full h-full">
+                                    <div className="relative aspect-square">
                                         <Image src={selectedMicrophone.image} alt={selectedMicrophone.name} fill data-ai-hint="microphone" className="object-contain"/>
                                     </div>
                                     </motion.div>
@@ -307,7 +320,7 @@ export default function RoomConfiguratorPage() {
                     </AnimateInView>
 
                     <AnimateInView direction="right" delay={200}>
-                       <Card className="p-6">
+                       <Card className="p-6 bg-background/90 backdrop-blur-sm">
                         <CardContent className="p-0">
                           <h3 className="heading-3 text-secondary mb-6">3. Request a Quote</h3>
                           

@@ -7,8 +7,8 @@ import { useParams, notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { AnimateInView } from "@/components/ui/animate-in-view";
-import HotspotCarousel from "@/components/ui/hotspot";
 import FeatureList from "@/components/ui/feature-list";
+import HotspotCarousel from "@/components/ui/hotspot";
 
 const DefaultHero = ({ solution }: { solution: Solution }) => {
     const heroImage = solution.sections[0]?.image?.src || "https://picsum.photos/1920/1080";
@@ -64,22 +64,30 @@ export default function SolutionDetailPage() {
   const hotspotSection = solution.sections.find(s => s.type === 'hotspot-carousel');
 
   return (
-    <div className="bg-background">
+    <div 
+      className="bg-background"
+      style={{
+        backgroundImage: "url('/assets/team-bg.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
         <DefaultHero solution={solution} />
 
         {introSection && (
-            <section className="section-padding bg-background">
+            <section className="section-padding bg-transparent  ">
                 <div className="container-max text-center max-w-4xl mx-auto">
                     <AnimateInView>
                         <h2 className="heading-2">{introSection.title}</h2>
-                        <div className="mt-6 text-black leading-relaxed space-y-4" dangerouslySetInnerHTML={{ __html: introSection.content || '' }} />
+                        <div className="mt-6 text-foreground/80 leading-relaxed space-y-4" dangerouslySetInnerHTML={{ __html: introSection.content || '' }} />
                     </AnimateInView>
                 </div>
             </section>
         )}
         
         {featureListSection && featureListSection.features && (
-            <section className="section-padding bg-card">
+            <section className="section-padding bg-transparent">
                 <div className="container-max">
                     <FeatureList features={featureListSection.features as any[]} />
                 </div>
@@ -87,7 +95,7 @@ export default function SolutionDetailPage() {
         )}
 
         {hotspotSection && hotspotSection.hotspots && (
-             <section className="section-padding bg-background">
+             <section className="section-padding bg-transparent">
                 <div className="container-max">
                     <HotspotCarousel
                         title={hotspotSection.title}
