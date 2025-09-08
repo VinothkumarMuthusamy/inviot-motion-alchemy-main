@@ -58,9 +58,9 @@ export const solutions: Solution[] = [
     {
         slug: "audio-video-collaboration",
         title: "Audio and Video Collaboration",
-        subtitle: "Communicate and collaborate securely with anyone, anywhere.",
+        subtitle: "Collaborate and communicate seamlessly, anytime and anywhere.",
         video: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-        description: "Audio & Video collaboration is expanding across all industries. Give your employees and clients the ability to share multimedia content and communicate more effectively over distances and across devices.",
+        description: "With audio and video collaboration becoming essential across industries, empower your employees and clients to share multimedia content and connect more effectively across distances, devices, and platforms.",
         sections: [
             {
                 type: 'centered-text',
