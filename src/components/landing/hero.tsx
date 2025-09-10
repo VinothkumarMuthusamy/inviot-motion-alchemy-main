@@ -9,9 +9,9 @@ const Hero = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   
   const videos = [
-    "/videos/i1.mp4",
-    "/videos/h1.mp4",
-    "/videos/m1.mp4"
+    "/videos/WEBSITEVIDEOFINAL 3.mp4",
+    "/videos/WEBSITEVIDEOFINAL 3.mp4",
+    "/videos/WEBSITEVIDEOFINAL 3.mp4"
   ];
   
   const headlines = [

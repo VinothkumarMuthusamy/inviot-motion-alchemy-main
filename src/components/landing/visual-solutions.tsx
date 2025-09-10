@@ -5,33 +5,35 @@ import ProfileCard from './ProfileCard';
 
 const industries = [
   {
-    name: 'Hospitality',
-    image: 'https://picsum.photos/800/1200?random=1',
-    title: 'Luxury & Comfort',
+    name: 'Retail',
+    image: '/assets/visualpageimg/Retail.jpg',
+    title: 'Modern & Inviting',
   },
+  
   {
     name: 'Corporate',
-    image: 'https://picsum.photos/1200/800?random=5',
+    image: '/assets/visualpageimg/Corporate.jpg',
     title: 'Sleek & Professional',
   },
   {
-    name: 'Retail',
-    image: 'https://picsum.photos/800/800?random=2',
-    title: 'Modern & Inviting',
+    name: 'Control Room',
+    image: '/assets/visualpageimg/Control rooms.jpg',
+    title: 'Mission Critical',
   },
   {
     name: 'Education',
-    image: 'https://picsum.photos/800/800?random=3',
+    image: '/assets/visualpageimg/Education.jpg',
     title: 'Interactive Learning',
   },
+  
   {
-    name: 'Control Room',
-    image: 'https://picsum.photos/1200/800?random=4',
-    title: 'Mission Critical',
+    name: 'Hospitality',
+    image: '/assets/visualpageimg/Hospitality.jpg',
+    title: 'Luxury & Comfort',
   },
    {
     name: 'Sports',
-    image: 'https://picsum.photos/800/800?random=6',
+    image: '/assets/visualpageimg/Sports (2).jpg',
     title: 'Dynamic & Energetic',
   },
 ];

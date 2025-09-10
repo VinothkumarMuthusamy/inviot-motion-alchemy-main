@@ -67,7 +67,7 @@ export const solutions: Solution[] = [
                 title: "Seamless Collaboration, Anywhere",
                 content: `<p>Bridge distances and connect teams with state-of-the-art audio and video collaboration tools. Our solutions are designed to be intuitive, reliable, and secure, ensuring that your meetings are productive, whether participants are in the same room or across the globe.</p><p>We integrate hardware and software to create a unified ecosystem that supports everything from one-on-one calls to large-scale virtual events.</p>`,
                 image: {
-                    src: "/assets/audio-video.jpg", 
+                    src: "/assets/solutionimg/Audio Visual.jpg", 
                     alt: "Business meeting", 
                     hint: "business meeting" 
                 },
@@ -145,7 +145,7 @@ export const solutions: Solution[] = [
                 title: "Engage, Inform, and Inspire",
                 content: `<p>Transform your spaces with dynamic digital signage that captures attention and delivers impactful messages. From towering video walls in corporate lobbies to interactive kiosks in retail, we provide end-to-end solutions that are easy to manage and impossible to ignore.</p>`,
                 image: { 
-                    src: "/assets/videowalls-02.jpg", 
+                    src: "/assets/solutionimg/Digital Signage.jpg", 
                     alt: "Interactive Digital Signage", 
                     hint: "interactive kiosk" 
                 },
@@ -215,7 +215,7 @@ export const solutions: Solution[] = [
                 title: "High-quality educational experience for teachers and students",
                 content: `<p>Moving to a digitized environment brings all the benefits of advanced technology into today’s classrooms and enables tested, standards-based solutions that simply work for users. At the same time, with budgets often limited, legacy devices must be accommodated in the solution design.</p><p>Our flexible solutions work with many legacy and third-party devices, enabling cost-effective classrooms and long-lasting high value.</p>`,
                 image: {
-                    src: "https://picsum.photos/1920/1080?random=8",
+                    src: "/assets/solutionimg/EDUCATION.jpg",
                     alt: "Pupils sitting next to their desks",
                     hint: "students classroom"
                 },
@@ -285,7 +285,7 @@ export const solutions: Solution[] = [
                 title: "Build Deeper Customer Connections",
                 content: `<p>Go beyond traditional showrooms. An Experience Centre is a curated environment where your brand's story comes to life. It allows customers to interact with your products and services in a meaningful, memorable way, fostering loyalty and driving engagement.</p>`,
                 image: { 
-                    src: "/assets/experience.jpg", 
+                    src: "/assets/solutionimg/Experience Centers.jpg", 
                     alt: "Experience Centre", 
                     hint: "modern interactive exhibit" 
                 },
@@ -355,7 +355,7 @@ export const solutions: Solution[] = [
                 title: "The Modern Meeting Ecosystem",
                 content: `<p>A successful meeting room is more than a table and chairs. It's an ecosystem of technology designed for intuitive use and flawless performance. We engineer spaces that foster collaboration, ensuring every participant, whether in-person or remote, is seen and heard clearly.</p>`,
                 image: { 
-                    src: "/assets/meeting-rooms-01.jpg", 
+                    src: "/assets/solutionimg/Meeting room.jpg", 
                     alt: "Seamless Meeting Room", 
                     hint: "modern boardroom" 
                 },
@@ -425,7 +425,7 @@ export const solutions: Solution[] = [
                 title: "Command, Control, and Clarity",
                 content: `<p>A Network Operations Center (NOC) or Security Operations Center (SOC) is the nerve center of an organization. We design and build mission-critical monitoring centres that provide operators with complete situational awareness, enabling rapid, informed decision-making.</p>`,
                 image: { 
-                    src: "/assets/monitoring-centers-01.jpg", 
+                    src: "/assets/solutionimg/Monitoring Centers.jpg", 
                     alt: "Monitoring Center", 
                     hint: "data center monitors" 
                 },

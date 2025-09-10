@@ -5,25 +5,25 @@ import Image from "next/image";
 
 const features = [
   {
-    icon: "https://www.denon.com/on/demandware.static/-/Library-Sites-denon_northamerica_shared/default/dw7ae803cd/key-pages/homepage/110-years.svg",
+    icon: "/assets/featurepage/Provenavexcellence.png",
     title: "Proven AV Excellence",
     description: "Delivering world-class audio-visual solutions.",
     hint: "110 years icon"
   },
   {
-    icon: "https://www.denon.com/on/demandware.static/-/Library-Sites-denon_northamerica_shared/default/dw9faaad17/key-pages/homepage/customer-support.svg",
+    icon: "/assets/featurepage/Futureprooftechnology.png",
     title: "Future-Ready Technology",
     description: "We design environments that evolve with tomorrow’s needs.",
     hint: "customer support icon"
   },
   {
-    icon: "https://www.denon.com/on/demandware.static/-/Library-Sites-denon_northamerica_shared/default/dw1eb5eb73/key-pages/homepage/handcrafted.svg",
+    icon: "/assets/featurepage/global reach.png",
     title: "End-to-End Integration",
     description: "Our team ensures precision and reliability at every step.",
     hint: "handcrafted icon"
   },
   {
-    icon: "https://www.denon.com/on/demandware.static/-/Library-Sites-denon_northamerica_shared/default/dwdc6fd9d2/key-pages/homepage/sustainability.svg",
+    icon: "/assets/featurepage/Worldwide Reach, Local Care.png",
     title: "Worldwide Reach, Local Care",
     description: "Headquartered in India with global backing.",
     hint: "sustainability icon"
