@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -234,8 +235,7 @@ const Solutions = () => {
                 >
                   <Image
                     src={
-                      solution.sections[0]?.image?.src ||
-                      "https://placehold.co/600x400.png"
+                      solution.image.src
                     }
                     alt={solution.title}
                     fill
