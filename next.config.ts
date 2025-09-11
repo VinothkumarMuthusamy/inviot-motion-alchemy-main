@@ -33,6 +33,18 @@ const nextConfig: NextConfig = {
         hostname: 'www.kramerav.com',
         port: '',
         pathname: '/**',
+      },
+       {
+        protocol: 'https',
+        hostname: 'resurgent.co.in', // Fixed: removed www
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.resurgent.co.in', // Keep this too for both variants
+        port: '',
+        pathname: '/**',
       }
     ],
   },
