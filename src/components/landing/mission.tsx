@@ -59,7 +59,7 @@ const Mission = () => {
                   fontWeight: 700,
                 }}
               >
-                Who is Inviot?
+                technology with purpose
               </h2>
               <p className="mt-4 max-w-4xl text-lg text-justify text-balance font-light leading-relaxed text-black">
                 At Inviot, we believe that the best way to improve communication
