@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -8,6 +7,8 @@ import { AnimateInView } from "@/components/ui/animate-in-view";
 import FeatureList from "@/components/ui/feature-list";
 import HotspotCarousel from "@/components/ui/hotspot";
 import type { Solution } from "../solutions-data";
+import Contact from "@/components/landing/contact";
+import { CheckCircle } from "lucide-react";
 
 const solution: Solution = {
     slug: "audio-video-collaboration",
@@ -23,8 +24,13 @@ const solution: Solution = {
     sections: [
         {
             type: 'centered-text',
-            title: "Seamless Collaboration, Anywhere",
-            content: `<p>Bridge distances and connect teams with state-of-the-art audio and video collaboration tools. Our solutions are designed to be intuitive, reliable, and secure, ensuring that your meetings are productive, whether participants are in the same room or across the globe.</p><p>We integrate hardware and software to create a unified ecosystem that supports everything from one-on-one calls to large-scale virtual events.</p>`,
+            title: "Redefine the way you work",
+            content: `<p>Collaborate, share feedback, and connect seamlessly, whether in the office, remote, or on the go. Affordable, flexible, and built for modern teams.</p>`,
+        },
+        {
+            type: 'centered-text',
+            title: "It's here, your opportunity to lead",
+            content: `<p>Delight clients with flexible, affordable web conferencing and empower your teams to collaborate seamlessly across distances. Stay connected, stay ahead.</p>`,
         },
         {
             type: 'feature-list',
@@ -81,10 +87,6 @@ const solution: Solution = {
             ]
         }
     ],
-    cta: {
-        title: "Ready to enhance your team's collaboration?",
-        buttonText: "Design Your Meeting Room"
-    }
 };
 
 const DefaultHero = ({ solution }: { solution: Solution }) => {
@@ -106,7 +108,7 @@ const DefaultHero = ({ solution }: { solution: Solution }) => {
             <div className="relative container-max">
                 <AnimateInView>
                     <div className="max-w-3xl">
-                        <h1 className="heading-1 !text-white">{solution.title}</h1>
+                        <h1 className="heading-1 !text-white">{solution.subtitle}</h1>
                         <p className="mt-4 text-xl text-white/80 max-w-4xl">
                         {solution.description}
                         </p>
@@ -128,9 +130,127 @@ export default function AudioVideoCollaborationPage() {
     }
   };
 
-  const introSection = solution.sections?.find(s => s.type === 'centered-text');
+  // Get all sections by type
+  const centeredTextSections = solution.sections?.filter(s => s.type === 'centered-text') || [];
   const featureListSection = solution.sections?.find(s => s.type === 'feature-list');
   const hotspotSection = solution.sections?.find(s => s.type === 'hotspot-carousel');
+
+  // Benefits data arrays for each section
+  const benefitsSections = [
+    {
+      title: "Benefits",
+      benefits: [
+        "Seamless collaboration across any smart device",
+        "Save time with quick, organized ad-hoc meetings",
+        "Drive faster, more effective decision-making",
+        "Strengthen teamwork and improve collaboration"
+      ]
+    },
+    {
+      title: "Benefits",
+      benefits: [
+        "Leverage the latest, high-impact digital displays with in-store retail solutions",
+        "Drive more business with engaging, cost-effective AV experiences",
+        "Boost customer spending through interactive and immersive engagement"
+      ]
+    },
+    {
+      title: "Benefits",
+      benefits: [
+        "Easy-to-use, highly functional online screens",
+        "Create and share content within minutes with AV collaboration",
+        "Deliver unique and personalized customer experiences"
+      ]
+    }
+  ];
+
+  // Hotspot data for three different sections
+  const hotspotSections = [
+    {
+      title: "Enterprise Solutions",
+      content: "Empower your organization with seamless collaboration across every smart device. Whether it's delivering a presentation straight from your phone in the boardroom or hosting a video meeting with remote team members, our technology ensures secure, reliable, and professional communication at all times.",
+      image: { src: "/assets/solutionimg/create-virtual-advertising-environment-with-digital-displays-managing-reviewing-promotiona.jpg", alt: "Enterprise solutions", hint: "enterprise solutions" },
+      hotspots: [
+        {
+          position: { top: '25%', left: '37%' },
+          title: "Conference Camera",
+          description: "Ultra HD Conference Camera",
+          details: ["120° wide angle", "Auto low-light correction", "5x digital zoom"],
+          link: "#"
+        },
+        {
+          position: { top: '80%', left: '63%' },
+          title: "Speakerphone",
+          description: "360° Full Duplex Speakerphone",
+          details: ["Voice tracking", "Echo cancellation", "10m pickup range"],
+          link: "#"
+        },
+        {
+          position: { top: '50%', left: '50%' },
+          title: "Control Panel",
+          description: "Touch Control Interface",
+          details: ["One-touch meeting start", "Volume controls", "Device status indicators"],
+          link: "#"
+        }
+      ]
+    },
+    {
+      title: "Retail Solutions",
+      content: "We bring extensive experience in the retail sector, working closely with clients and agency partners to design AV solutions that drive measurable profits. Our approach ensures every solution is cost-effective, tailored to your business goals, and optimized to fit your budget helping you create engaging customer experiences that convert into results.",
+      image: { src: "/assets/solutionimg/flat.jpg", alt: "Retail solutions", hint: "retail solutions" },
+      hotspots: [
+        {
+          position: { top: '35%', left: '55%' },
+          title: "All-in-One Bar",
+          description: "Video Sound Bar",
+          details: ["Integrated camera, mics and speakers", "Plug-and-play setup", "USB-C connectivity"],
+          link: "#"
+        },
+        {
+          position: { top: '65%', left: '30%' },
+          title: "Tabletop Hub",
+          description: "Wireless Connectivity Hub",
+          details: ["HDMI and USB connections", "Charging ports", "Cable management system"],
+          link: "#"
+        },
+        {
+          position: { top: '20%', left: '75%' },
+          title: "Display",
+          description: "55-inch 4K Monitor",
+          details: ["Anti-glare coating", "Built-in whiteboard software", "Mobile device compatibility"],
+          link: "#"
+        }
+      ]
+    },
+    {
+      title: "Hospitality & Tourism Solutions",
+      content: "Create memorable guest experiences with AV-guided customer journeys. Deliver real-time interaction, instant support, and seamless brand engagement.",
+      image: { src: "/assets/solutionimg/modern-hospital-entrance-with-interactive-digital-kiosk-bright-spacious-lobby-area.jpg", alt: "Hospitality solutions", hint: "hospitality solutions" },
+      hotspots: [
+        {
+          position: { top: '20%', left: '50%' },
+          title: "PTZ Camera",
+          description: "Professional PTZ Camera",
+          details: ["Remote controlled pan/tilt/zoom", "Preset positions", "Optical zoom"],
+          link: "#"
+        },
+        {
+          position: { top: '70%', left: '25%' },
+          title: "Ceiling Speakers",
+          description: "Distributed Audio System",
+          details: ["Even sound distribution", "Background music capable", "Volume zone controls"],
+          link: "#"
+        },
+        {
+          position: { top: '40%', left: '80%' },
+          title: "Interactive Display",
+          description: "86-inch Interactive Touchscreen",
+          details: ["Multi-touch capability", "Annotation tools", "Screen recording"],
+          link: "#"
+        }
+      ]
+    }
+  ];
 
   return (
     <div 
@@ -144,16 +264,18 @@ export default function AudioVideoCollaborationPage() {
     >
         <DefaultHero solution={solution} />
 
-        {introSection && (
-            <section className="section-padding bg-transparent">
+        {/* Render all centered-text sections */}
+        {centeredTextSections.map((section, index) => (
+            <section key={index} className="section-padding bg-transparent">
                 <div className="container-max text-center max-w-4xl mx-auto">
                     <AnimateInView>
-                        <h2 className="heading-2">{introSection.title}</h2>
-                        <div className="mt-6 text-foreground/80 leading-relaxed space-y-4" dangerouslySetInnerHTML={{ __html: introSection.content || '' }} />
+                        <h2 className="heading-2">{section.title}</h2>
+                        <div className="mt-6 text-foreground/80 leading-relaxed space-y-4" 
+                             dangerouslySetInnerHTML={{ __html: section.content || '' }} />
                     </AnimateInView>
                 </div>
             </section>
-        )}
+        ))}
         
         {featureListSection && featureListSection.features && (
             <section className="section-padding bg-transparent">
@@ -163,35 +285,45 @@ export default function AudioVideoCollaborationPage() {
             </section>
         )}
 
-        {hotspotSection && hotspotSection.hotspots && (
-             <section className="section-padding bg-transparent">
+        {/* Render three hotspot and benefits sections */}
+        {[0, 1, 2].map((index) => (
+          <div key={index}>
+            {/* Hotspot section */}
+            <section className="section-padding bg-transparent">
                 <div className="container-max">
                     <HotspotCarousel
-                        title={hotspotSection.title}
-                        description={hotspotSection.content || ''}
-                        slides={hotspotSection.hotspots}
+                        title={hotspotSections[index].title}
+                        description={hotspotSections[index].content}
+                        slides={[{
+                          image: hotspotSections[index].image,
+                          hotspots: hotspotSections[index].hotspots
+                        }]}
                     />
                 </div>
             </section>
-        )}
 
-        {solution.cta && (
-          <section className="section-padding bg-gradient-to-r from-primary to-accent">
-              <div className="container-max text-center text-white">
-                  <AnimateInView>
-                      <h2 className="heading-2 !text-white max-w-3xl mx-auto">{solution.cta.title}</h2>
-                      {solution.cta.subtitle && (
-                          <p className="mt-4 text-lg text-white/80 max-w-3xl mx-auto">
-                              {solution.cta.subtitle}
-                          </p>
-                      )}
-                       <Button size="lg" className="mt-8 font-headline btn-glow bg-white text-primary hover:bg-white/90" onClick={scrollToContact}>
-                          {solution.cta.buttonText} <ArrowRight className="w-4 h-4 ml-2" />
-                       </Button>
-                  </AnimateInView>
-              </div>
-          </section>
-        )}
+            {/* Benefits section with title and four bullet points */}
+            <section className="section-padding bg-transparent">
+                <div className="container-max">
+                    <div className="max-w-4xl mx-auto">
+                        <AnimateInView>
+                            <h2 className="heading-2 text-center mb-12">{benefitsSections[index].title}</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {benefitsSections[index].benefits.map((benefit, i) => (
+                                    <div key={i} className="flex items-start space-x-3">
+                                        <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                                        <p className="text-foreground/80 text-lg">{benefit}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </AnimateInView>
+                    </div>
+                </div>
+            </section>
+          </div>
+        ))}
+
+        <Contact />
     </div>
   )
 };

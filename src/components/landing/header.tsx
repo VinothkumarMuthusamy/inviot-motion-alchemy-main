@@ -13,12 +13,13 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Menu, Phone, Mail, HelpCircle } from "lucide-react";
+import { Menu, Phone, Mail, HelpCircle, ChevronDown, ChevronUp } from "lucide-react";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetClose,
+  SheetTitle,
 } from "@/components/ui/sheet";
 import Image from "next/image";
 import logoImage from "@/image/logo.png";
@@ -81,21 +82,20 @@ const solutions = [
   { name: "Experience Centres", href: "/solutions/experience-centres" },
   { name: "Meeting Rooms", href: "/solutions/meeting-rooms" },
   { name: "Monitoring Centres", href: "/solutions/monitoring-centres" },
-  { name: "Control Rooms", href: "/solutions/control-rooms" },
 ];
 
-const navLinks = [{ name: "Home", href: "/#hero" }];
-
-const remainingNavLinks = [
+const navLinks = [
+  { name: "Home", href: "/#hero" },
   { name: "Room configurator", href: "/room-configurator" },
   { name: "Blogs", href: "/blogs" },
-  { name: "About Us", href: "/about-us" },
+  { name: "About Us", href: "/about-us" }
 ];
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isHoveringNav, setIsHoveringNav] = useState(false);
+  const [mobileSolutionsOpen, setMobileSolutionsOpen] = useState(false);
 
   // Throttle scroll handler
   const handleScroll = useCallback(() => {
@@ -108,10 +108,6 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Custom navigation menu trigger style without the white box
-  const customMenuTriggerStyle =
-    "bg-transparent hover:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent p-1";
-
   // Memoize navigation items to prevent unnecessary re-renders
   const desktopNavItems = useMemo(
     () =>
@@ -123,7 +119,7 @@ const Header = () => {
             onMouseLeave={() => setIsHoveringNav(false)}
             onClick={(e) => handleLinkClick(e as any, link.href)}
             className={cn(
-              "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline p-2",
+              "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline p-2 text-base",
               // Remove all background styles
               "bg-transparent hover:bg-transparent focus:bg-transparent"
             )}
@@ -131,61 +127,6 @@ const Header = () => {
             {link.name}
           </NavigationMenuLink>
         </NavigationMenuItem>
-      )),
-    []
-  );
-
-  const remainingDesktopNavItems = useMemo(
-    () =>
-      remainingNavLinks.map((link) => (
-        <NavigationMenuItem key={link.name}>
-          <NavigationMenuLink
-            href={link.href}
-            onMouseEnter={() => setIsHoveringNav(true)}
-            onMouseLeave={() => setIsHoveringNav(false)}
-            className={cn(
-              "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline p-2",
-              // Remove all background styles
-              "bg-transparent hover:bg-transparent focus:bg-transparent"
-            )}
-          >
-            {link.name}
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-      )),
-    []
-  );
-
-  const mobileNavItems = useMemo(
-    () =>
-      navLinks.map((link) => (
-        <SheetClose asChild key={link.name}>
-          <Link
-            href={link.href}
-            onClick={(e) => handleSheetLinkClick(e, link.href)}
-            className="text-xl font-headline text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline p-2 block"
-          >
-            {link.name}
-          </Link>
-        </SheetClose>
-      )),
-    []
-  );
-
-  const remainingMobileNavItems = useMemo(
-    () =>
-      remainingNavLinks.map((link) => (
-        <SheetClose asChild key={link.name}>
-          <Link
-            href={link.href}
-            onMouseEnter={() => setIsHoveringNav(true)}
-            onMouseLeave={() => setIsHoveringNav(false)}
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-xl font-headline text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline p-2 block"
-          >
-            {link.name}
-          </Link>
-        </SheetClose>
       )),
     []
   );
@@ -217,20 +158,23 @@ const Header = () => {
     [handleLinkClick]
   );
 
+  // Determine if header has white background
+  const hasWhiteBg = scrolled || mobileMenuOpen || isHoveringNav;
+
   return (
     <>
       <TopBar />
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-2 transition-all duration-300",
-          scrolled || mobileMenuOpen || isHoveringNav
+          hasWhiteBg
             ? "bg-white backdrop-blur-sm shadow-md"
             : "bg-transparent"
         )}
         style={{ top: scrolled ? 0 : "1.75rem" }} // Adjust header position based on top bar visibility
       >
         <div className="container-max flex items-center justify-between">
-          {/* Logo with SVG image */}
+          {/* Logo - Use PNG when header has white background, SVG when transparent */}
           <Link
             href="/"
             className="flex items-center gap-2"
@@ -238,27 +182,24 @@ const Header = () => {
             onMouseEnter={() => setIsHoveringNav(true)}
             onMouseLeave={() => setIsHoveringNav(false)}
           >
-            <Image
-              src="/assets/inviot-logo.svg"
-              alt="Inviot Logo"
-              width={100}
-              height={30}
-              className="h-6 w-auto"
-            />
+            {hasWhiteBg ? (
+              <Image
+                src="/assets/inviot-logo.svg"
+                alt="Inviot Logo"
+                width={120}
+                height={30}
+                className="h-8 w-auto"
+              />
+            ) : (
+              <Image
+                src="/assets/Inviot_Logo.png"
+                alt="Inviot Logo"
+                width={100}
+                height={30}
+                className="h-6 w-auto"
+              />
+            )}
           </Link>
-          {/* <div className="flex flex-col">
-            <span
-              className={cn(
-                "font-headline text-2xl font-black uppercase tracking-widest transition-colors duration-300 text-black",
-                isHoveringNav ? "text-[#9B1B5C]" : "text-black"
-              )}
-            >
-              Inviot
-            </span>
-            <span className="text-xs font-medium text-gray-600 -mt-1">
-              AV Solutions
-            </span>
-          </div> */}
 
           {/* Desktop Menu */}
           <div
@@ -268,13 +209,28 @@ const Header = () => {
           >
             <NavigationMenu>
               <NavigationMenuList className="flex items-center gap-2">
-                {desktopNavItems}
+                {/* Home Link */}
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    href="/#hero"
+                    onMouseEnter={() => setIsHoveringNav(true)}
+                    onMouseLeave={() => setIsHoveringNav(false)}
+                    onClick={(e) => handleLinkClick(e as any, "/#hero")}
+                    className={cn(
+                      "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline p-2 text-base",
+                      // Remove all background styles
+                      "bg-transparent hover:bg-transparent focus:bg-transparent"
+                    )}
+                  >
+                    Home
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
 
-                {/* Solutions Dropdown */}
+                {/* Solutions Dropdown - Placed right after Home */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
                     className={cn(
-                      "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline data-[state=open]:text-[#9B1B5C] p-2",
+                      "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline data-[state=open]:text-[#9B1B5C] p-2 text-base",
                       // Remove all background styles
                       "bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent"
                     )}
@@ -289,7 +245,7 @@ const Header = () => {
                         <li key={solution.name}>
                           <Link
                             href={solution.href}
-                            className="block rounded-md p-2 hover:bg-accent hover:text-accent-foreground transition"
+                            className="block rounded-md p-2 hover:bg-accent hover:text-accent-foreground transition text-base"
                             prefetch={false}
                           >
                             {solution.name}
@@ -300,21 +256,38 @@ const Header = () => {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
-                {remainingDesktopNavItems}
+                {/* Other navigation links */}
+                {navLinks.filter(link => link.name !== "Home").map((link) => (
+                  <NavigationMenuItem key={link.name}>
+                    <NavigationMenuLink
+                      href={link.href}
+                      onMouseEnter={() => setIsHoveringNav(true)}
+                      onMouseLeave={() => setIsHoveringNav(false)}
+                      onClick={(e) => handleLinkClick(e as any, link.href)}
+                      className={cn(
+                        "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline p-2 text-base",
+                        // Remove all background styles
+                        "bg-transparent hover:bg-transparent focus:bg-transparent"
+                      )}
+                    >
+                      {link.name}
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ))}
+
+                {/* Contact Us Button - Now links to contact page */}
+                <Link href="/contact-us" passHref>
+                  <Button
+                    size="sm"
+                    className="font-headline btn-glow text-base"
+                    onMouseEnter={() => setIsHoveringNav(true)}
+                    onMouseLeave={() => setIsHoveringNav(false)}
+                  >
+                    Contact Us
+                  </Button>
+                </Link>
               </NavigationMenuList>
             </NavigationMenu>
-
-            {/* Contact Us Button - Now links to contact page */}
-            <Link href="/contact-us" passHref>
-              <Button
-                size="sm"
-                className="font-headline btn-glow"
-                onMouseEnter={() => setIsHoveringNav(true)}
-                onMouseLeave={() => setIsHoveringNav(false)}
-              >
-                Contact Us
-              </Button>
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -335,43 +308,74 @@ const Header = () => {
                 side="right"
                 className="w-[300px] sm:w-[400px] bg-background/90 backdrop-blur-sm"
               >
+                {/* Add SheetTitle for accessibility */}
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                
                 <div className="flex flex-col h-full">
                   <div className="flex-grow mt-8">
                     <nav className="flex flex-col space-y-4">
-                      {mobileNavItems}
-
-                      {/* Mobile Solutions Link with Room Configurator */}
+                      {/* Home Link */}
                       <SheetClose asChild>
                         <Link
-                          href="/solutions"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="text-xl font-headline text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2 block"
-                          prefetch={false}
+                          href="/#hero"
+                          onClick={(e) => handleSheetLinkClick(e, "/#hero")}
+                          className="text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2 block"
+                        >
+                          Home
+                        </Link>
+                      </SheetClose>
+
+                      {/* Mobile Solutions Dropdown */}
+                      <div className="flex flex-col">
+                        <button
+                          onClick={() => setMobileSolutionsOpen(!mobileSolutionsOpen)}
+                          className="flex items-center justify-between text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2"
                         >
                           Solutions
-                        </Link>
-                      </SheetClose>
+                          {mobileSolutionsOpen ? (
+                            <ChevronUp size={16} />
+                          ) : (
+                            <ChevronDown size={16} />
+                          )}
+                        </button>
+                        
+                        {mobileSolutionsOpen && (
+                          <div className="pl-4 mt-2 space-y-3">
+                            {solutions.map((solution) => (
+                              <SheetClose asChild key={solution.name}>
+                                <Link
+                                  href={solution.href}
+                                  onClick={() => setMobileMenuOpen(false)}
+                                  className="text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2 block"
+                                  prefetch={false}
+                                >
+                                  {solution.name}
+                                </Link>
+                              </SheetClose>
+                            ))}
+                          </div>
+                        )}
+                      </div>
 
-                      {/* Mobile Room Configurator Link */}
-                      <SheetClose asChild>
-                        <Link
-                          href="/solutions/room-configurator"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="text-xl font-headline text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2 block"
-                          prefetch={false}
-                        >
-                          Room Configurator
-                        </Link>
-                      </SheetClose>
-
-                      {remainingMobileNavItems}
+                      {/* Other navigation links */}
+                      {navLinks.filter(link => link.name !== "Home").map((link) => (
+                        <SheetClose asChild key={link.name}>
+                          <Link
+                            href={link.href}
+                            onClick={(e) => handleSheetLinkClick(e, link.href)}
+                            className="text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2 block"
+                          >
+                            {link.name}
+                          </Link>
+                        </SheetClose>
+                      ))}
                     </nav>
                   </div>
                   {/* Mobile Contact Us Button - Now links to contact page */}
                   <SheetClose asChild>
                     <Link href="/contact-us" passHref>
                       <Button
-                        className="font-headline btn-glow mt-auto w-full"
+                        className="font-headline btn-glow mt-auto w-full text-lg font-bold"
                         size="lg"
                       >
                         Contact Us
