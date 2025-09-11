@@ -41,24 +41,24 @@ interface EquipmentOptions {
 
 const equipmentOptions: EquipmentOptions = {
   projector: [
-    { id: 'proj1', name: 'Epson EB-1781W', brand: 'Epson', image: 'https://picsum.photos/300/200?random=1' },
-    { id: 'proj2', name: 'Sony VPL-HW45ES', brand: 'Sony', image: 'https://picsum.photos/300/200?random=2' },
-    { id: 'proj3', name: 'BenQ HT3550', brand: 'BenQ', image: 'https://picsum.photos/300/200?random=3' },
+    { id: 'proj1', name: 'Epson EB-1781W', brand: 'Epson', image: '/assets/roompage/3.png' },
+    { id: 'proj2', name: 'Sony VPL-HW45ES', brand: 'Sony', image: '/assets/roompage/3.png' },
+    { id: 'proj3', name: 'BenQ HT3550', brand: 'BenQ', image: '/assets/roompage/3.png' },
   ],
   speaker: [
-    { id: 'spk1', name: 'Bose FreeSpace 51', brand: 'Bose', image: 'https://picsum.photos/200/200?random=4' },
-    { id: 'spk2', name: 'JBL Control 25-1L', brand: 'JBL', image: 'https://picsum.photos/200/200?random=5' },
-    { id: 'spk3', name: 'Yamaha VXS10', brand: 'Yamaha', image: 'https://picsum.photos/200/200?random=6' },
+    { id: 'spk1', name: 'Bose FreeSpace 51', brand: 'Bose', image: '/assets/roompage/4.png' },
+    { id: 'spk2', name: 'JBL Control 25-1L', brand: 'JBL', image: '/assets/roompage/4.png' },
+    { id: 'spk3', name: 'Yamaha VXS10', brand: 'Yamaha', image: '/assets/roompage/4.png' },
   ],
   display: [
-    { id: 'disp1', name: 'Samsung QM85B', brand: 'Samsung', image: 'https://picsum.photos/400/300?random=7' },
-    { id: 'disp2', name: 'LG 86UR8000', brand: 'LG', image: 'https://picsum.photos/400/300?random=8' },
-    { id: 'disp3', name: 'Sony FW-85BZ40L', brand: 'Sony', image: 'https://picsum.photos/400/300?random=9' },
+    { id: 'disp1', name: 'Samsung QM85B', brand: 'Samsung', image: '/assets/roompage/1.png' },
+    { id: 'disp2', name: 'LG 86UR8000', brand: 'LG', image: '/assets/roompage/1.png' },
+    { id: 'disp3', name: 'Sony FW-85BZ40L', brand: 'Sony', image: '/assets/roompage/1.png' },
   ],
   microphone: [
-    { id: 'mic1', name: 'Shure MXA910', brand: 'Shure', image: 'https://picsum.photos/150/150?random=10' },
-    { id: 'mic2', name: 'Sennheiser TeamConnect Ceiling 2', brand: 'Sennheiser', image: 'https://picsum.photos/150/150?random=11' },
-    { id: 'mic3', name: 'Audio-Technica ATND1061', brand: 'Audio-Technica', image: 'https://picsum.photos/150/150?random=12' },
+    { id: 'mic1', name: 'Shure MXA910', brand: 'Shure', image: '/assets/roompage/5.png' },
+    { id: 'mic2', name: 'Sennheiser TeamConnect Ceiling 2', brand: 'Sennheiser', image: '/assets/roompage/5.png' },
+    { id: 'mic3', name: 'Audio-Technica ATND1061', brand: 'Audio-Technica', image: '/assets/roompage/5.png' },
   ],
 };
 
@@ -230,7 +230,7 @@ export default function RoomConfiguratorPage() {
                             className="relative w-full h-96 bg-background rounded-lg overflow-hidden border border-border/50"
                           >
                              <Image 
-                                src="https://picsum.photos/seed/room/1200/800" 
+                                src="/assets/roompage/2.png" 
                                 alt="Conference Room Background" 
                                 layout="fill" 
                                 objectFit="cover" 
