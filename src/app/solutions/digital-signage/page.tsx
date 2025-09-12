@@ -8,7 +8,7 @@ import FeatureList from "@/components/ui/feature-list";
 import HotspotCarousel from "@/components/ui/hotspot";
 import type { Solution } from "../solutions-data";
 import Contact from "@/components/landing/contact";
-
+import TrustedFeatures from "@/components/landing/trusted-features";
 const solution: Solution = {
   slug: "digital-signage",
   title: "Digital Signage",
@@ -60,60 +60,90 @@ const solution: Solution = {
 const hotspotSections = [
   {
     title: "Video Walls",
-    content: "Video walls transform ordinary spaces into captivating experiences. Whether for events, retail environments, corporate offices, receptions, or restaurants, they deliver high-impact visuals that engage and impress. Wherever you’d consider a single screen, a multi-screen video wall can elevate the experience, providing a more immersive and dynamic way to showcase your content.",
-    image: { src: "/assets/solutionimg/billboard-mockup-glass-wall-building-mockup.jpg", alt: "Enterprise solutions", hint: "enterprise solutions" },
+    content:
+      "Video walls transform ordinary spaces into captivating experiences. Whether for events, retail environments, corporate offices, receptions, or restaurants, they deliver high-impact visuals that engage and impress. Wherever you’d consider a single screen, a multi-screen video wall can elevate the experience, providing a more immersive and dynamic way to showcase your content.",
+    image: {
+      src: "/assets/LANDSCAPE/DIGITAL SIGNAGE/1.png",
+      alt: "Enterprise solutions",
+      hint: "enterprise solutions",
+    },
     hotspots: [
       {
-        position: { top: '25%', left: '37%' },
+        position: { top: "25%", left: "37%" },
         title: "Conference Camera",
         description: "Ultra HD Conference Camera",
-        details: ["120° wide angle", "Auto low-light correction", "5x digital zoom"],
-        link: "#"
+        details: [
+          "120° wide angle",
+          "Auto low-light correction",
+          "5x digital zoom",
+        ],
+        link: "#",
       },
       {
-        position: { top: '80%', left: '63%' },
+        position: { top: "80%", left: "63%" },
         title: "Speakerphone",
         description: "360° Full Duplex Speakerphone",
         details: ["Voice tracking", "Echo cancellation", "10m pickup range"],
-        link: "#"
+        link: "#",
       },
       {
-        position: { top: '50%', left: '50%' },
+        position: { top: "50%", left: "50%" },
         title: "Control Panel",
         description: "Touch Control Interface",
-        details: ["One-touch meeting start", "Volume controls", "Device status indicators"],
-        link: "#"
-      }
-    ]
+        details: [
+          "One-touch meeting start",
+          "Volume controls",
+          "Device status indicators",
+        ],
+        link: "#",
+      },
+    ],
   },
   {
     title: "Room Booking Management",
-    content: "Managing your spaces has never been easier. Real-time digital room booking streamlines the entire process, removing the need for paper-based reservations or multiple platforms. By simplifying scheduling, you reduce administrative overhead, save resources, and free up time—allowing your team to focus on what matters most.",
-    image: { src: "/assets/solutionimg/museum.jpg", alt: "Retail solutions", hint: "retail solutions" },
+    content:
+      "Managing your spaces has never been easier. Real-time digital room booking streamlines the entire process, removing the need for paper-based reservations or multiple platforms. By simplifying scheduling, you reduce administrative overhead, save resources, and free up time—allowing your team to focus on what matters most.",
+    image: {
+      src: "/assets/LANDSCAPE/DIGITAL SIGNAGE/2.png",
+      alt: "Retail solutions",
+      hint: "retail solutions",
+    },
     hotspots: [
       {
-        position: { top: '35%', left: '55%' },
+        position: { top: "35%", left: "55%" },
         title: "All-in-One Bar",
         description: "Video Sound Bar",
-        details: ["Integrated camera, mics and speakers", "Plug-and-play setup", "USB-C connectivity"],
-        link: "#"
+        details: [
+          "Integrated camera, mics and speakers",
+          "Plug-and-play setup",
+          "USB-C connectivity",
+        ],
+        link: "#",
       },
       {
-        position: { top: '65%', left: '30%' },
+        position: { top: "65%", left: "30%" },
         title: "Tabletop Hub",
         description: "Wireless Connectivity Hub",
-        details: ["HDMI and USB connections", "Charging ports", "Cable management system"],
-        link: "#"
+        details: [
+          "HDMI and USB connections",
+          "Charging ports",
+          "Cable management system",
+        ],
+        link: "#",
       },
       {
-        position: { top: '20%', left: '75%' },
+        position: { top: "20%", left: "75%" },
         title: "Display",
         description: "55-inch 4K Monitor",
-        details: ["Anti-glare coating", "Built-in whiteboard software", "Mobile device compatibility"],
-        link: "#"
-      }
-    ]
-  }
+        details: [
+          "Anti-glare coating",
+          "Built-in whiteboard software",
+          "Mobile device compatibility",
+        ],
+        link: "#",
+      },
+    ],
+  },
 ];
 
 const DefaultHero = ({ solution }: { solution: Solution }) => {
@@ -307,13 +337,13 @@ export default function DigitalSignagePage() {
         </div>
       </section>
 
-      {featureListSection && featureListSection.features && (
+      {/* {featureListSection && featureListSection.features && (
         <section className="section-padding bg-transparent">
           <div className="container-max">
             <FeatureList features={featureListSection.features as any[]} />
           </div>
         </section>
-      )}
+      )} */}
 
       {/* two Custom Hotspot Sections */}
       {hotspotSections.map((section, index) => (
@@ -322,15 +352,17 @@ export default function DigitalSignagePage() {
             <HotspotCarousel
               title={section.title}
               description={section.content}
-              slides={[{
-                image: section.image,
-                hotspots: section.hotspots
-              }]}
+              slides={[
+                {
+                  image: section.image,
+                  hotspots: section.hotspots,
+                },
+              ]}
             />
           </div>
         </section>
       ))}
-
+      <TrustedFeatures />
       <Contact />
     </div>
   );

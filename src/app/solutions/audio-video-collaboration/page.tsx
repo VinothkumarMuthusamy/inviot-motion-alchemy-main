@@ -9,7 +9,7 @@ import HotspotCarousel from "@/components/ui/hotspot";
 import type { Solution } from "../solutions-data";
 import Contact from "@/components/landing/contact";
 import { CheckCircle } from "lucide-react";
-
+import TrustedFeatures from "@/components/landing/trusted-features";
 const solution: Solution = {
     slug: "audio-video-collaboration",
     title: "Audio and Video Collaboration",
@@ -169,7 +169,7 @@ export default function AudioVideoCollaborationPage() {
     {
       title: "Enterprise Solutions",
       content: "Empower your organization with seamless collaboration across every smart device. Whether it's delivering a presentation straight from your phone in the boardroom or hosting a video meeting with remote team members, our technology ensures secure, reliable, and professional communication at all times.",
-      image: { src: "/assets/solutionimg/create-virtual-advertising-environment-with-digital-displays-managing-reviewing-promotiona.jpg", alt: "Enterprise solutions", hint: "enterprise solutions" },
+      image: { src: "/assets/LANDSCAPE/AUDIO VISUAL/1.png", alt: "Enterprise solutions", hint: "enterprise solutions" },
       hotspots: [
         {
           position: { top: '25%', left: '37%' },
@@ -277,13 +277,13 @@ export default function AudioVideoCollaborationPage() {
             </section>
         ))}
         
-        {featureListSection && featureListSection.features && (
+        {/* {featureListSection && featureListSection.features && (
             <section className="section-padding bg-transparent">
                 <div className="container-max">
                     <FeatureList features={featureListSection.features as any[]} />
                 </div>
             </section>
-        )}
+        )} */}
 
         {/* Render three hotspot and benefits sections */}
         {[0, 1, 2].map((index) => (
@@ -322,7 +322,7 @@ export default function AudioVideoCollaborationPage() {
             </section>
           </div>
         ))}
-
+        <TrustedFeatures />
         <Contact />
     </div>
   )

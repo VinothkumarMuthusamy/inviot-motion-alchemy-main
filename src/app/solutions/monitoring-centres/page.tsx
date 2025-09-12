@@ -8,13 +8,17 @@ import FeatureList from "@/components/ui/feature-list";
 import HotspotCarousel from "@/components/ui/hotspot";
 import type { Solution } from "../solutions-data";
 import Contact from "@/components/landing/contact";
+import TrustedFeatures from "@/components/landing/trusted-features";
 
 const solution: Solution = {
   slug: "monitoring-centres",
   title: "Automated Monitoring & Experience Centres",
-  subtitle: "Automate your monitoring control and help human capital focus on the issues that matter the most.",
-  video: "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-  description: "Streamline monitoring and control through automation, allowing your people to focus on high-value priorities. At the same time, Experience Centres provide an impactful way to engage customers, strengthen brand loyalty, and increase sales. With the right planning and technology, your business can design a Customer Experience Centre that delivers truly memorable interactions.",
+  subtitle:
+    "Automate your monitoring control and help human capital focus on the issues that matter the most.",
+  video:
+    "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+  description:
+    "Streamline monitoring and control through automation, allowing your people to focus on high-value priorities. At the same time, Experience Centres provide an impactful way to engage customers, strengthen brand loyalty, and increase sales. With the right planning and technology, your business can design a Customer Experience Centre that delivers truly memorable interactions.",
   image: {
     src: "/assets/solutionimg/Monitoring Centers.jpg",
     alt: "Monitoring Center",
@@ -33,17 +37,20 @@ const solution: Solution = {
         {
           icon: "https://picsum.photos/150/150?random=26",
           title: "24/7-Rated Video Walls",
-          description: "Deploy robust, high-resolution LED or LCD video walls designed for continuous operation and data visualization.",
+          description:
+            "Deploy robust, high-resolution LED or LCD video walls designed for continuous operation and data visualization.",
         },
         {
           icon: "https://picsum.photos/150/150?random=27",
           title: "Flexible Source Processing",
-          description: "Display any source, on any screen, at any time with powerful video wall processors and intuitive controls.",
+          description:
+            "Display any source, on any screen, at any time with powerful video wall processors and intuitive controls.",
         },
         {
           icon: "https://picsum.photos/150/150?random=28",
           title: "Ergonomic Operator Consoles",
-          description: "Design workspaces that optimize operator comfort and efficiency for long hours of critical monitoring.",
+          description:
+            "Design workspaces that optimize operator comfort and efficiency for long hours of critical monitoring.",
         },
       ],
     },
@@ -54,7 +61,7 @@ const solution: Solution = {
       hotspots: [
         {
           image: {
-            src: "/assets/solutionimg/african-american-manager-overseeing-monitoring-activity-control-center.jpg",
+            src: "/assets/LANDSCAPE/Monitoring room/1.png",
             alt: "A security operations center",
             hint: "cybersecurity command center",
           },
@@ -146,7 +153,7 @@ export default function MonitoringCentresPage() {
     slides: [
       {
         image: {
-          src: "/assets/solutionimg/technician-using-pc-data-center-update-server-tech-configuring-equipment.jpg",
+          src: "/assets/LANDSCAPE/Monitoring room/12.png",
           alt: "Customer lounge",
           hint: "customer lounge area",
         },
@@ -204,15 +211,15 @@ export default function MonitoringCentresPage() {
         </section>
       )}
 
-      {featureListSection && featureListSection.features && (
+      {/* {featureListSection && featureListSection.features && (
         <section className="section-padding bg-transparent">
           <div className="container-max">
             <FeatureList features={featureListSection.features as any[]} />
           </div>
         </section>
-      )}
+      )} */}
 
-      <section className="flex items-center justify-center bg-transparent px-4 sm:px-6 lg:px-8 py-8">
+      <section className="flex items-start text-justify bg-transparent pb-0 px-4 sm:px-6 lg:px-8 py-8">
         <div className="w-full max-w-4xl mx-auto">
           <AnimateInView>
             <h2 className="heading-2 mb-8 text-primary font-bold text-center">
@@ -222,15 +229,18 @@ export default function MonitoringCentresPage() {
               {[
                 {
                   title: "Security Operations Centers",
-                  description: "Centralized facilities where analysts monitor organizational assets, ensuring both physical sites and information systems remain secure.",
+                  description:
+                    "Centralized facilities where analysts monitor organizational assets, ensuring both physical sites and information systems remain secure.",
                 },
                 {
                   title: "Social Media Command Centers",
-                  description: "Dedicated spaces for your social media team to track conversations, engage with customers, and safeguard your brand identity and reputation.",
+                  description:
+                    "Dedicated spaces for your social media team to track conversations, engage with customers, and safeguard your brand identity and reputation.",
                 },
                 {
                   title: "Dedicated Experts",
-                  description: "Our specialists work with you to define the purpose of your space, identify the key information operators need, and design ergonomic environments that optimize efficiency and focus.",
+                  description:
+                    "Our specialists work with you to define the purpose of your space, identify the key information operators need, and design ergonomic environments that optimize efficiency and focus.",
                 },
               ].map((item, index) => (
                 <li key={index} className="flex items-start">
@@ -248,7 +258,8 @@ export default function MonitoringCentresPage() {
                     />
                   </svg>
                   <span>
-                    <span className="font-bold text-primary">{item.title}</span> - {item.description}
+                    <span className="font-bold text-primary">{item.title}</span>{" "}
+                    - {item.description}
                   </span>
                 </li>
               ))}
@@ -258,18 +269,18 @@ export default function MonitoringCentresPage() {
       </section>
 
       {hotspotSection && hotspotSection.hotspots && (
-        <section className="section-padding bg-transparent">
+        <section className="section-padding bg-transparent pt-0">
           <div className="container-max">
             <HotspotCarousel
-              title={hotspotSection.title || ""}
-              description={hotspotSection.content || ""}
+              title=""
+              description=""
               slides={hotspotSection.hotspots}
             />
           </div>
         </section>
       )}
 
-      <section className="flex items-center justify-center bg-transparent px-4 sm:px-6 lg:px-8 py-8">
+      <section className="flex items-start text-justify bg-transparent pb-0 px-4 sm:px-6 lg:px-8 py-8">
         <div className="w-full max-w-4xl mx-auto">
           <AnimateInView>
             <h2 className="heading-2 mb-8 text-primary font-bold text-center">
@@ -279,23 +290,28 @@ export default function MonitoringCentresPage() {
               {[
                 {
                   title: "Broad Support Capabilities",
-                  description: "Today's NOCs manage and control resources for businesses, universities, utilities, and even government agencies.",
+                  description:
+                    "Today's NOCs manage and control resources for businesses, universities, utilities, and even government agencies.",
                 },
                 {
                   title: "Advanced Display Solutions",
-                  description: "Narrow-bezel video walls and pixel-pitch panels deliver superior picture quality with intuitive usability.",
+                  description:
+                    "Narrow-bezel video walls and pixel-pitch panels deliver superior picture quality with intuitive usability.",
                 },
                 {
                   title: "Powerful Control Systems",
-                  description: "Hardware and software-based video wall controllers ensure seamless monitoring and management.",
+                  description:
+                    "Hardware and software-based video wall controllers ensure seamless monitoring and management.",
                 },
                 {
                   title: "Secure Infrastructure",
-                  description: "Sensitive hardware remains protected within the organization's most secure facilities.",
+                  description:
+                    "Sensitive hardware remains protected within the organization's most secure facilities.",
                 },
                 {
                   title: "Global Monitoring",
-                  description: "NOCs can oversee server banks and critical resources distributed worldwide, ensuring uninterrupted operations.",
+                  description:
+                    "NOCs can oversee server banks and critical resources distributed worldwide, ensuring uninterrupted operations.",
                 },
               ].map((item, index) => (
                 <li key={index} className="flex items-start">
@@ -313,7 +329,8 @@ export default function MonitoringCentresPage() {
                     />
                   </svg>
                   <span>
-                    <span className="font-bold text-primary">{item.title}</span> - {item.description}
+                    <span className="font-bold text-primary">{item.title}</span>{" "}
+                    - {item.description}
                   </span>
                 </li>
               ))}
@@ -323,7 +340,7 @@ export default function MonitoringCentresPage() {
       </section>
 
       {/* Standalone hotspot section - independent of solution data */}
-      <section className="section-padding bg-transparent">
+      <section className="section-padding bg-transparent pt-0">
         <div className="container-max">
           <HotspotCarousel
             title={standaloneHotspotData.title}
@@ -332,7 +349,7 @@ export default function MonitoringCentresPage() {
           />
         </div>
       </section>
-
+      <TrustedFeatures />
       <Contact />
     </div>
   );

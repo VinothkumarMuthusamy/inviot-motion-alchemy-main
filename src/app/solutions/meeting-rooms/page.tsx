@@ -8,6 +8,7 @@ import FeatureList from "@/components/ui/feature-list";
 import HotspotCarousel from "@/components/ui/hotspot";
 import type { Solution } from "../solutions-data";
 import Contact from "@/components/landing/contact";
+import TrustedFeatures from "@/components/landing/trusted-features";
 const solution: Solution = {
   slug: "meeting-rooms",
   title: "Meeting Rooms",
@@ -170,15 +171,15 @@ export default function MeetingRoomsPage() {
         </section>
       )}
 
-      {featureListSection && featureListSection.features && (
+      {/* {featureListSection && featureListSection.features && (
         <section className="section-padding bg-transparent">
           <div className="container-max">
             <FeatureList features={featureListSection.features as any[]} />
           </div>
         </section>
-      )}
+      )} */}
 
-      <section className="flex items-center justify-center bg-transparent px-4 sm:px-6 lg:px-8">
+      <section className="flex items-start text-justify bg-transparent px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-4xl mx-auto">
           <AnimateInView>
             <h2 className="heading-2 mb-8 text-primary font-bold text-center">
@@ -239,13 +240,13 @@ export default function MeetingRoomsPage() {
         </section>
       )}
 
-      <section className="flex items-center justify-center bg-transparent px-4 sm:px-6 lg:px-8 py-8">
+      <section className="flex items-start text-justify bg-transparent px-4 sm:px-6 lg:px-8 py-8">
         <div className="w-full max-w-4xl mx-auto">
           <AnimateInView>
             <h2 className="heading-2 mb-8 text-primary font-bold text-center">
               With Inviot, Discover What Team Collaboration Looks Like
             </h2>
-            <ul className="space-y-6 text-foreground/80">
+            <ul className="space-y-6 ml-16 text-foreground/80">
               {[
                 {
                   title: "State-of-the-art displays & audio",
@@ -289,7 +290,7 @@ export default function MeetingRoomsPage() {
           </AnimateInView>
         </div>
       </section>
-
+      <TrustedFeatures />
       <Contact />
     </div>
   );

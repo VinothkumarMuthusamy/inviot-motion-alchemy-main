@@ -6,112 +6,125 @@ import { AnimateInView } from "@/components/ui/animate-in-view";
 import ScrollReveal1 from "../ui/scroll-reveal1";
 import VariableProximity from "../ui/VariableProximity";
 
-// Import client logos (keep your existing imports)
-import c1 from "@/image/c1.png";
-import c2 from "@/image/c2.png";
-import c3 from "@/image/c3.png";
-import c4 from "@/image/c4.png";
-import c5 from "@/image/c5.png";
-import c6 from "@/image/c6.png";
-import c7 from "@/image/c7.png";
-import c8 from "@/image/c8.png";
-import c9 from "@/image/c9.png";
-import c10 from "@/image/c10.png";
-import c11 from "@/image/c11.png";
-import c12 from "@/image/c12.png";
-import c13 from "@/image/c13.png";
-import c14 from "@/image/c14.png";
-import c15 from "@/image/c15.png";
-
-// Import partner logos (keep your existing imports)
-import p1 from "@/image/p1.png";
-import p2 from "@/image/p2.png";
-import p3 from "@/image/p3.png";
-import p4 from "@/image/p4.png";
-import p5 from "@/image/p5.png";
-import p6 from "@/image/p6.png";
-import p7 from "@/image/p7.png";
-import p8 from "@/image/p8.png";
-import p9 from "@/image/p9.png";
-import p10 from "@/image/p10.png";
-import p11 from "@/image/p11.png";
-import p12 from "@/image/p12.png";
-import p13 from "@/image/p13.png";
-import p14 from "@/image/p14.png";
-import p15 from "@/image/p15.png";
-import p16 from "@/image/p16.png";
-import p17 from "@/image/p17.png";
-import p18 from "@/image/p18.png";
-import p19 from "@/image/p19.png";
-import p20 from "@/image/p20.png";
-
 interface LogoItem {
   name: string;
-  logo: any;
+  logo: string;
   hint: string;
 }
 
 const clients: LogoItem[] = [
-  { name: "TechCorp Solutions", logo: c1, hint: "technology company" },
-  { name: "Global Enterprises", logo: c2, hint: "multinational corporation" },
-  { name: "Innovate Labs", logo: c3, hint: "research and development" },
-  { name: "Capital Finance Group", logo: c4, hint: "financial services" },
-  { name: "MediaSphere Networks", logo: c5, hint: "broadcasting company" },
-  { name: "Digital Dynamics", logo: c6, hint: "digital transformation" },
-  { name: "SoftWorks Inc", logo: c7, hint: "software development" },
-  { name: "HardTech Systems", logo: c8, hint: "hardware manufacturer" },
-  { name: "HealthFirst Medical", logo: c9, hint: "healthcare provider" },
-  { name: "EduFuture University", logo: c10, hint: "higher education" },
-  { name: "City Municipal Office", logo: c11, hint: "government services" },
-  { name: "RetailPlus Stores", logo: c12, hint: "retail chain" },
-  { name: "Grand Hotels Group", logo: c13, hint: "hospitality brand" },
-  { name: "ManufacturePro", logo: c14, hint: "industrial manufacturing" },
-  { name: "CommunityCare NGO", logo: c15, hint: "non-profit organization" },
+  { name: "Client 2", logo: "/assets/CLIENTS/Our india clients/2.png", hint: "client company" },
+  { name: "Client 3", logo: "/assets/CLIENTS/Our india clients/3.png", hint: "client company" },
+  { name: "Client 4", logo: "/assets/CLIENTS/Our india clients/4.png", hint: "client company" },
+  { name: "Client 5", logo: "/assets/CLIENTS/Our india clients/5.png", hint: "client company" },
+  { name: "Client 6", logo: "/assets/CLIENTS/Our india clients/6.png", hint: "client company" },
+  { name: "Client 7", logo: "/assets/CLIENTS/Our india clients/7.png", hint: "client company" },
+  { name: "Client 8", logo: "/assets/CLIENTS/Our india clients/8.png", hint: "client company" },
+  { name: "Client 9", logo: "/assets/CLIENTS/Our india clients/9.png", hint: "client company" },
+  { name: "Client 10", logo: "/assets/CLIENTS/Our india clients/10.png", hint: "client company" },
+  { name: "Client 11", logo: "/assets/CLIENTS/Our india clients/11.png", hint: "client company" },
+  { name: "Client 12", logo: "/assets/CLIENTS/Our india clients/12.png", hint: "client company" },
+  { name: "Client 13", logo: "/assets/CLIENTS/Our india clients/13.png", hint: "client company" },
+  { name: "Client 14", logo: "/assets/CLIENTS/Our india clients/14.png", hint: "client company" },
+  { name: "Client 15", logo: "/assets/CLIENTS/Our india clients/15.png", hint: "client company" },
+  { name: "Client 16", logo: "/assets/CLIENTS/Our india clients/16.png", hint: "client company" },
+  { name: "Client 17", logo: "/assets/CLIENTS/Our india clients/17.png", hint: "client company" },
+  { name: "Client 18", logo: "/assets/CLIENTS/Our india clients/18.png", hint: "client company" },
+  { name: "Client 19", logo: "/assets/CLIENTS/Our india clients/19.png", hint: "client company" },
+  { name: "Client 20", logo: "/assets/CLIENTS/Our india clients/20.png", hint: "client company" },
+  { name: "Client 21", logo: "/assets/CLIENTS/Our india clients/21.png", hint: "client company" },
+  { name: "Client 22", logo: "/assets/CLIENTS/Our india clients/22.png", hint: "client company" },
+  { name: "Client 23", logo: "/assets/CLIENTS/Our india clients/23.png", hint: "client company" },
+  { name: "Client 24", logo: "/assets/CLIENTS/Our india clients/24.png", hint: "client company" },
+  { name: "Client 25", logo: "/assets/CLIENTS/Our india clients/25.png", hint: "client company" },
+  { name: "Client 26", logo: "/assets/CLIENTS/Our india clients/26.png", hint: "client company" },
+  { name: "Client 27", logo: "/assets/CLIENTS/Our india clients/27.png", hint: "client company" },
+  { name: "Client 28", logo: "/assets/CLIENTS/Our india clients/28.png", hint: "client company" },
+  { name: "Client 29", logo: "/assets/CLIENTS/Our india clients/29.png", hint: "client company" },
+  { name: "Client 30", logo: "/assets/CLIENTS/Our india clients/30.png", hint: "client company" },
+  { name: "Client 31", logo: "/assets/CLIENTS/Our india clients/31.png", hint: "client company" },
+  { name: "Client 32", logo: "/assets/CLIENTS/Our india clients/32.png", hint: "client company" },
+  { name: "Client 33", logo: "/assets/CLIENTS/Our india clients/33.png", hint: "client company" },
+  { name: "Client 34", logo: "/assets/CLIENTS/Our india clients/34.png", hint: "client company" },
+  { name: "Client 35", logo: "/assets/CLIENTS/Our india clients/35.png", hint: "client company" },
+  { name: "Client 36", logo: "/assets/CLIENTS/Our india clients/36.png", hint: "client company" },
+  { name: "Client 37", logo: "/assets/CLIENTS/Our india clients/37.png", hint: "client company" },
+  { name: "Client 38", logo: "/assets/CLIENTS/Our india clients/38.png", hint: "client company" },
+  { name: "Client 39", logo: "/assets/CLIENTS/Our india clients/39.png", hint: "client company" },
+  { name: "Client 40", logo: "/assets/CLIENTS/Our india clients/40.png", hint: "client company" },
+  { name: "Client 41", logo: "/assets/CLIENTS/Our india clients/41.png", hint: "client company" },
+  { name: "Client 42", logo: "/assets/CLIENTS/Our india clients/42.png", hint: "client company" },
+  { name: "Client 43", logo: "/assets/CLIENTS/Our india clients/43.png", hint: "client company" },
+  { name: "Client 44", logo: "/assets/CLIENTS/Our india clients/44.png", hint: "client company" },
+  { name: "Client 45", logo: "/assets/CLIENTS/Our india clients/45.png", hint: "client company" },
+  { name: "Client 46", logo: "/assets/CLIENTS/Our india clients/46.png", hint: "client company" },
+  { name: "Client 47", logo: "/assets/CLIENTS/Our india clients/47.png", hint: "client company" },
+  { name: "Client 48", logo: "/assets/CLIENTS/Our india clients/48.png", hint: "client company" },
+  { name: "Client 49", logo: "/assets/CLIENTS/Our india clients/49.png", hint: "client company" },
+  { name: "Client 50", logo: "/assets/CLIENTS/Our india clients/50.png", hint: "client company" },
+  { name: "Client 51", logo: "/assets/CLIENTS/Our india clients/51.png", hint: "client company" },
+  
 ];
 
-const partners: LogoItem[] = [
-  { name: "TechVision", logo: p1, hint: "AV technology partner" },
-  { name: "Corporate Solutions", logo: p2, hint: "business integration" },
-  { name: "Startup Innovations", logo: p3, hint: "emerging technology" },
-  { name: "Financial Systems", logo: p4, hint: "fintech solutions" },
-  { name: "Media Productions", logo: p5, hint: "content creation" },
-  { name: "Tech Giants Inc", logo: p6, hint: "technology conglomerate" },
-  { name: "Software Alliance", logo: p7, hint: "software development" },
-  { name: "Hardware Partners", logo: p8, hint: "equipment manufacturer" },
-  { name: "Consulting Experts", logo: p9, hint: "professional services" },
-  { name: "Design Studio Pro", logo: p10, hint: "creative design" },
-  { name: "Cloud Services Ltd", logo: p11, hint: "cloud computing" },
-  { name: "SecureTech Solutions", logo: p12, hint: "cybersecurity" },
-  { name: "Network Systems", logo: p13, hint: "connectivity solutions" },
-  { name: "Audio Excellence", logo: p14, hint: "sound technology" },
-  { name: "Visual Technologies", logo: p15, hint: "display systems" },
-  { name: "Integration Specialists", logo: p16, hint: "system integration" },
-  { name: "Innovation Labs", logo: p17, hint: "R&D partnership" },
-  { name: "Digital Transformers", logo: p18, hint: "digital solutions" },
-  { name: "Enterprise Systems", logo: p19, hint: "business solutions" },
-  { name: "Collaborate Pro", logo: p20, hint: "collaboration tools" },
+// Technology Partners - All 29 images
+const technologyPartners: LogoItem[] = [
+  { name: "Audio Technica", logo: "/assets/Partners/Technology Partners - AV/Audio Technica.png", hint: "audio equipment" },
+  { name: "Barco", logo: "/assets/Partners/Technology Partners - AV/Barco.png", hint: "projection technology" },
+  { name: "Biamp", logo: "/assets/Partners/Technology Partners - AV/Biamp.png", hint: "audio systems" },
+  { name: "Bose", logo: "/assets/Partners/Technology Partners - AV/Bose.png", hint: "sound systems" },
+  { name: "BrightSign", logo: "/assets/Partners/Technology Partners - AV/Bright sign.png", hint: "digital signage" },
+  { name: "Chief", logo: "/assets/Partners/Technology Partners - AV/Chief.png", hint: "mounting solutions" },
+  { name: "Christie", logo: "/assets/Partners/Technology Partners - AV/Christie.png", hint: "visual solutions" },
+  { name: "Cisco", logo: "/assets/Partners/Technology Partners - AV/Cisco.png", hint: "networking equipment" },
+  { name: "ClearOne", logo: "/assets/Partners/Technology Partners - AV/ClearOne.png", hint: "conferencing solutions" },
+  { name: "Crestron", logo: "/assets/Partners/Technology Partners - AV/Crestron.png", hint: "automation systems" },
+  { name: "Datapath", logo: "/assets/Partners/Technology Partners - AV/Datapath.png", hint: "video wall controllers" },
+  { name: "Epson", logo: "/assets/Partners/Technology Partners - AV/Epson.png", hint: "projectors" },
+  { name: "Extron", logo: "/assets/Partners/Technology Partners - AV/Extron Electro.png", hint: "AV systems" },
+  { name: "Harman", logo: "/assets/Partners/Technology Partners - AV/Harmon.png", hint: "audio solutions" },
+  { name: "Jabra", logo: "/assets/Partners/Technology Partners - AV/Jabra.png", hint: "headsets" },
+  { name: "Jupiter", logo: "/assets/Partners/Technology Partners - AV/Jupiter.png", hint: "display systems" },
+  { name: "Kramer", logo: "/assets/Partners/Technology Partners - AV/Kramer.png", hint: "AV solutions" },
+  { name: "LG", logo: "/assets/Partners/Technology Partners - AV/LG.png", hint: "displays" },
+  { name: "Lightware", logo: "/assets/Partners/Technology Partners - AV/Lightware.png", hint: "AV connectivity" },
+  { name: "Logitech", logo: "/assets/Partners/Technology Partners - AV/Logitech.png", hint: "peripherals" },
+  { name: "Neat", logo: "/assets/Partners/Technology Partners - AV/Neat.png", hint: "video devices" },
+  { name: "Panasonic", logo: "/assets/Partners/Technology Partners - AV/Panasonic.png", hint: "electronics" },
+  { name: "Poly", logo: "/assets/Partners/Technology Partners - AV/Poly.png", hint: "communications equipment" },
+  { name: "QSC", logo: "/assets/Partners/Technology Partners - AV/QSC.png", hint: "audio products" },
+  { name: "Samsung", logo: "/assets/Partners/Technology Partners - AV/Samsung.png", hint: "electronics" },
+  { name: "Sennheiser", logo: "/assets/Partners/Technology Partners - AV/Sennheiser.png", hint: "audio equipment" },
+  { name: "Shure", logo: "/assets/Partners/Technology Partners - AV/Shure.png", hint: "microphones" },
+  { name: "Microsoft Teams", logo: "/assets/Partners/Technology Partners - AV/Teams.png", hint: "collaboration platform" },
+  { name: "Zoom", logo: "/assets/Partners/Technology Partners - AV/Zoom.png", hint: "video communications" },
 ];
 
 interface HorizontalMarqueeProps {
   items: LogoItem[];
   direction?: "normal" | "reverse";
   speedMultiplier?: number;
+  className?: string;
+  opacity?: number;
 }
 
 const HorizontalMarquee = ({
   items,
   direction = "normal",
   speedMultiplier = 1,
+  className = "",
+  opacity = 80,
 }: HorizontalMarqueeProps) => {
-  const extendedItems = [...items, ...items, ...items]; // Triple the items for seamless looping
+  // For large number of items, we need to duplicate them enough times to create a seamless loop
+  // We'll duplicate the items array twice to ensure smooth animation
+  const extendedItems = [...items, ...items];
 
   const getSpeed = (): number => {
-    const baseSpeed = 40;
+    const baseSpeed = 60; // Adjust base speed based on number of items
     return baseSpeed / speedMultiplier;
   };
 
   return (
-    <div className="relative w-full overflow-hidden py-6">
+    <div className={`relative w-full overflow-hidden py-6 ${className}`}>
       <div
         className="flex whitespace-nowrap"
         style={{
@@ -131,7 +144,8 @@ const HorizontalMarquee = ({
               width={120}
               height={60}
               data-ai-hint={item.hint}
-              className="hover:scale-105 transition-all duration-300 opacity-80 hover:opacity-100 object-contain max-h-[60px]"
+              className="hover:scale-105 transition-all duration-300 hover:opacity-100 object-contain max-h-[60px]"
+              style={{ opacity: `${opacity}%` }}
             />
           </div>
         ))}
@@ -143,10 +157,10 @@ const HorizontalMarquee = ({
 const Affiliations = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-return (
+  return (
     <section
       id="affiliations"
-      className="relative py-8 md:py-12" // Reduced top and bottom padding by half
+      className="relative py-8 md:py-12"
       ref={containerRef}
     >
       <div className="absolute inset-0 bg-white/0 z-0"></div>
@@ -171,23 +185,33 @@ return (
           </ScrollReveal1>
         </div>
 
-        <AnimateInView delay={200} className="mb-16">
+        {/* Top Clients Marquee - Left to Right */}
+        <AnimateInView delay={200} className="mb-0">
           <HorizontalMarquee
             items={clients}
             direction="normal"
-            speedMultiplier={1.5}
+            speedMultiplier={1}
+          />
+        </AnimateInView>
+        
+        {/* Bottom Clients Marquee - Right to Left */}
+        <AnimateInView delay={200} className="mb-16">
+          <HorizontalMarquee
+            items={clients}
+            direction="reverse"
+            speedMultiplier={1}
           />
         </AnimateInView>
 
-        {/* Partners Section */}
+        {/* Technology Partners Section */}
         <div className="flex flex-col items-center text-center mb-16 mt-24">
           <VariableProximity
-            label="Our Partners"
+            label="Our Technology Partners"
             fromFontVariationSettings={`'wght' 700`}
             toFontVariationSettings={`'wght' 300`}
             containerRef={containerRef}
             radius={120}
-            className="heading-2 mb-6 text-3xl md:text-4xl lg:text-5xl "
+            className="heading-2 mb-6 text-3xl md:text-4xl lg:text-5xl"
             style={{ fontFamily: "'Saira', sans-serif" }}
           />
           <ScrollReveal1
@@ -198,11 +222,21 @@ return (
           </ScrollReveal1>
         </div>
 
-        <AnimateInView>
+        {/* Top Technology Partners Marquee - Left to Right */}
+        <AnimateInView delay={200} className="mb-0">
           <HorizontalMarquee
-            items={partners}
+            items={technologyPartners}
+            direction="normal"
+            speedMultiplier={1}
+          />
+        </AnimateInView>
+        
+        {/* Bottom Technology Partners Marquee - Right to Left */}
+        <AnimateInView delay={200}>
+          <HorizontalMarquee
+            items={technologyPartners}
             direction="reverse"
-            speedMultiplier={1.2}
+            speedMultiplier={1}
           />
         </AnimateInView>
       </div>
@@ -214,7 +248,7 @@ return (
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-33.33%);
+            transform: translateX(-500%);
           }
         }
       `}</style>

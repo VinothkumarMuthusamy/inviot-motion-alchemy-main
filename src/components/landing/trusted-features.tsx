@@ -32,7 +32,7 @@ const features = [
 
 const TrustedFeatures = () => {
   return (
-    <div className="bg-white/50 py-16 md:py-20 lg:py-24">
+    <div className="bg-transparent py-16 md:py-20 lg:py-24">
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="text-center mb-6 md:mb-8">
@@ -43,7 +43,7 @@ const TrustedFeatures = () => {
               Often first, always trusted
             </h1>
             <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto">
-              Cutting-edge technology. Premium sound quality. 110+ years of
+              Cutting-edge technology. 20+ years of
               experience.
             </p>
           </AnimateInView>

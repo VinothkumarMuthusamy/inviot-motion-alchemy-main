@@ -8,6 +8,7 @@ import FeatureList from "@/components/ui/feature-list";
 import HotspotCarousel from "@/components/ui/hotspot";
 import type { Solution } from "../solutions-data";
 import Contact from "@/components/landing/contact";
+import TrustedFeatures from "@/components/landing/trusted-features";
 const solution: Solution = {
   slug: "digital-classrooms",
   title: "Digital Classrooms",
@@ -61,7 +62,7 @@ const solution: Solution = {
       hotspots: [
         {
           image: {
-            src: "/assets/solutionimg/tips.jpg",
+            src: "/assets/LANDSCAPE/EDUCATION/1.png",
             alt: "A digital classroom",
             hint: "digital classroom",
           },
@@ -201,7 +202,7 @@ export default function DigitalClassroomsPage() {
                     "Schools need advanced AV tools and sustainable environments that foster collaboration and long-term success.",
                 },
               ].map((item, index) => (
-                <li key={index} className="flex items-start">
+                <li key={index} className="flex items-start text-justify bg-transparent px-4 sm:px-6 lg:px-8">
                   <svg
                     className="h-5 w-5 text-primary mr-3 mt-1 flex-shrink-0"
                     fill="none"
@@ -226,13 +227,13 @@ export default function DigitalClassroomsPage() {
         </div>
       </section>
 
-      {featureListSection && featureListSection.features && (
+      {/* {featureListSection && featureListSection.features && (
         <section className="section-padding bg-transparent">
           <div className="container-max">
             <FeatureList features={featureListSection.features as any[]} />
           </div>
         </section>
-      )}
+      )} */}
 
       {hotspotSection && hotspotSection.hotspots && (
         <section className="section-padding bg-transparent">
@@ -245,7 +246,7 @@ export default function DigitalClassroomsPage() {
           </div>
         </section>
       )}
-
+      <TrustedFeatures />
       <Contact />
     </div>
   );
