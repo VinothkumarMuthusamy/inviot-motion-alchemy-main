@@ -40,12 +40,7 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
-      {
-        protocol: 'https',
-        hostname: 'www.resurgent.co.in', // Keep this too for both variants
-        port: '',
-        pathname: '/**',
-      }
+      
     ],
   },
 };

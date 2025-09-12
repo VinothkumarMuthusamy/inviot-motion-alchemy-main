@@ -51,16 +51,19 @@ const Mission = () => {
           {/* Top-Left: Who is Inviot? content */}
           <div className="flex flex-col justify-center">
             <AnimateInView className="flex flex-col items-start text-left">
-              <h2
-                className="heading-2 text-primary"
-                style={{
-                  fontFamily: "'Saira', sans-serif",
-                  color: "#d32471",
-                  fontWeight: 700,
-                }}
-              >
-                technology with purpose
-              </h2>
+<h2
+  className="heading-2 text-primary"
+  style={{
+    fontFamily: "Saira",
+    color: "#d32471",
+    fontWeight: 700,
+    textTransform: "none",   // ⬅️ stops uppercase/lowercase forcing
+  }}
+>
+  Technology with Purpose
+</h2>
+
+
               <p className="mt-4 max-w-4xl text-lg text-justify text-balance font-light leading-relaxed text-black">
                 At Inviot, we believe that the best way to improve communication
                 and collaboration within organizations is to treat audiovisual,

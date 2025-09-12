@@ -149,7 +149,7 @@ export default {
     require('tailwindcss-animate'),
     function ({ addUtilities, theme }: { addUtilities: any, theme: any }) {
       const delays = theme('transitionDelay');
-      const animationDelays = Object.keys(delays).reduce((acc: Record<string, any>, key) => {
+      const animationDelays = Object.keys(delays).reduce((acc: Record<string, any>, key: any) => {
         acc[`.animation-delay-${key}`] = { animationDelay: delays[key] };
         return acc;
       }, {});

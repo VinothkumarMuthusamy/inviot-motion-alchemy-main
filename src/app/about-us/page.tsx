@@ -197,7 +197,7 @@ function Timeline() {
   const height = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   
   return (
-    <section className="section-padding bg-transparent" ref={containerRef}>
+    <section className="section-padding bg-background/80 backdrop-blur-sm" ref={containerRef}>
       <div className="container-max text-center mb-12 md:mb-16">
         <h2 className="heading-2">Our Journey</h2>
         <p className="mt-4 text-lg md:text-xl text-foreground/70">
@@ -216,8 +216,11 @@ function Timeline() {
           }}
         >
           <motion.div
-              className="absolute bottom-0 left-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background ring-4 ring-primary/50 transform -translate-x-[calc(50%_+_0.1rem)] translate-y-1/2"
+              className="absolute bottom-0 w-4 h-4 rounded-full bg-primary border-4 border-background ring-4 ring-primary/50"
               style={{
+                left: '50%',
+                translateX: '-50%',
+                translateY: '50%',
                 scale: useTransform(scrollYProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0])
               }}
            />
@@ -256,7 +259,7 @@ const AboutUsPage = () => {
         <Header />
         <main className="flex-grow">
           {/* Hero About Section */}
-          <section className="section-padding pt-32 bg-transparent">
+          <section className="section-padding pt-32 bg-card/80 backdrop-blur-sm">
             <div className="container-max grid lg:grid-cols-2 gap-12 items-center">
                 <AnimateInView>
                 <div>
@@ -312,7 +315,7 @@ const AboutUsPage = () => {
           </section>
 
           {/* Image Carousel Section */}
-          <section className="section-padding bg-transparent ">
+          <section className="section-padding bg-card/80 backdrop-blur-sm">
             <div className="container-max">
               <AnimateInView>
                 <div className="text-center mb-12">
@@ -330,7 +333,7 @@ const AboutUsPage = () => {
           </section>
   
           {/* Mission + Vision */}
-          <section className="section-padding bg-transparent ">
+          <section className="section-padding bg-card/80 backdrop-blur-sm">
             <div className="container-max">
               <div className="grid md:grid-cols-2 gap-8">
                 <AnimateInView>
@@ -382,7 +385,3 @@ const AboutUsPage = () => {
   };
   
   export default AboutUsPage;
-
-    
-
-    
