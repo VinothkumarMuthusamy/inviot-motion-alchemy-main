@@ -21,7 +21,7 @@ const AwardIcon = () => (
 // Stats Section
 const StatsSection = () => {
   const stats = [
-    { icon: CalendarIcon, finalValue: 25, label: "Years of Experience" },
+    { icon: CalendarIcon, finalValue: 20,label: "Years of Experience" },
     { icon: BriefcaseIcon, finalValue: 4000, label: "Successful Projects" },
     { icon: GlobeIcon, finalValue: 2, label: "Global Presence (India & ME)" },
     { icon: AwardIcon, finalValue: 9001, label: "ISO 9001:2015 Certified", isYear: true },

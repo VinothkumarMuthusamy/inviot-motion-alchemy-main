@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog"
+import { cn } from '@/lib/utils';
 
 
 const HotspotPoint = ({ hotspot, onOpenModal }: { hotspot: HotspotSlide['hotspots'][0]; onOpenModal: () => void }) => {
@@ -33,10 +34,24 @@ const HotspotPoint = ({ hotspot, onOpenModal }: { hotspot: HotspotSlide['hotspot
             onOpenModal();
         }
     }
+    
+    const getPositioningClasses = (top: string, left: string) => {
+        const topNum = parseFloat(top);
+        const leftNum = parseFloat(left);
+        let classes = [];
+        if (topNum > 50) classes.push('bottom');
+        if (leftNum < 25) classes.push('left');
+        if (leftNum > 75) classes.push('right');
+        return classes.join('-');
+    };
 
     return (
         <>
-            <div className="hotspot" style={{ top: hotspot.position.top, left: hotspot.position.left }}>
+            <div 
+                className="hotspot" 
+                style={{ top: hotspot.position.top, left: hotspot.position.left }}
+                data-quadrant={getPositioningClasses(hotspot.position.top, hotspot.position.left)}
+            >
                 <button
                     className="hotspot__circle"
                     onClick={handleClick}
@@ -104,7 +119,8 @@ const HotspotCarousel = ({ title, description, slides }: { title: string; descri
                                     alt={slide.image.alt}
                                     data-ai-hint={slide.image.hint}
                                     fill
-                                    className="object-contain"
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, 80vw"
                                 />
                                 {slide.hotspots.map((hotspot, hsIndex) => (
                                     <HotspotPoint key={hsIndex} hotspot={hotspot} onOpenModal={() => handleOpenModal(hotspot)} />

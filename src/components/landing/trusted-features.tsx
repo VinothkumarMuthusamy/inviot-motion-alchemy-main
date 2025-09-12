@@ -32,19 +32,16 @@ const features = [
 
 const TrustedFeatures = () => {
   return (
-    <div className="bg-transparent py-16 md:py-20 lg:py-24">
+    <section className="bg-transparent !bg-transparent py-16 md:py-20 lg:py-24">
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="text-center mb-6 md:mb-8">
-          {" "}
-          {/* Reduced bottom margin by half */}
           <AnimateInView>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
               Often first, always trusted
             </h1>
             <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto">
-              Cutting-edge technology. 20+ years of
-              experience.
+              Cutting-edge technology. 20+ years of experience.
             </p>
           </AnimateInView>
         </div>
@@ -53,7 +50,7 @@ const TrustedFeatures = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
           {features.map((feature, index) => (
             <AnimateInView key={index} delay={index * 150} className="flex">
-              <div className="flex flex-col items-center text-center p-4 w-full">
+              <div className="flex flex-col items-center text-center p-4 w-full bg-transparent">
                 <div className="relative w-28 h-28 md:w-32 md:h-32 mb-4">
                   <Image
                     src={feature.icon}
@@ -74,7 +71,7 @@ const TrustedFeatures = () => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,12 +1,10 @@
-
 'use client';
 import React from 'react';
 import { gsap } from 'gsap';
-
 import './FlowingMenu.css';
 
 interface MenuItemProps {
-  link: string;
+  link?: string; // Made optional with ?
   text: string;
   image: string;
 }
@@ -46,7 +44,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
     return topEdgeDist < bottomEdgeDist ? 'top' : 'bottom';
   };
 
-  const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleMouseEnter = (ev: React.MouseEvent<HTMLDivElement>) => { // Changed to div
     if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
     const rect = itemRef.current.getBoundingClientRect();
     const x = ev.clientX - rect.left;
@@ -60,7 +58,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
       .to([marqueeRef.current, marqueeInnerRef.current], { y: '0%' }, 0);
   };
 
-  const handleMouseLeave = (ev: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleMouseLeave = (ev: React.MouseEvent<HTMLDivElement>) => { // Changed to div
     if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
     const rect = itemRef.current.getBoundingClientRect();
     const x = ev.clientX - rect.left;
@@ -86,10 +84,22 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
   }, [text, image]);
 
   return (
-    <div className="menu__item" ref={itemRef}>
-      <a className="menu__item-link" href={link} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        {text}
-      </a>
+    <div 
+      className="menu__item" 
+      ref={itemRef}
+      onMouseEnter={handleMouseEnter} 
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Use div instead of a tag if no link is provided */}
+      {link ? (
+        <a className="menu__item-link" href={link}>
+          {text}
+        </a>
+      ) : (
+        <div className="menu__item-link">
+          {text}
+        </div>
+      )}
       <div className="marquee" ref={marqueeRef}>
         <div className="marquee__inner-wrap" ref={marqueeInnerRef}>
           <div className="marquee__inner" aria-hidden="true">

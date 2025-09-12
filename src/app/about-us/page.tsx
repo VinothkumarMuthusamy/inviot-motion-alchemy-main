@@ -1,11 +1,10 @@
-
 'use client';
 
 import Footer from "@/components/landing/footer";
 import Header from "@/components/landing/header";
 import { AnimateInView } from "@/components/ui/animate-in-view";
 import Image from "next/image";
-import { Target, Eye, Building, Globe, Star, Flag, Briefcase, ChevronLeft, ChevronRight } from "lucide-react";
+import { Target, Eye, Building, Globe, Star, Flag, Briefcase, ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
@@ -44,7 +43,7 @@ const ImageCarousel = ({ images, interval = 4000 }: { images: { src: string; alt
                 alt={image.alt}
                 data-ai-hint={image.hint}
                 fill
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 priority={index === 0}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
@@ -160,7 +159,7 @@ const TimelineEvent = ({
       {/* Center Icon */}
       <div className="flex justify-center items-center my-4 md:my-0 order-first md:order-2 col-start-1 md:col-start-2">
         <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary flex items-center justify-center z-10 border-4 border-background relative">
-          <div className="absolute top-0 left-[-2.6rem] md:hidden h-full border-l-2 border-dashed border-border/70 -z-10"></div>
+          <div className="absolute top-0 left-[calc(50%_-_1px)] md:hidden h-full border-l-2 border-dashed border-border/70 -z-10"></div>
           <event.icon className="w-6 h-6 md:w-8 md:h-8 text-primary-foreground" />
         </div>
       </div>
@@ -206,12 +205,13 @@ function Timeline() {
       </div>
 
       <div className="relative w-full max-w-4xl mx-auto">
-        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-border/50 rounded-full transform -translate-x-1/2 pointer-events-none"></div>
+        <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-border/50 rounded-full transform -translate-x-1/2 pointer-events-none"></div>
         
         <motion.div
-          className="absolute left-4 md:left-1/2 top-0 w-1 bg-primary rounded-full transform -translate-x-1/2 origin-top"
+          className="absolute left-1/2 top-0 w-1 bg-primary rounded-full origin-top"
           style={{ 
             height,
+            transform: 'translateX(-50%)',
             boxShadow: '0 0 10px hsl(var(--primary)), 0 0 20px hsl(var(--primary))'
           }}
         >
@@ -238,12 +238,12 @@ function Timeline() {
 
 const AboutUsPage = () => {
     const carouselImages = [
-      { src: "/assets/aboutus/inviot1.png", alt: "Collaboration space", hint: "collaboration space" },
-      { src: "/assets/aboutus/inviot2.png", alt: "Collaboration space", hint: "collaboration space" },
-      { src: "/assets/aboutus/adani1.png", alt: "Modern meeting room", hint: "modern meeting room" },
-      { src: "/assets/aboutus/adani2.png", alt: "Conference room setup", hint: "conference room" },
-      { src: "/assets/aboutus/amgen1.png", alt: "Collaboration space", hint: "collaboration space" },
-      { src: "/assets/aboutus/amgen2.png", alt: "Executive boardroom", hint: "executive boardroom" }
+      { src: "/assets/aboutus/2.png", alt: "Collaboration space", hint: "collaboration space" },
+      { src: "/assets/aboutus/3.png", alt: "Collaboration space", hint: "collaboration space" },
+      { src: "/assets/aboutus/4.png", alt: "Modern meeting room", hint: "modern meeting room" },
+      { src: "/assets/aboutus/5.png", alt: "Conference room setup", hint: "conference room" },
+      { src: "/assets/aboutus/6.png", alt: "Collaboration space", hint: "collaboration space" },
+      { src: "/assets/aboutus/7.png", alt: "Executive boardroom", hint: "executive boardroom" }
     ];
   
     return (
@@ -301,7 +301,15 @@ const AboutUsPage = () => {
                         sizes="(max-width: 768px) 100vw, 50vw"
                     />
                     </div>
-                    <h2 className="heading-3 text-secondary mb-4">Our Company</h2>
+                    <div className="flex justify-between items-center mb-4">
+                      <h2 className="heading-3 text-secondary">Our Company</h2>
+                      <Button asChild variant="outline" size="sm">
+                        <a href="/assets/aboutus/INVIOT_COMPANY_PROFILE.pdf" download>
+                          <Download className="mr-2 h-4 w-4" />
+                          Company Profile
+                        </a>
+                      </Button>
+                    </div>
                     <div className="space-y-4 text-foreground/70 leading-relaxed">
                     <p>
                         We are a leading design and engineering integration firm in
@@ -385,3 +393,4 @@ const AboutUsPage = () => {
   };
   
   export default AboutUsPage;
+    

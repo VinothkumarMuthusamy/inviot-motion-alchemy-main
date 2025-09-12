@@ -1,38 +1,35 @@
 "use client";
 
 import { useRef } from "react";
-import { ArrowRight } from "lucide-react";
 import ScrollReveal from "../ui/scroll-reveal";
 import { AnimateInView } from "../ui/animate-in-view";
-import Link from "next/link";
-import { Button } from "../ui/button";
 import FlowingMenu from "./FlowingMenu";
 
 const menuItems = [
   {
     text: "AV-Only Specialists",
-    link: "#",
-    image: "https://picsum.photos/400/200?random=1",
+   // Empty link to satisfy type requirements
+    image: "/assets/WHYINVIOTCHOOSEUS/AVSpecialist.png",
   },
   {
     text: "Design→Integration→Support",
-    link: "#",
-    image: "https://picsum.photos/400/200?random=2",
+   // Empty link to satisfy type requirements
+    image: "/assets/WHYINVIOTCHOOSEUS/Designintegeration.png",
   },
   {
     text: "Enterprise-grade Quality",
-    link: "#",
-    image: "https://picsum.photos/400/200?random=3",
+    // Empty link to satisfy type requirements
+    image: "/assets/WHYINVIOTCHOOSEUS/high-technology-background.jpg",
   },
   {
     text: "Scale & Experience",
-    link: "#",
-    image: "https://picsum.photos/400/200?random=4",
+   // Empty link to satisfy type requirements
+    image: "/assets/WHYINVIOTCHOOSEUS/SCALEEXPERIENCE.jpg",
   },
   {
     text: "User-first",
-    link: "#",
-    image: "https://picsum.photos/400/200?random=5",
+    // Empty link to satisfy type requirements
+    image: "/assets/WHYINVIOTCHOOSEUS/userFirst.jpg",
   },
 ];
 
@@ -54,17 +51,14 @@ const WhyChooseUs = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* LEFT SIDE */}
           <div className="flex flex-col gap-4 h-[450px]">
-            {" "}
             <AnimateInView direction="left">
-              {" "}
               <h2 className="text-3xl md:text-4xl font-bold text-pink-600 mb-2">
                 Why teams choose Inviot for AV
-              </h2>{" "}
-            </AnimateInView>{" "}
+              </h2>
+            </AnimateInView>
             <div className="bg-pink-600 rounded-lg shadow-lg backdrop-blur-sm bg-opacity-80 border border-white border-opacity-20 flex-grow">
-              {" "}
-              <FlowingMenu items={menuItems} />{" "}
-            </div>{" "}
+              <FlowingMenu items={menuItems} />
+            </div>
           </div>
 
           {/* RIGHT SIDE */}
@@ -80,14 +74,6 @@ const WhyChooseUs = () => {
                   end-to-end AV that's reliable, intuitive, and future-ready
                   across India and the Middle East.
                 </ScrollReveal>
-                <div className="mt-6">
-                  {/* Optional CTA Button */}
-                  {/* <Button asChild className="btn-glow font-headline text-sm py-2 px-4">
-                    <Link href="/solutions">
-                      Explore Our Solutions <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button> */}
-                </div>
               </div>
             </AnimateInView>
           </div>
