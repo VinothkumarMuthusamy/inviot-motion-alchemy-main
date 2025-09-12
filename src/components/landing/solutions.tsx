@@ -140,7 +140,8 @@ const Solutions = () => {
             <h2 className="heading-2 text-center text-3xl md:text-4xl">
               Our Solutions
             </h2>
-            <p className="mt-4 text-base md:text-lg text-black max-w-6xl mx-auto text-center">
+            <p className="mt-4 text-sm md:text-base text-black max-w-6xl mx-auto text-center">
+
               We improve communication and collaboration within a company by
               treating audiovisual, unified collaboration, and digital media as
               part of a larger ecosystem. Our expertise and experience help us

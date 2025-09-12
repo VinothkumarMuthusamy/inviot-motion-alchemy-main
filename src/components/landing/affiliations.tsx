@@ -156,11 +156,12 @@ return (
         <div className="flex flex-col items-center text-center mb-16">
           <VariableProximity
             label="Our Clients"
-            fromFontVariationSettings={`'wght' 300`}
-            toFontVariationSettings={`'wght' 700`}
+            fromFontVariationSettings={`'wght' 700`}
+            toFontVariationSettings={`'wght' 300`}
             containerRef={containerRef}
             radius={120}
             className="heading-2 mb-6 text-3xl md:text-4xl lg:text-5xl"
+            style={{ fontFamily: "'Saira', sans-serif" }}
           />
           <ScrollReveal1
             textClassName="text-black text-justify md:text-center leading-relaxed max-w-3xl mx-auto text-lg md:text-xl"
@@ -182,11 +183,12 @@ return (
         <div className="flex flex-col items-center text-center mb-16 mt-24">
           <VariableProximity
             label="Our Partners"
-            fromFontVariationSettings={`'wght' 300`}
-            toFontVariationSettings={`'wght' 700`}
+            fromFontVariationSettings={`'wght' 700`}
+            toFontVariationSettings={`'wght' 300`}
             containerRef={containerRef}
             radius={120}
-            className="heading-2 mb-6 text-3xl md:text-4xl lg:text-5xl"
+            className="heading-2 mb-6 text-3xl md:text-4xl lg:text-5xl "
+            style={{ fontFamily: "'Saira', sans-serif" }}
           />
           <ScrollReveal1
             textClassName="text-black text-justify md:text-center leading-relaxed max-w-3xl mx-auto text-lg md:text-xl"
