@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Linkedin, Twitter, Mail, MapPin, Phone, ArrowUp, Sparkles } from "lucide-react";
+import { Facebook, Linkedin, Twitter, Mail, MapPin, Phone, ArrowUp, Sparkles, InstagramIcon } from "lucide-react";
 import { solutions } from "@/app/solutions/solutions-data";
 
 const Footer = () => {
@@ -124,7 +124,7 @@ const Footer = () => {
             </p>
             <div className="flex gap-2 mt-1">
               <Link 
-                href="#" 
+                href="https://www.linkedin.com/company/inviot-av-solutions" 
                 className="text-foreground/60 hover:text-primary transition-colors p-1.5 rounded-full bg-background/60 hover:bg-primary/5 hover-sparkle relative"
                 onMouseEnter={() => setHoveredItem('linkedin')}
                 onMouseLeave={() => setHoveredItem(null)}
@@ -135,7 +135,7 @@ const Footer = () => {
                 )}
               </Link>
               <Link 
-                href="#" 
+                href="https://x.com/inviotav" 
                 className="text-foreground/60 hover:text-primary transition-colors p-1.5 rounded-full bg-background/60 hover:bg-primary/5 hover-sparkle relative"
                 onMouseEnter={() => setHoveredItem('twitter')}
                 onMouseLeave={() => setHoveredItem(null)}
@@ -146,13 +146,24 @@ const Footer = () => {
                 )}
               </Link>
               <Link 
-                href="#" 
+                href="https://www.facebook.com/Inviotavsolutions" 
                 className="text-foreground/60 hover:text-primary transition-colors p-1.5 rounded-full bg-background/60 hover:bg-primary/5 hover-sparkle relative"
                 onMouseEnter={() => setHoveredItem('facebook')}
                 onMouseLeave={() => setHoveredItem(null)}
               >
                 <Facebook size={16} />
                 {hoveredItem === 'facebook' && (
+                  <Sparkles size={8} className="sparkle-icon absolute -top-0.5 -right-0.5 text-primary" />
+                )}
+              </Link>
+              <Link 
+                href="https://www.instagram.com/inviotavsolutions" 
+                className="text-foreground/60 hover:text-primary transition-colors p-1.5 rounded-full bg-background/60 hover:bg-primary/5 hover-sparkle relative"
+                onMouseEnter={() => setHoveredItem('instagram')}
+                onMouseLeave={() => setHoveredItem(null)}
+              >
+                <InstagramIcon size={16} />
+                {hoveredItem === 'instagram' && (
                   <Sparkles size={8} className="sparkle-icon absolute -top-0.5 -right-0.5 text-primary" />
                 )}
               </Link>

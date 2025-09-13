@@ -4,7 +4,7 @@ import Footer from "@/components/landing/footer";
 import Header from "@/components/landing/header";
 import { AnimateInView } from "@/components/ui/animate-in-view";
 import Image from "next/image";
-import { Target, Eye, Building, Globe, Star, Flag, Briefcase, ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { Target, Eye, Building, Globe, Star, Flag, Briefcase, ChevronLeft, ChevronRight, Download, X } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
@@ -12,6 +12,47 @@ import Typewriter from 'typewriter-effect';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+
+const PDFViewer = ({ pdfUrl }: { pdfUrl: string }) => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm">
+          <Download className="mr-2 h-4 w-4" />
+          Company Profile
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-0">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Company Profile</DialogTitle>
+        </DialogHeader>
+        <div className="relative flex-grow">
+          <iframe
+            src={`${pdfUrl}#toolbar=0`}
+            className="w-full h-full"
+            title="Company Profile"
+          />
+           <div className="absolute bottom-4 right-4 flex items-center gap-2">
+            <Button asChild variant="default" size="sm">
+              <a href={pdfUrl} download="inviot-company-profile.pdf">
+                <Download className="mr-2 h-4 w-4" />
+                Download
+              </a>
+            </Button>
+            <DialogClose asChild>
+               <Button variant="secondary" size="icon">
+                  <X className="h-4 w-4" />
+                  <span className="sr-only">Close</span>
+                </Button>
+            </DialogClose>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 
 const ImageCarousel = ({ images, interval = 4000 }: { images: { src: string; alt: string, hint: string }[]; interval?: number }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: interval })]);
@@ -33,19 +74,19 @@ const ImageCarousel = ({ images, interval = 4000 }: { images: { src: string; alt
   }, [emblaApi]);
 
   return (
-    <div className="relative w-full overflow-hidden rounded-lg shadow-xl">
+    <div className="relative w-full max-w-[737px] mx-auto overflow-hidden rounded-lg shadow-xl">
       <div ref={emblaRef}>
         <div className="flex">
           {images.map((image, index) => (
-            <div key={index} className="flex-[0_0_100%] relative h-80 md:h-96 lg:h-[500px]">
+            <div key={index} className="flex-[0_0_100%] relative h-[384px] bg-white rounded-lg overflow-hidden flex items-center justify-center">
               <Image
                 src={image.src}
                 alt={image.alt}
                 data-ai-hint={image.hint}
                 fill
-                className="w-full h-full object-contain"
+                className="object-cover"
                 priority={index === 0}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                sizes="(max-width: 737px) 100vw, 737px"
               />
             </div>
           ))}
@@ -196,7 +237,7 @@ function Timeline() {
   const height = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   
   return (
-    <section className="section-padding bg-background/80 backdrop-blur-sm" ref={containerRef}>
+    <section className="section-padding bg-transparent" ref={containerRef}>
       <div className="container-max text-center mb-12 md:mb-16">
         <h2 className="heading-2">Our Journey</h2>
         <p className="mt-4 text-lg md:text-xl text-foreground/70">
@@ -238,12 +279,12 @@ function Timeline() {
 
 const AboutUsPage = () => {
     const carouselImages = [
-      { src: "/assets/aboutus/2.png", alt: "Collaboration space", hint: "collaboration space" },
-      { src: "/assets/aboutus/3.png", alt: "Collaboration space", hint: "collaboration space" },
-      { src: "/assets/aboutus/4.png", alt: "Modern meeting room", hint: "modern meeting room" },
-      { src: "/assets/aboutus/5.png", alt: "Conference room setup", hint: "conference room" },
-      { src: "/assets/aboutus/6.png", alt: "Collaboration space", hint: "collaboration space" },
-      { src: "/assets/aboutus/7.png", alt: "Executive boardroom", hint: "executive boardroom" }
+      { src: "/assets/aboutus/Adani/1.png", alt: "Adani project", hint: "office interior" },
+      { src: "/assets/aboutus/Adani/2.png", alt: "Adani project", hint: "modern office" },
+      { src: "/assets/aboutus/Amgen/1.png", alt: "Amgen meeting room", hint: "meeting room" },
+      { src: "/assets/aboutus/Amgen/2.png", alt: "Amgen conference setup", hint: "conference room" },
+      { src: "/assets/aboutus/Invoit AV Solutions/1.png", alt: "Inviot collaboration space", hint: "collaboration space" },
+      { src: "/assets/aboutus/Invoit AV Solutions/2.png", alt: "Inviot executive boardroom", hint: "executive boardroom" }
     ];
   
     return (
@@ -259,7 +300,7 @@ const AboutUsPage = () => {
         <Header />
         <main className="flex-grow">
           {/* Hero About Section */}
-          <section className="section-padding pt-32 bg-card/80 backdrop-blur-sm">
+          <section className="section-padding pt-32 bg-transparent">
             <div className="container-max grid lg:grid-cols-2 gap-12 items-center">
                 <AnimateInView>
                 <div>
@@ -290,7 +331,7 @@ const AboutUsPage = () => {
                 </AnimateInView>
                 
                 <AnimateInView delay={200}>
-                <div className="bg-background/80 backdrop-blur-sm p-8 rounded-lg shadow-lg border border-border/50 overflow-hidden">
+                <div className="bg-transparent p-8 rounded-lg">
                     <div className="relative h-48 w-full mb-6 rounded-lg overflow-hidden">
                     <Image
                         src="/assets/aboutus/aboutcompany.jpg"
@@ -303,12 +344,7 @@ const AboutUsPage = () => {
                     </div>
                     <div className="flex justify-between items-center mb-4">
                       <h2 className="heading-3 text-secondary">Our Company</h2>
-                      <Button asChild variant="outline" size="sm">
-                        <a href="/assets/aboutus/INVIOT_COMPANY_PROFILE.pdf" download>
-                          <Download className="mr-2 h-4 w-4" />
-                          Company Profile
-                        </a>
-                      </Button>
+                      <PDFViewer pdfUrl="/assets/aboutus/INVIOT_COMPANY_PROFILE.pdf" />
                     </div>
                     <div className="space-y-4 text-foreground/70 leading-relaxed">
                     <p>
@@ -323,7 +359,7 @@ const AboutUsPage = () => {
           </section>
 
           {/* Image Carousel Section */}
-          <section className="section-padding bg-card/80 backdrop-blur-sm">
+          <section className="section-padding bg-transparent">
             <div className="container-max">
               <AnimateInView>
                 <div className="text-center mb-12">
@@ -341,11 +377,11 @@ const AboutUsPage = () => {
           </section>
   
           {/* Mission + Vision */}
-          <section className="section-padding bg-card/80 backdrop-blur-sm">
+          <section className="section-padding bg-transparent">
             <div className="container-max">
               <div className="grid md:grid-cols-2 gap-8">
                 <AnimateInView>
-                  <Card className="h-full bg-background/80 backdrop-blur-sm border-border/50">
+                  <Card className="h-full bg-transparent border-border/50">
                     <CardContent className="p-6 md:p-8 text-center">
                       <div className="flex justify-center mb-4">
                         <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
@@ -363,7 +399,7 @@ const AboutUsPage = () => {
                   </Card>
                 </AnimateInView>
                 <AnimateInView delay={200}>
-                  <Card className="h-full bg-background/80 backdrop-blur-sm border-border/50">
+                  <Card className="h-full bg-transparent border-border/50">
                     <CardContent className="p-6 md:p-8 text-center">
                       <div className="flex justify-center mb-4">
                         <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
@@ -393,4 +429,9 @@ const AboutUsPage = () => {
   };
   
   export default AboutUsPage;
+    
+    
+
+    
+
     
