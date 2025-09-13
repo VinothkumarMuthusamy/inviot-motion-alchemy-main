@@ -87,7 +87,7 @@ const solutions = [
 const navLinks = [
   { name: "Home", href: "/#hero" },
   { name: "Room configurator", href: "/room-configurator" },
-  { name: "Blogs", href: "/blogs" },
+  
   { name: "About Us", href: "/about-us" }
 ];
 
