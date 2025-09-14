@@ -1,15 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { AnimateInView } from "@/components/ui/animate-in-view";
-import FeatureList from "@/components/ui/feature-list";
-import HotspotCarousel from "@/components/ui/hotspot";
 import type { Solution } from "../solutions-data";
 import Contact from "@/components/landing/contact";
 import { CheckCircle } from "lucide-react";
 import TrustedFeatures from "@/components/landing/trusted-features";
+
 const solution: Solution = {
     slug: "audio-video-collaboration",
     title: "Audio and Video Collaboration",
@@ -31,60 +28,6 @@ const solution: Solution = {
             type: 'centered-text',
             title: "It's here, your opportunity to lead",
             content: `<p>Delight clients with flexible, affordable web conferencing and empower your teams to collaborate seamlessly across distances. Stay connected, stay ahead.</p>`,
-        },
-        {
-            type: 'feature-list',
-            title: "Core Collaboration Features",
-            features: [
-                {
-                    icon: "https://picsum.photos/150/150?random=10",
-                    title: "Crystal-Clear Audio",
-                    description: "Advanced microphones and speakers with noise cancellation for intelligible, distraction-free conversations."
-                },
-                {
-                    icon: "https://picsum.photos/150/150?random=11",
-                    title: "4K Ultra-HD Video",
-                    description: "High-resolution cameras with auto-framing and speaker tracking to capture every detail and expression."
-                },
-                {
-                    icon: "https://picsum.photos/150/150?random=12",
-                    title: "Wireless Sharing",
-                    description: "Effortlessly share content from any device—laptops, tablets, or smartphones—with a single click."
-                }
-            ]
-        },
-        {
-            type: 'hotspot-carousel',
-            title: "Explore a Collaboration Setup",
-            content: "Our integrated meeting rooms feature best-in-class products to create an intuitive and powerful collaboration experience. See how different components come together to form a seamless whole.",
-            hotspots: [
-                {
-                    image: { src: "https://picsum.photos/1280/720?random=13", alt: "A modern meeting room", hint: "modern meeting room" },
-                    hotspots: [
-                        {
-                            position: { top: '30%', left: '50%' },
-                            title: "Smart Camera",
-                            description: "AI-powered 4K PTZ Camera",
-                            details: ["Auto-framing", "Speaker tracking", "12x Optical Zoom"],
-                            link: "#"
-                        },
-                        {
-                            position: { top: '65%', left: '25%' },
-                            title: "Ceiling Mic Array",
-                            description: "360-degree audio capture",
-                            details: ["Beamforming technology", "Acoustic echo cancellation", "Covers 25-foot radius"],
-                            link: "#"
-                        },
-                         {
-                            position: { top: '50%', left: '80%' },
-                            title: "Interactive Display",
-                            description: "86-inch 4K Touchscreen",
-                            details: ["20-point multi-touch", "Wireless content sharing", "Integrated whiteboarding"],
-                            link: "#"
-                        }
-                    ]
-                }
-            ]
         }
     ],
 };
@@ -119,6 +62,57 @@ const DefaultHero = ({ solution }: { solution: Solution }) => {
     );
 };
 
+// Card component for solutions
+const SolutionCard = ({ 
+    title, 
+    description, 
+    benefits, 
+    image,
+    number
+}: { 
+    title: string; 
+    description: string; 
+    benefits: string[]; 
+    image: { src: string; alt: string; hint: string };
+    number: number;
+}) => {
+    return (
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden transition-all duration-700 h-full flex flex-col mx-auto max-w-4xl border border-white/20 relative">
+            <div className="relative h-64 md:h-80 lg:h-96">
+                {/* Numbered circle positioned over the image */}
+                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center z-10 shadow-lg">
+                    <span className="text-white font-bold text-xl">{number}</span>
+                </div>
+                
+                <Image
+                    src={image.src}
+                    alt={image.alt}
+                    data-ai-hint={image.hint}
+                    fill
+                    className="object-cover"
+                    priority
+                />
+            </div>
+            <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col bg-transparent">
+                <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">{title}</h3>
+                <p className="text-foreground/80 mb-4 md:mb-6 text-sm md:text-base">{description}</p>
+                
+                <div className="border-t border-gray-200/50 pt-4 md:pt-6">
+                    <h4 className="text-base md:text-lg font-semibold text-foreground mb-3 md:mb-4">Benefits</h4>
+                    <ul className="space-y-2 md:space-y-3">
+                        {benefits.map((benefit, index) => (
+                            <li key={index} className="flex items-start">
+                                <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-pink-600 flex-shrink-0 mt-0.5 mr-2 md:mr-3" />
+                                <span className="text-foreground/80 text-sm md:text-base">{benefit}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 export default function AudioVideoCollaborationPage() {
   const scrollToContact = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -132,198 +126,94 @@ export default function AudioVideoCollaborationPage() {
 
   // Get all sections by type
   const centeredTextSections = solution.sections?.filter(s => s.type === 'centered-text') || [];
-  const featureListSection = solution.sections?.find(s => s.type === 'feature-list');
-  const hotspotSection = solution.sections?.find(s => s.type === 'hotspot-carousel');
 
-  // Benefits data arrays for each section
-  const benefitsSections = [
+  // Solutions data for cards
+  const solutionsData = [
     {
-      title: "Benefits",
+      title: "Enterprise Solutions",
+      description: "Empower your organization with seamless collaboration across every smart device. Whether it's delivering a presentation straight from your phone in the boardroom or hosting a video meeting with remote team members, our technology ensures secure, reliable, and professional communication at all times.",
       benefits: [
         "Seamless collaboration across any smart device",
         "Save time with quick, organized ad-hoc meetings",
         "Drive faster, more effective decision-making",
         "Strengthen teamwork and improve collaboration"
-      ]
+      ],
+      image: { 
+        src: "/assets/LANDSCAPE/AUDIO VISUAL/1.png", 
+        alt: "Enterprise solutions", 
+        hint: "enterprise solutions" 
+      }
     },
     {
-      title: "Benefits",
+      title: "Retail Solutions",
+      description: "We bring extensive experience in the retail sector, working closely with clients and agency partners to design AV solutions that drive measurable profits. Our approach ensures every solution is cost-effective, tailored to your business goals, and optimized to fit your budget helping you create engaging customer experiences that convert into results.",
       benefits: [
         "Leverage the latest, high-impact digital displays with in-store retail solutions",
         "Drive more business with engaging, cost-effective AV experiences",
         "Boost customer spending through interactive and immersive engagement"
-      ]
+      ],
+      image: { 
+        src: "/assets/solutionimg/flat.jpg", 
+        alt: "Retail solutions", 
+        hint: "retail solutions" 
+      }
     },
     {
-      title: "Benefits",
+      title: "Hospitality & Tourism Solutions",
+      description: "Create memorable guest experiences with AV-guided customer journeys. Deliver real-time interaction, instant support, and seamless brand engagement.",
       benefits: [
         "Easy-to-use, highly functional online screens",
         "Create and share content within minutes with AV collaboration",
         "Deliver unique and personalized customer experiences"
-      ]
-    }
-  ];
-
-  // Hotspot data for three different sections
-  const hotspotSections = [
-    {
-      title: "Enterprise Solutions",
-      content: "Empower your organization with seamless collaboration across every smart device. Whether it's delivering a presentation straight from your phone in the boardroom or hosting a video meeting with remote team members, our technology ensures secure, reliable, and professional communication at all times.",
-      image: { src: "/assets/LANDSCAPE/AUDIO VISUAL/1.png", alt: "Enterprise solutions", hint: "enterprise solutions" },
-      hotspots: [
-        {
-          position: { top: '25%', left: '37%' },
-          title: "Conference Camera",
-          description: "Ultra HD Conference Camera",
-          details: ["120° wide angle", "Auto low-light correction", "5x digital zoom"],
-          link: "#"
-        },
-        {
-          position: { top: '80%', left: '63%' },
-          title: "Speakerphone",
-          description: "360° Full Duplex Speakerphone",
-          details: ["Voice tracking", "Echo cancellation", "10m pickup range"],
-          link: "#"
-        },
-        {
-          position: { top: '50%', left: '50%' },
-          title: "Control Panel",
-          description: "Touch Control Interface",
-          details: ["One-touch meeting start", "Volume controls", "Device status indicators"],
-          link: "#"
-        }
-      ]
-    },
-    {
-      title: "Retail Solutions",
-      content: "We bring extensive experience in the retail sector, working closely with clients and agency partners to design AV solutions that drive measurable profits. Our approach ensures every solution is cost-effective, tailored to your business goals, and optimized to fit your budget helping you create engaging customer experiences that convert into results.",
-      image: { src: "/assets/solutionimg/flat.jpg", alt: "Retail solutions", hint: "retail solutions" },
-      hotspots: [
-        {
-          position: { top: '35%', left: '55%' },
-          title: "All-in-One Bar",
-          description: "Video Sound Bar",
-          details: ["Integrated camera, mics and speakers", "Plug-and-play setup", "USB-C connectivity"],
-          link: "#"
-        },
-        {
-          position: { top: '65%', left: '30%' },
-          title: "Tabletop Hub",
-          description: "Wireless Connectivity Hub",
-          details: ["HDMI and USB connections", "Charging ports", "Cable management system"],
-          link: "#"
-        },
-        {
-          position: { top: '20%', left: '75%' },
-          title: "Display",
-          description: "55-inch 4K Monitor",
-          details: ["Anti-glare coating", "Built-in whiteboard software", "Mobile device compatibility"],
-          link: "#"
-        }
-      ]
-    },
-    {
-      title: "Hospitality & Tourism Solutions",
-      content: "Create memorable guest experiences with AV-guided customer journeys. Deliver real-time interaction, instant support, and seamless brand engagement.",
-      image: { src: "/assets/solutionimg/modern-hospital-entrance-with-interactive-digital-kiosk-bright-spacious-lobby-area.jpg", alt: "Hospitality solutions", hint: "hospitality solutions" },
-      hotspots: [
-        {
-          position: { top: '20%', left: '50%' },
-          title: "PTZ Camera",
-          description: "Professional PTZ Camera",
-          details: ["Remote controlled pan/tilt/zoom", "Preset positions", "Optical zoom"],
-          link: "#"
-        },
-        {
-          position: { top: '70%', left: '25%' },
-          title: "Ceiling Speakers",
-          description: "Distributed Audio System",
-          details: ["Even sound distribution", "Background music capable", "Volume zone controls"],
-          link: "#"
-        },
-        {
-          position: { top: '40%', left: '80%' },
-          title: "Interactive Display",
-          description: "86-inch Interactive Touchscreen",
-          details: ["Multi-touch capability", "Annotation tools", "Screen recording"],
-          link: "#"
-        }
-      ]
+      ],
+      image: { 
+        src: "/assets/solutionimg/modern-hospital-entrance-with-interactive-digital-kiosk-bright-spacious-lobby-area.jpg", 
+        alt: "Hospitality solutions", 
+        hint: "hospitality solutions" 
+      }
     }
   ];
 
   return (
-    <div 
-      className="bg-background"
-      style={{
-        backgroundImage: "url('/assets/team-bg.jpg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      }}
-    >
+    <div className="bg-transparent">
         <DefaultHero solution={solution} />
 
         {/* Render all centered-text sections */}
         {centeredTextSections.map((section, index) => (
-            <section key={index} className="section-padding bg-transparent">
-                <div className="container-max text-center max-w-4xl mx-auto">
+            <section key={index} className="py-12 md:py-16 lg:py-20 bg-transparent">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
                     <AnimateInView>
-                        <h2 className="heading-2">{section.title}</h2>
-                        <div className="mt-6 text-foreground/80 leading-relaxed space-y-4" 
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">{section.title}</h2>
+                        <div className="text-foreground/80 leading-relaxed space-y-4 text-base md:text-lg" 
                              dangerouslySetInnerHTML={{ __html: section.content || '' }} />
                     </AnimateInView>
                 </div>
             </section>
         ))}
         
-        {/* {featureListSection && featureListSection.features && (
-            <section className="section-padding bg-transparent">
-                <div className="container-max">
-                    <FeatureList features={featureListSection.features as any[]} />
+        {/* Solutions Cards Section - Individual cards that appear as you scroll */}
+        <section className="py-12 md:py-16 lg:py-20 bg-transparent">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col gap-12 md:gap-16 lg:gap-20">
+                    {solutionsData.map((solution, index) => (
+                        <div key={index} className="min-h-screen flex items-center justify-center py-8">
+                            <AnimateInView>
+                                <SolutionCard 
+                                    title={solution.title}
+                                    description={solution.description}
+                                    benefits={solution.benefits}
+                                    image={solution.image}
+                                    number={index + 1}
+                                />
+                            </AnimateInView>
+                        </div>
+                    ))}
                 </div>
-            </section>
-        )} */}
+            </div>
+        </section>
 
-        {/* Render three hotspot and benefits sections */}
-        {[0, 1, 2].map((index) => (
-          <div key={index}>
-            {/* Hotspot section */}
-            <section className="section-padding bg-transparent">
-                <div className="container-max">
-                    <HotspotCarousel
-                        title={hotspotSections[index].title}
-                        description={hotspotSections[index].content}
-                        slides={[{
-                          image: hotspotSections[index].image,
-                          hotspots: hotspotSections[index].hotspots
-                        }]}
-                    />
-                </div>
-            </section>
-
-            {/* Benefits section with title and four bullet points */}
-            <section className="section-padding bg-transparent">
-                <div className="container-max">
-                    <div className="max-w-4xl mx-auto">
-                        <AnimateInView>
-                            <h2 className="heading-2 text-center mb-12">{benefitsSections[index].title}</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {benefitsSections[index].benefits.map((benefit, i) => (
-                                    <div key={i} className="flex items-start space-x-3">
-                                        <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                                        <p className="text-foreground/80 text-lg">{benefit}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </AnimateInView>
-                    </div>
-                </div>
-            </section>
-          </div>
-        ))}
         <TrustedFeatures />
         <Contact />
     </div>
   )
-};
+}
