@@ -13,7 +13,6 @@ import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import dynamic from "next/dynamic";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import Header from "@/components/landing/header";
 import Footer from "@/components/landing/footer";
 
@@ -67,6 +66,7 @@ const locations = [
   }
 ];
 
+// Airplane animation component
 const Airplane = ({ animation, delay }: { animation: string; delay: string }) => (
   <div className="airplane-container" style={{ animationName: animation, animationDelay: delay }}>
     <svg className="airplane-svg" width="50" height="50" viewBox="0 0 100 100">
@@ -76,12 +76,56 @@ const Airplane = ({ animation, delay }: { animation: string; delay: string }) =>
   </div>
 );
 
+// CSS for airplane animations (should be added to your global CSS)
+const airplaneStyles = `
+  @keyframes fly-path-1 {
+    0% { transform: translate(-100px, 100px) rotate(10deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.6; }
+    100% { transform: translate(calc(100vw + 100px), -100px) rotate(30deg); opacity: 0; }
+  }
+  
+  @keyframes fly-path-2 {
+    0% { transform: translate(calc(100vw + 100px), 150px) rotate(-10deg); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.5; }
+    100% { transform: translate(-100px, -150px) rotate(-30deg); opacity: 0; }
+  }
+  
+  .airplane-container {
+    position: absolute;
+    animation-duration: 20s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    z-index: 1;
+  }
+  
+  .smoke-trail {
+    position: absolute;
+    width: 20px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    filter: blur(3px);
+    animation: smoke 2s infinite;
+  }
+  
+  @keyframes smoke {
+    0% { transform: translateX(0) scale(1); opacity: 0.7; }
+    100% { transform: translateX(30px) scale(2); opacity: 0; }
+  }
+`;
+
 const ContactPage = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
 
   useEffect(() => {
     setIsMounted(true);
+    // Add airplane styles to document
+    const styleSheet = document.createElement("style")
+    styleSheet.innerText = airplaneStyles
+    document.head.appendChild(styleSheet)
   }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -112,67 +156,53 @@ const ContactPage = () => {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow pt-20">
-        <section 
-          id="contact" 
-          className="section-padding bg-primary relative overflow-hidden"
-        >
+        <section id="contact" className="py-12 bg-primary relative overflow-hidden">
+          {/* Airplane animations in background */}
           <div className="absolute inset-0 z-0 pointer-events-none">
             <Airplane animation="fly-path-1" delay="0s" />
             <Airplane animation="fly-path-2" delay="7.5s" />
           </div>
-          <div className="container-max relative z-10">
+          
+          <div className="container mx-auto px-4 relative z-10">
+            {/* Page Title and Description with animation */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="text-center mb-12"
             >
-              <h2 className="heading-2 text-white">GET IN TOUCH</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-white">GET IN TOUCH</h2>
               <p className="mt-4 max-w-2xl mx-auto text-primary-foreground/80">
                 With our expertise and experience, we can help you create an environment where everyone feels empowered and engaged in their work.
               </p>
             </motion.div>
 
-            {/* Map Section at the Top */}
+            {/* Send Us a Message Form - First Section with animation */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
-              className="mt-12 relative rounded-lg h-[400px] w-full bg-background/90 border border-primary/20 shadow-xl backdrop-blur-sm overflow-hidden"
+              className="mb-16"
             >
-              <MapWithNoSSR 
-                locations={locations} 
-                selectedLocation={selectedLocation}
-                onLocationSelect={setSelectedLocation}
-              />
-            </motion.div>
-
-            <div className="mt-12 grid lg:grid-cols-2 gap-12 items-start">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="w-full"
-              >
-                <Card className="bg-background/95 border-primary/20 p-6 sm:p-8 h-full shadow-xl backdrop-blur-sm w-full">
-                  <CardContent className="p-0 w-full">
-                    <h3 className="heading-3 text-center text-primary mb-6">Send Us a Message</h3>
-                    <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
+              <Card className="bg-background/95 border-primary/20 p-6 md:p-8 shadow-xl backdrop-blur-sm max-w-4xl mx-auto">
+                <CardContent className="p-0">
+                  <h3 className="heading-3 text-center text-primary mb-6">Send Us a Message</h3>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <div className="grid md:grid-cols-2 gap-6">
                         <FormField
                           control={form.control}
                           name="name"
                           render={({ field }) => (
-                            <FormItem className="w-full">
+                            <FormItem>
                               <FormLabel className="text-black font-bold text-base">Name</FormLabel>
                               <FormControl>
                                 <Input 
                                   placeholder="Your Name" 
                                   {...field} 
-                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary w-full" 
+                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary" 
                                 />
                               </FormControl>
                               <FormMessage />
@@ -183,13 +213,13 @@ const ContactPage = () => {
                           control={form.control}
                           name="email"
                           render={({ field }) => (
-                            <FormItem className="w-full">
+                            <FormItem>
                               <FormLabel className="text-black font-bold text-base">Email Address</FormLabel>
                               <FormControl>
                                 <Input 
                                   placeholder="Your Email" 
                                   {...field} 
-                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary w-full" 
+                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary" 
                                 />
                               </FormControl>
                               <FormMessage />
@@ -200,13 +230,13 @@ const ContactPage = () => {
                           control={form.control}
                           name="phone"
                           render={({ field }) => (
-                            <FormItem className="w-full">
+                            <FormItem>
                               <FormLabel className="text-black font-bold text-base">Phone</FormLabel>
                               <FormControl>
                                 <Input 
                                   placeholder="Your Phone" 
                                   {...field} 
-                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary w-full" 
+                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary" 
                                 />
                               </FormControl>
                               <FormMessage />
@@ -217,102 +247,143 @@ const ContactPage = () => {
                           control={form.control}
                           name="company"
                           render={({ field }) => (
-                            <FormItem className="w-full">
+                            <FormItem>
                               <FormLabel className="text-black font-bold text-base">Company (Optional)</FormLabel>
                               <FormControl>
                                 <Input 
                                   placeholder="Your Company" 
                                   {...field} 
-                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary w-full" 
+                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary" 
                                 />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-                        <FormField
-                          control={form.control}
-                          name="message"
-                          render={({ field }) => (
-                            <FormItem className="w-full">
-                              <FormLabel className="text-black font-bold text-base">Message</FormLabel>
-                              <FormControl>
-                                <Textarea 
-                                  placeholder="Your Message" 
-                                  {...field} 
-                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary w-full min-h-[120px]" 
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <Button type="submit" className="font-headline w-full shadow-md btn-glow" size="lg">
-                          Send Message
-                        </Button>
-                      </form>
-                    </Form>
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-black font-bold text-base">Message</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Your Message" 
+                                {...field} 
+                                className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary min-h-[120px]" 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <Button type="submit" className="font-headline w-full shadow-md btn-glow bg-primary hover:bg-primary/90 text-white" size="lg">
+                        Send Message
+                      </Button>
+                    </form>
+                  </Form>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Map and Address Section - Map on Right, Address on Left with animation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+            >
+              {/* Address Card - Left Side (Smaller) */}
+              <motion.div 
+                className="lg:col-span-1"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <Card className="bg-background/95 border-primary/20 shadow-xl backdrop-blur-sm h-full">
+                  <CardContent className="p-5">
+                    <h3 className="heading-3 text-primary mb-5">Our Offices</h3>
+                    
+                    <div className="space-y-4 mb-6">
+                      {locations.map(location => (
+                        <motion.div 
+                          key={location.id}
+                          className={`p-3 rounded-lg cursor-pointer transition-all ${
+                            selectedLocation.id === location.id 
+                              ? "bg-primary/20 border border-primary" 
+                              : "bg-background/50 border border-border hover:bg-primary/10"
+                          }`}
+                          onClick={() => setSelectedLocation(location)}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <div className="flex items-start gap-2">
+                            <MapPin className="w-4 h-4 mt-1 text-primary flex-shrink-0" />
+                            <div>
+                              <h4 className="font-semibold text-gray-900 text-sm">{location.name}</h4>
+                              <p className="text-muted-foreground text-xs mt-1">{location.address}</p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                    
+                    <div className="pt-4 border-t border-border">
+                      <div className="space-y-4">
+                        <motion.a 
+                          href="tel:+919513800036" 
+                          className="flex items-center gap-3 text-foreground hover:text-primary transition-colors"
+                          whileHover={{ x: 5 }}
+                        >
+                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Phone className="w-4 h-4 text-primary" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm">Phone</p>
+                            <p className="text-muted-foreground text-sm">+91 9513 800 036</p>
+                          </div>
+                        </motion.a>
+                        <motion.a 
+                          href="mailto:info@inviotav.com" 
+                          className="flex items-center gap-3 text-foreground hover:text-primary transition-colors"
+                          whileHover={{ x: 5 }}
+                        >
+                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Mail className="w-4 h-4 text-primary" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm">Email</p>
+                            <p className="text-muted-foreground text-sm">info@inviotav.com</p>
+                          </div>
+                        </motion.a>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
 
-              <motion.div
+              {/* Map - Right Side (Larger) */}
+              <motion.div 
+                className="lg:col-span-2"
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
                 viewport={{ once: true }}
-                className="relative rounded-lg p-8 bg-background/90 border border-primary/20 shadow-xl backdrop-blur-sm"
               >
-                <div className="relative z-10">
-                  <h3 className="heading-3 text-primary mb-6">Our Offices</h3>
-                  
-                  <div className="grid grid-cols-1 gap-4">
-                    {locations.map(location => (
-                      <div 
-                        key={location.id}
-                        className={`p-4 rounded-md cursor-pointer transition-all ${
-                          selectedLocation.id === location.id 
-                            ? "bg-primary/20 border border-primary" 
-                            : "bg-background/50 border border-border hover:bg-primary/10"
-                        }`}
-                        onClick={() => setSelectedLocation(location)}
-                      >
-                        <div className="flex items-start gap-3">
-                          <MapPin className="w-5 h-5 mt-1 text-primary flex-shrink-0" />
-                          <div>
-                            <h4 className="font-semibold text-lg">{location.name}</h4>
-                            <p className="text-muted-foreground mt-1">{location.address}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="mt-8 pt-6 border-t border-border">
-                    <div className="flex flex-col space-y-6">
-                      <a href="tel:+919513800036" className="flex items-center gap-4 text-foreground hover:text-primary transition-colors group">
-                        <div className="w-12 h-12 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors flex items-center justify-center">
-                          <Phone className="w-6 h-6 text-primary" />
-                        </div>
-                        <div>
-                          <p className="font-bold text-lg">Phone</p>
-                          <p className="text-foreground/80">+91 9513 800 036</p>
-                        </div>
-                      </a>
-                      <a href="mailto:info@inviotav.com" className="flex items-center gap-4 text-foreground hover:text-primary transition-colors group">
-                        <div className="w-12 h-12 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors flex items-center justify-center">
-                          <Mail className="w-6 h-6 text-primary" />
-                        </div>
-                        <div>
-                          <p className="font-bold text-lg">Email</p>
-                          <p className="text-foreground/80">info@inviotav.com</p>
-                        </div>
-                      </a>
-                    </div>
+                <div className="bg-background/90 border-primary/20 shadow-xl backdrop-blur-sm p-1 h-full rounded-lg">
+                  <div className="h-96 rounded-lg overflow-hidden">
+                    <MapWithNoSSR 
+                      locations={locations} 
+                      selectedLocation={selectedLocation}
+                      onLocationSelect={setSelectedLocation}
+                    />
                   </div>
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
           </div>
         </section>
         <Toaster />
