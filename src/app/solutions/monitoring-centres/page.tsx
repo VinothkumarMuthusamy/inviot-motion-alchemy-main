@@ -286,7 +286,7 @@ export default function MonitoringCentresPage() {
               <AnimateInView>
                 <div className="relative w-full h-64 md:h-80 lg:h-96 mb-8 rounded-xl overflow-hidden">
                   <Image
-                    src="/assets/solutionimg/Monitoring Centers.jpg"
+                    src="/assets/solutionimg/noc.jpg"
                     alt="Customer Experience Center"
                     data-ai-hint="experience center"
                     fill
