@@ -26,20 +26,18 @@ const solution: Solution = {
       type: "centered-text",
       title: "Experience Centres",
       content: `<p>Experience Centres are one of the most powerful PR and corporate communication tools, helping businesses connect with prospects, partners, and end-users in meaningful ways. They create immersive environments that showcase your brand, foster loyalty, and increase sales. For businesses looking to develop their own Customer Experience Centre, the right AV solutions are key to delivering impactful, memorable interactions.</p>`,
-    }
+    },
   ],
 };
 
 // Card component for solutions
-const SolutionCard = ({ 
-  title, 
-  description,  
+const SolutionCard = ({
   image,
-  number
-}: { 
-  title: string; 
-  description: string; 
-  // benefits: string[]; 
+  number,
+}: {
+  // title: string;
+  // description: string;
+  // benefits: string[];
   image: { src: string; alt: string; hint: string };
   number: number;
 }) => {
@@ -50,7 +48,7 @@ const SolutionCard = ({
         <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center z-10 shadow-lg">
           <span className="text-white font-bold text-xl">{number}</span>
         </div>
-        
+
         <Image
           src={image.src}
           alt={image.alt}
@@ -60,10 +58,10 @@ const SolutionCard = ({
           priority
         />
       </div>
-      <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col bg-transparent">
+      {/* <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col bg-transparent">
         <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">{title}</h3>
         <p className="text-foreground/80 mb-4 md:mb-6 text-sm md:text-base">{description}</p>
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -110,25 +108,27 @@ export default function ExperienceCentresPage() {
   };
 
   // Get all sections by type
-  const centeredTextSections = solution.sections?.filter(s => s.type === 'centered-text') || [];
+  const centeredTextSections =
+    solution.sections?.filter((s) => s.type === "centered-text") || [];
 
   // Solutions data for cards
   const solutionsData = [
     {
       title: "Interactive Installations",
-      description: "Engage visitors with multi-touch video walls, projection mapping, and gesture-controlled displays that create memorable, immersive experiences.",
+      description:
+        "Engage visitors with multi-touch video walls, projection mapping, and gesture-controlled displays that create memorable, immersive experiences.",
       benefits: [
         "Multi-touch video walls for collaborative experiences",
         "Projection mapping for immersive environments",
         "Gesture-controlled displays for intuitive interaction",
-        "Interactive product showcases with object recognition"
+        "Interactive product showcases with object recognition",
       ],
-      image: { 
-        src: "/assets/LANDSCAPE/Experience centres/1.png", 
-        alt: "Interactive installations", 
-        hint: "interactive installations" 
-      }
-    }
+      image: {
+        src: "/assets/LANDSCAPE/Experience centres/1.png",
+        alt: "Interactive installations",
+        hint: "interactive installations",
+      },
+    },
   ];
 
   return (
@@ -140,19 +140,50 @@ export default function ExperienceCentresPage() {
         <section key={index} className="py-12 md:py-16 lg:py-20 bg-transparent">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
             <AnimateInView>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">{section.title}</h2>
-              <div className="text-foreground/80 leading-relaxed space-y-4 text-base md:text-lg" 
-                   dangerouslySetInnerHTML={{ __html: section.content || "" }} />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">
+                {section.title}
+              </h2>
+              <div
+                className="text-foreground/80 leading-relaxed space-y-4 text-base md:text-lg"
+                dangerouslySetInnerHTML={{ __html: section.content || "" }}
+              />
             </AnimateInView>
           </div>
         </section>
       ))}
 
+      {/* <section className="py-0 bg-transparent">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-12 md:gap-16 lg:gap-20">
+            {solutionsData.map((solution, index) => (
+              <div key={index} className="min-h-screen flex items-center justify-center py-8">
+                <AnimateInView>
+                  <SolutionCard 
+                    image={solution.image}
+                    number={index + 1}
+                  />
+                </AnimateInView>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section> */}
+
       {/* Connect & Engage Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-transparent">
+      <section className="py-0 bg-transparent">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <AnimateInView>
+              <div className="relative w-full h-64 md:h-80 lg:h-96 mb-8 rounded-xl overflow-hidden">
+                <Image
+                  src="/assets/LANDSCAPE/Experience centres/1.png" // Replace with your actual image path
+                  alt="Customer Experience Center"
+                  data-ai-hint="experience center"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8 text-center">
                 Connect, Engage & Build Loyalty
               </h2>
@@ -179,7 +210,10 @@ export default function ExperienceCentresPage() {
                       "Build deeper customer connections that translate into stronger brand loyalty and long-term growth.",
                   },
                 ].map((item, index) => (
-                  <li key={index} className="flex items-start text-justify bg-transparent">
+                  <li
+                    key={index}
+                    className="flex items-start text-justify bg-transparent"
+                  >
                     <svg
                       className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
                       fill="none"
@@ -194,7 +228,9 @@ export default function ExperienceCentresPage() {
                       />
                     </svg>
                     <span>
-                      <span className="font-bold text-pink-600">{item.title}</span>{" "}
+                      <span className="font-bold text-pink-600">
+                        {item.title}
+                      </span>{" "}
                       – {item.description}
                     </span>
                   </li>
@@ -204,26 +240,8 @@ export default function ExperienceCentresPage() {
           </div>
         </div>
       </section>
-      
+
       {/* Solutions Cards Section - Individual cards that appear as you scroll */}
-      <section className="py-12 md:py-16 lg:py-20 bg-transparent">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-12 md:gap-16 lg:gap-20">
-            {solutionsData.map((solution, index) => (
-              <div key={index} className="min-h-screen flex items-center justify-center py-8">
-                <AnimateInView>
-                  <SolutionCard 
-                    title={solution.title}
-                    description={solution.description}
-                    image={solution.image}
-                    number={index + 1}
-                  />
-                </AnimateInView>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <TrustedFeatures />
       <Contact />

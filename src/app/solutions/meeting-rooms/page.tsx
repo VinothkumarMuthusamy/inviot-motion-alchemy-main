@@ -26,21 +26,21 @@ const solution: Solution = {
       type: "centered-text",
       title: "The Ultimate Collaboration Environment",
       content: `<p>Create meeting spaces that truly connect people—whether on-site or remote. By integrating cutting-edge technology with best-fit audio, video, acoustic, and lighting solutions, we ensure your collaboration environment works seamlessly, delivering a smooth, productive experience every time.</p>`,
-    }
+    },
   ],
 };
 
 // Card component for solutions
-const SolutionCard = ({ 
-  title, 
-  description, 
-  benefits, 
+const SolutionCard = ({
+  title,
+  description,
+  benefits,
   image,
-  number
-}: { 
-  title: string; 
-  description: string; 
-  benefits: string[]; 
+  number,
+}: {
+  title: string;
+  description: string;
+  benefits: string[];
   image: { src: string; alt: string; hint: string };
   number: number;
 }) => {
@@ -51,7 +51,7 @@ const SolutionCard = ({
         <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center z-10 shadow-lg">
           <span className="text-white font-bold text-xl">{number}</span>
         </div>
-        
+
         <Image
           src={image.src}
           alt={image.alt}
@@ -62,16 +62,24 @@ const SolutionCard = ({
         />
       </div>
       <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col bg-transparent">
-        <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">{title}</h3>
-        <p className="text-foreground/80 mb-4 md:mb-6 text-sm md:text-base">{description}</p>
-        
+        <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">
+          {title}
+        </h3>
+        <p className="text-foreground/80 mb-4 md:mb-6 text-sm md:text-base">
+          {description}
+        </p>
+
         <div className="border-t border-gray-200/50 pt-4 md:pt-6">
-          <h4 className="text-base md:text-lg font-semibold text-foreground mb-3 md:mb-4">Benefits</h4>
+          <h4 className="text-base md:text-lg font-semibold text-foreground mb-3 md:mb-4">
+            Benefits
+          </h4>
           <ul className="space-y-2 md:space-y-3">
             {benefits.map((benefit, index) => (
               <li key={index} className="flex items-start">
                 <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-pink-600 flex-shrink-0 mt-0.5 mr-2 md:mr-3" />
-                <span className="text-foreground/80 text-sm md:text-base">{benefit}</span>
+                <span className="text-foreground/80 text-sm md:text-base">
+                  {benefit}
+                </span>
               </li>
             ))}
           </ul>
@@ -123,55 +131,59 @@ export default function MeetingRoomsPage() {
   };
 
   // Get all sections by type
-  const centeredTextSections = solution.sections?.filter(s => s.type === 'centered-text') || [];
+  const centeredTextSections =
+    solution.sections?.filter((s) => s.type === "centered-text") || [];
 
   // Solutions data for cards
   const solutionsData = [
     {
       title: "One-Touch Meeting Start",
-      description: "Integrate with calendaring systems (like Outlook and Google) to start any meeting with a single tap, making meetings effortless and efficient.",
+      description:
+        "Integrate with calendaring systems (like Outlook and Google) to start any meeting with a single tap, making meetings effortless and efficient.",
       benefits: [
         "Seamless integration with Outlook and Google Calendar",
         "Single-tap meeting initiation",
         "Automatic room configuration based on meeting type",
-        "Effortless meeting management for all users"
+        "Effortless meeting management for all users",
       ],
-      image: { 
-        src: "/assets/solutionimg/videocall.jpg", 
-        alt: "One-touch meeting", 
-        hint: "meeting start" 
-      }
+      image: {
+        src: "/assets/solutionimg/videocall.jpg",
+        alt: "One-touch meeting",
+        hint: "meeting start",
+      },
     },
     {
       title: "Intelligent Audio Systems",
-      description: "Deploy advanced DSPs and ceiling microphones that automatically focus on the active speaker, ensuring crystal-clear audio for all participants.",
+      description:
+        "Deploy advanced DSPs and ceiling microphones that automatically focus on the active speaker, ensuring crystal-clear audio for all participants.",
       benefits: [
         "Advanced DSP technology for optimal audio",
         "Ceiling microphones with automatic speaker focus",
         "Crystal-clear audio for all participants",
-        "Noise cancellation and echo reduction"
+        "Noise cancellation and echo reduction",
       ],
-      image: { 
-        src: "/assets/solutionimg/Meeting room.jpg", 
-        alt: "Intelligent audio", 
-        hint: "audio systems" 
-      }
+      image: {
+        src: "/assets/solutionimg/Meeting room.jpg",
+        alt: "Intelligent audio",
+        hint: "audio systems",
+      },
     },
     {
       title: "Room Scheduling & Management",
-      description: "See room availability at a glance and book spaces on the fly with elegant panels outside each room, simplifying workplace management.",
+      description:
+        "See room availability at a glance and book spaces on the fly with elegant panels outside each room, simplifying workplace management.",
       benefits: [
         "Real-time room availability display",
         "On-the-fly booking capabilities",
         "Elegant exterior panels for easy scheduling",
-        "Simplified workplace management system"
+        "Simplified workplace management system",
       ],
-      image: { 
-        src: "/assets/LANDSCAPE/AUDIO VISUAL/1.png", 
-        alt: "Room scheduling", 
-        hint: "scheduling system" 
-      }
-    }
+      image: {
+        src: "/assets/LANDSCAPE/AUDIO VISUAL/1.png",
+        alt: "Room scheduling",
+        hint: "scheduling system",
+      },
+    },
   ];
 
   return (
@@ -183,16 +195,20 @@ export default function MeetingRoomsPage() {
         <section key={index} className="py-12 md:py-16 lg:py-20 bg-transparent">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
             <AnimateInView>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">{section.title}</h2>
-              <div className="text-foreground/80 leading-relaxed space-y-4 text-base md:text-lg" 
-                   dangerouslySetInnerHTML={{ __html: section.content || "" }} />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">
+                {section.title}
+              </h2>
+              <div
+                className="text-foreground/80 leading-relaxed space-y-4 text-base md:text-lg"
+                dangerouslySetInnerHTML={{ __html: section.content || "" }}
+              />
             </AnimateInView>
           </div>
         </section>
       ))}
 
       {/* Seamless User Experience Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-transparent">
+      <section className="py-4 bg-transparent">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <AnimateInView>
@@ -217,7 +233,10 @@ export default function MeetingRoomsPage() {
                       "Simplify workplace management with flexible scheduling. Inviot's solutions allow users to book and manage rooms or desks effortlessly—whether on-premises or through the cloud—offering freedom and efficiency from anywhere.",
                   },
                 ].map((item, index) => (
-                  <li key={index} className="flex items-start text-justify bg-transparent">
+                  <li
+                    key={index}
+                    className="flex items-start text-justify bg-transparent"
+                  >
                     <svg
                       className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
                       fill="none"
@@ -232,7 +251,9 @@ export default function MeetingRoomsPage() {
                       />
                     </svg>
                     <span>
-                      <span className="font-bold text-pink-600">{item.title}</span>{" "}
+                      <span className="font-bold text-pink-600">
+                        {item.title}
+                      </span>{" "}
                       – {item.description}
                     </span>
                   </li>
@@ -242,9 +263,9 @@ export default function MeetingRoomsPage() {
           </div>
         </div>
       </section>
-      
+
       {/* Solutions Cards Section - Individual cards that appear as you scroll */}
-      <section className="py-12 md:py-16 lg:py-20 bg-transparent">
+      {/* <section className="py-12 md:py-16 lg:py-20 bg-transparent">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-12 md:gap-16 lg:gap-20">
             {solutionsData.map((solution, index) => (
@@ -262,17 +283,27 @@ export default function MeetingRoomsPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Team Collaboration Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-transparent">
+      <section className="py-0 bg-transparent">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <AnimateInView>
+              <div className="relative w-full h-64 md:h-80 lg:h-96 mb-8 rounded-xl overflow-hidden">
+                <Image
+                  src="/assets/solutionimg/videocall.jpg" // Replace with your actual image path
+                  alt="Customer Experience Center"
+                  data-ai-hint="experience center"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8 text-center">
                 With Inviot, Discover What Team Collaboration Looks Like
               </h2>
-              <ul className="space-y-6 text-foreground/80">
+              <ul className="space-y-6 ml-20 text-foreground/80">
                 {[
                   {
                     title: "State-of-the-art displays & audio",
@@ -290,7 +321,10 @@ export default function MeetingRoomsPage() {
                       "Share content instantly from any device for seamless collaboration.",
                   },
                 ].map((item, index) => (
-                  <li key={index} className="flex items-start text-justify bg-transparent">
+                  <li
+                    key={index}
+                    className="flex items-start text-justify bg-transparent"
+                  >
                     <svg
                       className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
                       fill="none"
@@ -305,7 +339,9 @@ export default function MeetingRoomsPage() {
                       />
                     </svg>
                     <span>
-                      <span className="font-bold text-pink-600">{item.title}</span>{" "}
+                      <span className="font-bold text-pink-600">
+                        {item.title}
+                      </span>{" "}
                       – {item.description}
                     </span>
                   </li>
