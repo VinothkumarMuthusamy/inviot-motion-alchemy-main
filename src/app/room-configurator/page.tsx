@@ -117,10 +117,10 @@ const microphoneOptions = {
 
 
 const carouselImages = [
-  "https://picsum.photos/seed/room1/1200/800",
-  "https://picsum.photos/seed/room2/1200/800",
-  "https://picsum.photos/seed/room3/1200/800",
-  "https://picsum.photos/seed/room4/1200/800",
+  "/assets/roompage/r5.jpg",
+  "/assets/roompage/r2.jpg",
+  "/assets/roompage/r3.jpg",
+  "/assets/roompage/r4.jpg",
 ];
 
 

@@ -26,21 +26,20 @@ const solution: Solution = {
       type: "centered-text",
       title: "More Interactive Than Ever",
       content: `<p>Digital signage goes beyond just displaying content, it transforms the way people engage with your business. Collect feedback on designs, presentations, and products from anywhere. Give remote workers the same collaboration opportunities as in-office teams. Offer affordable, flexible solutions for small businesses without costly meeting rooms or equipment. Enhance teaching strategies with integrated web conferencing, and support smoother project management by enabling flexible work schedules.</p>`,
-    }
+    },
   ],
 };
 
 // Card component for solutions
-const SolutionCard = ({ 
-  title, 
-  description, 
-  benefits, 
+const SolutionCard = ({
+  title,
+  description,
   image,
-  number
-}: { 
-  title: string; 
-  description: string; 
-  benefits: string[]; 
+  number,
+}: {
+  title: string;
+  description: string;
+  // benefits: string[];
   image: { src: string; alt: string; hint: string };
   number: number;
 }) => {
@@ -51,7 +50,7 @@ const SolutionCard = ({
         <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center z-10 shadow-lg">
           <span className="text-white font-bold text-xl">{number}</span>
         </div>
-        
+
         <Image
           src={image.src}
           alt={image.alt}
@@ -62,10 +61,14 @@ const SolutionCard = ({
         />
       </div>
       <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col bg-transparent">
-        <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">{title}</h3>
-        <p className="text-foreground/80 mb-4 md:mb-6 text-sm md:text-base">{description}</p>
-        
-        <div className="border-t border-gray-200/50 pt-4 md:pt-6">
+        <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">
+          {title}
+        </h3>
+        <p className="text-foreground/80 mb-4 md:mb-6 text-sm md:text-base">
+          {description}
+        </p>
+
+        {/* <div className="border-t border-gray-200/50 pt-4 md:pt-6">
           <h4 className="text-base md:text-lg font-semibold text-foreground mb-3 md:mb-4">Benefits</h4>
           <ul className="space-y-2 md:space-y-3">
             {benefits.map((benefit, index) => (
@@ -75,7 +78,7 @@ const SolutionCard = ({
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -123,55 +126,58 @@ export default function DigitalSignagePage() {
   };
 
   // Get all sections by type
-  const centeredTextSections = solution.sections?.filter(s => s.type === 'centered-text') || [];
+  const centeredTextSections =
+    solution.sections?.filter((s) => s.type === "centered-text") || [];
 
   // Solutions data for cards
   const solutionsData = [
     {
       title: "Video Walls",
-      description: "Video walls transform ordinary spaces into captivating experiences. Whether for events, retail environments, corporate offices, receptions, or restaurants, they deliver high-impact visuals that engage and impress.",
+      description:
+        "Video walls transform ordinary spaces into captivating experiences. Whether for events, retail environments, corporate offices, receptions, or restaurants, they deliver high-impact visuals that engage and impress. Wherever you’d consider a single screen, a multi-screen video wall can elevate the experience, providing a more immersive and dynamic way to showcase your content.",
       benefits: [
         "High-impact visuals for engaging experiences",
         "Seamless multi-screen configurations",
         "Ultra-narrow bezel displays",
-        "Suitable for various environments and applications"
+        "Suitable for various environments and applications",
       ],
-      image: { 
-        src: "/assets/LANDSCAPE/DIGITAL SIGNAGE/1.png", 
-        alt: "Video walls", 
-        hint: "video walls" 
-      }
+      image: {
+        src: "/assets/LANDSCAPE/DIGITAL SIGNAGE/1.png",
+        alt: "Video walls",
+        hint: "video walls",
+      },
     },
     {
       title: "Room Booking Management",
-      description: "Managing your spaces has never been easier. Real-time digital room booking streamlines the entire process, removing the need for paper-based reservations or multiple platforms.",
+      description:
+        "Managing your spaces has never been easier. Real-time digital room booking streamlines the entire process, removing the need for paper-based reservations or multiple platforms. By simplifying scheduling, you reduce administrative overhead, save resources, and free up time—allowing your team to focus on what matters most.",
       benefits: [
         "Real-time digital room booking",
         "Reduces administrative overhead",
         "Eliminates paper-based reservations",
-        "Simplifies scheduling processes"
+        "Simplifies scheduling processes",
       ],
-      image: { 
-        src: "/assets/LANDSCAPE/DIGITAL SIGNAGE/2.png", 
-        alt: "Room booking management", 
-        hint: "room booking" 
-      }
+      image: {
+        src: "/assets/LANDSCAPE/DIGITAL SIGNAGE/2.png",
+        alt: "Room booking management",
+        hint: "room booking",
+      },
     },
-    {
-      title: "Interactive Displays",
-      description: "Engage users with touchscreens, wayfinding, directories, and data-driven content triggered by sensors for immersive interactive experiences.",
-      benefits: [
-        "Touch-interactive kiosks and monitors",
-        "Wayfinding and directory solutions",
-        "Data-driven content triggered by sensors",
-        "Large-format interactive displays"
-      ],
-      image: { 
-        src: "/assets/solutionimg/shopping-girl-looking-store-window.jpg", 
-        alt: "Interactive displays", 
-        hint: "interactive displays" 
-      }
-    }
+    // {
+    //   title: "Interactive Displays",
+    //   description: "Engage users with touchscreens, wayfinding, directories, and data-driven content triggered by sensors for immersive interactive experiences.",
+    //   benefits: [
+    //     "Touch-interactive kiosks and monitors",
+    //     "Wayfinding and directory solutions",
+    //     "Data-driven content triggered by sensors",
+    //     "Large-format interactive displays"
+    //   ],
+    //   image: {
+    //     src: "/assets/solutionimg/shopping-girl-looking-store-window.jpg",
+    //     alt: "Interactive displays",
+    //     hint: "interactive displays"
+    //   }
+    // }
   ];
 
   return (
@@ -183,46 +189,58 @@ export default function DigitalSignagePage() {
         <section key={index} className="py-12 md:py-16 lg:py-20 bg-transparent">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
             <AnimateInView>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">{section.title}</h2>
-              <div className="text-foreground/80 leading-relaxed space-y-4 text-base md:text-lg" 
-                   dangerouslySetInnerHTML={{ __html: section.content || "" }} />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">
+                {section.title}
+              </h2>
+              <div
+                className="text-foreground/80 leading-relaxed space-y-4 text-base md:text-lg"
+                dangerouslySetInnerHTML={{ __html: section.content || "" }}
+              />
             </AnimateInView>
           </div>
         </section>
       ))}
 
       {/* Display Solutions Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-transparent">
+      <section className="bg-transparent">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto text-center">
             <AnimateInView>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8 text-center">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">
                 Our Display Solutions
               </h2>
-              <ul className="space-y-6 text-foreground/80">
+              <ul className="space-y-6 text-foreground/80 text-justify mx-auto max-w-3xl">
                 {[
                   {
-                    title: "Touch-interactive kiosks",
-                    description: "Dynamic engagement through interactive touchscreens and monitors.",
+                    title: "",
+                    description:
+                      "Touch-interactive kiosks and monitors for dynamic engagement",
                   },
                   {
-                    title: "Large-format displays",
-                    description: "Captivate audiences with stunning large-format interactive displays.",
+                    title: "",
+                    description:
+                      "Large-format interactive displays that captivate audiences",
                   },
                   {
-                    title: "Indoor and outdoor solutions",
-                    description: "Versatile display solutions for any environment and condition.",
+                    title: "",
+                    description:
+                      "Indoor and outdoor display solutions for any environment",
                   },
                   {
-                    title: "Video walls and LED systems",
-                    description: "Create immersive experiences with stunning video walls and direct-view LED systems.",
+                    title: "",
+                    description:
+                      "Video walls and direct-view LED systems for stunning visuals",
                   },
                   {
-                    title: "Centralized content management",
-                    description: "Create layouts, push updates, and manage content across networks with ease.",
+                    title: "",
+                    description:
+                      "Create layouts, push updates, and manage content across networks with ease",
                   },
                 ].map((item, index) => (
-                  <li key={index} className="flex items-start text-justify bg-transparent">
+                  <li
+                    key={index}
+                    className="flex items-start justify-center bg-transparent"
+                  >
                     <svg
                       className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
                       fill="none"
@@ -236,29 +254,43 @@ export default function DigitalSignagePage() {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
-                    <span>
-                      <span className="font-bold text-pink-600">{item.title}</span>{" "}
-                      – {item.description}
+                    <span className="text-left">
+                      <span className="font-bold text-pink-600">
+                        {item.title}
+                      </span>{" "}
+                     {item.description}
                     </span>
                   </li>
                 ))}
               </ul>
+
+              {/* ✅ Image Below the List */}
+              <div className="mt-10 flex justify-center">
+                <img
+                  src="/assets/solutionimg/shopping-girl-looking-store-window.jpg"
+                  alt="Display Solutions"
+                  className="max-w-full h-auto rounded-lg shadow-md"
+                />
+              </div>
             </AnimateInView>
           </div>
         </div>
       </section>
-      
+
       {/* Solutions Cards Section - Individual cards that appear as you scroll */}
       <section className="py-12 md:py-16 lg:py-20 bg-transparent">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-12 md:gap-16 lg:gap-20">
             {solutionsData.map((solution, index) => (
-              <div key={index} className="min-h-screen flex items-center justify-center py-8">
+              <div
+                key={index}
+                className="min-h-screen flex items-center justify-center py-8"
+              >
                 <AnimateInView>
-                  <SolutionCard 
+                  <SolutionCard
                     title={solution.title}
                     description={solution.description}
-                    benefits={solution.benefits}
+                    // benefits={solution.benefits}
                     image={solution.image}
                     number={index + 1}
                   />

@@ -108,28 +108,8 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Memoize navigation items to prevent unnecessary re-renders
-  const desktopNavItems = useMemo(
-    () =>
-      navLinks.map((link) => (
-        <NavigationMenuItem key={link.name}>
-          <NavigationMenuLink
-            href={link.href}
-            onMouseEnter={() => setIsHoveringNav(true)}
-            onMouseLeave={() => setIsHoveringNav(false)}
-            onClick={(e) => handleLinkClick(e as any, link.href)}
-            className={cn(
-              "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline p-2 text-base",
-              // Remove all background styles
-              "bg-transparent hover:bg-transparent focus:bg-transparent"
-            )}
-          >
-            {link.name}
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-      )),
-    []
-  );
+  // Determine if header has white background
+  const hasWhiteBg = scrolled || mobileMenuOpen || isHoveringNav;
 
   const handleLinkClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -158,8 +138,32 @@ const Header = () => {
     [handleLinkClick]
   );
 
-  // Determine if header has white background
-  const hasWhiteBg = scrolled || mobileMenuOpen || isHoveringNav;
+  // Memoize navigation items to prevent unnecessary re-renders
+  const desktopNavItems = useMemo(
+    () =>
+      navLinks.map((link) => (
+        <NavigationMenuItem key={link.name}>
+          <NavigationMenuLink
+            href={link.href}
+            onMouseEnter={() => setIsHoveringNav(true)}
+            onMouseLeave={() => setIsHoveringNav(false)}
+            onClick={(e) => handleLinkClick(e as any, link.href)}
+            className={cn(
+              // Conditional text color based on background
+              hasWhiteBg 
+                ? "text-foreground hover:text-[#9B1B5C]" 
+                : "text-white hover:text-gray-200",
+              "font-bold transition-colors hover:underline p-2 text-base",
+              // Remove all background styles
+              "bg-transparent hover:bg-transparent focus:bg-transparent"
+            )}
+          >
+            {link.name}
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      )),
+    [hasWhiteBg, handleLinkClick]
+  );
 
   return (
     <>
@@ -217,7 +221,11 @@ const Header = () => {
                     onMouseLeave={() => setIsHoveringNav(false)}
                     onClick={(e) => handleLinkClick(e as any, "/#hero")}
                     className={cn(
-                      "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline p-2 text-base",
+                      // Conditional text color based on background
+                      hasWhiteBg 
+                        ? "text-foreground hover:text-[#9B1B5C]" 
+                        : "text-white hover:text-gray-200",
+                      "font-bold transition-colors hover:underline p-2 text-base",
                       // Remove all background styles
                       "bg-transparent hover:bg-transparent focus:bg-transparent"
                     )}
@@ -230,7 +238,11 @@ const Header = () => {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
                     className={cn(
-                      "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline data-[state=open]:text-[#9B1B5C] p-2 text-base",
+                      // Conditional text color based on background
+                      hasWhiteBg 
+                        ? "text-foreground hover:text-[#9B1B5C] data-[state=open]:text-[#9B1B5C]" 
+                        : "text-white hover:text-gray-200 data-[state=open]:text-gray-200",
+                      "font-bold transition-colors hover:underline p-2 text-base",
                       // Remove all background styles
                       "bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent"
                     )}
@@ -265,7 +277,11 @@ const Header = () => {
                       onMouseLeave={() => setIsHoveringNav(false)}
                       onClick={(e) => handleLinkClick(e as any, link.href)}
                       className={cn(
-                        "text-foreground hover:text-[#9B1B5C] font-bold transition-colors hover:underline p-2 text-base",
+                        // Conditional text color based on background
+                        hasWhiteBg 
+                          ? "text-foreground hover:text-[#9B1B5C]" 
+                          : "text-white hover:text-gray-200",
+                        "font-bold transition-colors hover:underline p-2 text-base",
                         // Remove all background styles
                         "bg-transparent hover:bg-transparent focus:bg-transparent"
                       )}
@@ -279,7 +295,10 @@ const Header = () => {
                 <Link href="/contact-us" passHref>
                   <Button
                     size="sm"
-                    className="font-headline btn-glow text-base"
+                    className={cn(
+                      "font-headline btn-glow text-base",
+                      // Keep button colors consistent regardless of header background
+                    )}
                     onMouseEnter={() => setIsHoveringNav(true)}
                     onMouseLeave={() => setIsHoveringNav(false)}
                   >
@@ -299,6 +318,12 @@ const Header = () => {
                   variant="ghost"
                   onMouseEnter={() => setIsHoveringNav(true)}
                   onMouseLeave={() => setIsHoveringNav(false)}
+                  className={cn(
+                    // Conditional text color based on background
+                    hasWhiteBg 
+                      ? "text-foreground" 
+                      : "text-white"
+                  )}
                 >
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Toggle menu</span>

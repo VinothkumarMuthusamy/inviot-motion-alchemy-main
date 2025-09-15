@@ -248,7 +248,7 @@ const Affiliations = () => {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-500%);
+            transform: translateX(-400%);
           }
         }
       `}</style>

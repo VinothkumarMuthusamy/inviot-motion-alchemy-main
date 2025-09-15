@@ -33,14 +33,13 @@ const solution: Solution = {
 // Card component for solutions
 const SolutionCard = ({ 
   title, 
-  description, 
-  benefits, 
+  description,  
   image,
   number
 }: { 
   title: string; 
   description: string; 
-  benefits: string[]; 
+  // benefits: string[]; 
   image: { src: string; alt: string; hint: string };
   number: number;
 }) => {
@@ -64,18 +63,6 @@ const SolutionCard = ({
       <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col bg-transparent">
         <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">{title}</h3>
         <p className="text-foreground/80 mb-4 md:mb-6 text-sm md:text-base">{description}</p>
-        
-        <div className="border-t border-gray-200/50 pt-4 md:pt-6">
-          <h4 className="text-base md:text-lg font-semibold text-foreground mb-3 md:mb-4">Benefits</h4>
-          <ul className="space-y-2 md:space-y-3">
-            {benefits.map((benefit, index) => (
-              <li key={index} className="flex items-start">
-                <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-pink-600 flex-shrink-0 mt-0.5 mr-2 md:mr-3" />
-                <span className="text-foreground/80 text-sm md:text-base">{benefit}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
     </div>
   );
@@ -140,36 +127,6 @@ export default function ExperienceCentresPage() {
         src: "/assets/LANDSCAPE/Experience centres/1.png", 
         alt: "Interactive installations", 
         hint: "interactive installations" 
-      }
-    },
-    {
-      title: "Personalized Journeys",
-      description: "Use RFID or mobile apps to tailor content and experiences to individual visitors based on their interests, creating unique and memorable brand interactions.",
-      benefits: [
-        "RFID technology for personalized experiences",
-        "Mobile app integration for customized content",
-        "Tailored experiences based on visitor interests",
-        "Unique brand interactions for each visitor"
-      ],
-      image: { 
-        src: "/assets/solutionimg/Experience Centers.jpg", 
-        alt: "Personalized journeys", 
-        hint: "personalized experiences" 
-      }
-    },
-    {
-      title: "Centralized Show Control",
-      description: "Orchestrate all lighting, audio, and video elements from a single, intuitive control system for flawless presentations and seamless experiences.",
-      benefits: [
-        "Single control system for all AV elements",
-        "Intuitive interface for easy operation",
-        "Flawless presentation orchestration",
-        "Seamless integration of lighting, audio, and video"
-      ],
-      image: { 
-        src: "/assets/solutionimg/modern-hospital-entrance-with-interactive-digital-kiosk-bright-spacious-lobby-area.jpg", 
-        alt: "Centralized control", 
-        hint: "control system" 
       }
     }
   ];
@@ -258,7 +215,6 @@ export default function ExperienceCentresPage() {
                   <SolutionCard 
                     title={solution.title}
                     description={solution.description}
-                    benefits={solution.benefits}
                     image={solution.image}
                     number={index + 1}
                   />
