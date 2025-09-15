@@ -33,22 +33,12 @@ const solution: Solution = {
 // Card component for solutions
 const SolutionCard = ({
   image,
-  number,
 }: {
-  // title: string;
-  // description: string;
-  // benefits: string[];
   image: { src: string; alt: string; hint: string };
-  number: number;
 }) => {
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden transition-all duration-700 h-full flex flex-col mx-auto max-w-4xl border border-white/20 relative">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-700 h-full flex flex-col mx-auto max-w-4xl border border-gray-200 relative">
       <div className="relative h-64 md:h-80 lg:h-96">
-        {/* Numbered circle positioned over the image */}
-        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center z-10 shadow-lg">
-          <span className="text-white font-bold text-xl">{number}</span>
-        </div>
-
         <Image
           src={image.src}
           alt={image.alt}
@@ -58,10 +48,6 @@ const SolutionCard = ({
           priority
         />
       </div>
-      {/* <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col bg-transparent">
-        <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">{title}</h3>
-        <p className="text-foreground/80 mb-4 md:mb-6 text-sm md:text-base">{description}</p>
-      </div> */}
     </div>
   );
 };
@@ -132,119 +118,113 @@ export default function ExperienceCentresPage() {
   ];
 
   return (
-    <div className="bg-transparent">
-      <DefaultHero solution={solution} />
+    <div className="relative">
+      {/* Full background image without any blur effects */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/assets/team-bg.jpg"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+      
+      <div className="relative z-10">
+        <DefaultHero solution={solution} />
 
-      {/* Render all centered-text sections */}
-      {centeredTextSections.map((section, index) => (
-        <section key={index} className="py-12 md:py-16 lg:py-20 bg-transparent">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
-            <AnimateInView>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">
-                {section.title}
-              </h2>
-              <div
-                className="text-foreground/80 leading-relaxed space-y-4 text-base md:text-lg"
-                dangerouslySetInnerHTML={{ __html: section.content || "" }}
-              />
-            </AnimateInView>
+        {/* Render all centered-text sections without card styling */}
+        {centeredTextSections.map((section, index) => (
+          <section key={index} className="py-16 md:py-20 lg:py-24">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
+              <AnimateInView>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-pink-600 mb-6">
+                  {section.title}
+                </h2>
+                <div
+                  className="text-xl md:text-2xl text-black leading-relaxed space-y-6 mt-8"
+                  dangerouslySetInnerHTML={{ __html: section.content || "" }}
+                />
+              </AnimateInView>
+            </div>
+          </section>
+        ))}
+
+        {/* Connect & Engage Section */}
+        <section className="py-16 md:py-20 lg:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <AnimateInView>
+                <div className="relative w-full h-64 md:h-80 lg:h-96 mb-8 rounded-xl overflow-hidden">
+                  <Image
+                    src="/assets/LANDSCAPE/Experience centres/1.png"
+                    alt="Customer Experience Center"
+                    data-ai-hint="experience center"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8 text-center">
+                  Connect, Engage & Build Loyalty
+                </h2>
+                <ul className="space-y-6 text-black">
+                  {[
+                    {
+                      title: "Tailored customer experiences",
+                      description:
+                        "Create environments designed around personalized interactions that make prospects feel valued from the very start.",
+                    },
+                    {
+                      title: "Stronger brand reputation",
+                      description:
+                        "A well-executed Customer Experience Centre (CEC) offers a polished, engaging introduction to your brand, reinforcing trust and credibility.",
+                    },
+                    {
+                      title: "Interactive product demonstrations",
+                      description:
+                        "Enable your sales team to deliver hands-on demos, showcase product details, and support customers in making informed decisions.",
+                    },
+                    {
+                      title: "Drive loyalty & sales",
+                      description:
+                        "Build deeper customer connections that translate into stronger brand loyalty and long-term growth.",
+                    },
+                  ].map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-start text-justify"
+                    >
+                      <svg
+                        className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span>
+                        <span className="font-bold text-pink-600">
+                          {item.title}
+                        </span>{" "}
+                        – {item.description}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </AnimateInView>
+            </div>
           </div>
         </section>
-      ))}
 
-      {/* <section className="py-0 bg-transparent">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-12 md:gap-16 lg:gap-20">
-            {solutionsData.map((solution, index) => (
-              <div key={index} className="min-h-screen flex items-center justify-center py-8">
-                <AnimateInView>
-                  <SolutionCard 
-                    image={solution.image}
-                    number={index + 1}
-                  />
-                </AnimateInView>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
-      {/* Connect & Engage Section */}
-      <section className="py-0 bg-transparent">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <AnimateInView>
-              <div className="relative w-full h-64 md:h-80 lg:h-96 mb-8 rounded-xl overflow-hidden">
-                <Image
-                  src="/assets/LANDSCAPE/Experience centres/1.png" // Replace with your actual image path
-                  alt="Customer Experience Center"
-                  data-ai-hint="experience center"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8 text-center">
-                Connect, Engage & Build Loyalty
-              </h2>
-              <ul className="space-y-6 text-foreground/80">
-                {[
-                  {
-                    title: "Tailored customer experiences",
-                    description:
-                      "Create environments designed around personalized interactions that make prospects feel valued from the very start.",
-                  },
-                  {
-                    title: "Stronger brand reputation",
-                    description:
-                      "A well-executed Customer Experience Centre (CEC) offers a polished, engaging introduction to your brand, reinforcing trust and credibility.",
-                  },
-                  {
-                    title: "Interactive product demonstrations",
-                    description:
-                      "Enable your sales team to deliver hands-on demos, showcase product details, and support customers in making informed decisions.",
-                  },
-                  {
-                    title: "Drive loyalty & sales",
-                    description:
-                      "Build deeper customer connections that translate into stronger brand loyalty and long-term growth.",
-                  },
-                ].map((item, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start text-justify bg-transparent"
-                  >
-                    <svg
-                      className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span>
-                      <span className="font-bold text-pink-600">
-                        {item.title}
-                      </span>{" "}
-                      – {item.description}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </AnimateInView>
-          </div>
-        </div>
-      </section>
-
-      {/* Solutions Cards Section - Individual cards that appear as you scroll */}
-
-      <TrustedFeatures />
-      <Contact />
+        <TrustedFeatures />
+        <Contact />
+      </div>
     </div>
   );
 }

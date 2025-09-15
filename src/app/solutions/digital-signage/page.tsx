@@ -35,22 +35,14 @@ const SolutionCard = ({
   title,
   description,
   image,
-  number,
 }: {
   title: string;
   description: string;
-  // benefits: string[];
   image: { src: string; alt: string; hint: string };
-  number: number;
 }) => {
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden transition-all duration-700 h-full flex flex-col mx-auto max-w-4xl border border-white/20 relative">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-700 h-full flex flex-col mx-auto max-w-4xl border border-gray-200 relative">
       <div className="relative h-64 md:h-80 lg:h-96">
-        {/* Numbered circle positioned over the image */}
-        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center z-10 shadow-lg">
-          <span className="text-white font-bold text-xl">{number}</span>
-        </div>
-
         <Image
           src={image.src}
           alt={image.alt}
@@ -60,25 +52,13 @@ const SolutionCard = ({
           priority
         />
       </div>
-      <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col bg-transparent">
+      <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col">
         <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">
           {title}
         </h3>
-        <p className="text-foreground/80 mb-4 md:mb-6 text-sm md:text-base">
+        <p className="text-black mb-4 md:mb-6 text-sm md:text-base">
           {description}
         </p>
-
-        {/* <div className="border-t border-gray-200/50 pt-4 md:pt-6">
-          <h4 className="text-base md:text-lg font-semibold text-foreground mb-3 md:mb-4">Benefits</h4>
-          <ul className="space-y-2 md:space-y-3">
-            {benefits.map((benefit, index) => (
-              <li key={index} className="flex items-start">
-                <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-pink-600 flex-shrink-0 mt-0.5 mr-2 md:mr-3" />
-                <span className="text-foreground/80 text-sm md:text-base">{benefit}</span>
-              </li>
-            ))}
-          </ul>
-        </div> */}
       </div>
     </div>
   );
@@ -134,7 +114,7 @@ export default function DigitalSignagePage() {
     {
       title: "Video Walls",
       description:
-        "Video walls transform ordinary spaces into captivating experiences. Whether for events, retail environments, corporate offices, receptions, or restaurants, they deliver high-impact visuals that engage and impress. Wherever you’d consider a single screen, a multi-screen video wall can elevate the experience, providing a more immersive and dynamic way to showcase your content.",
+        "Video walls transform ordinary spaces into captivating experiences. Whether for events, retail environments, corporate offices, receptions, or restaurants, they deliver high-impact visuals that engage and impress. Wherever you'd consider a single screen, a multi-screen video wall can elevate the experience, providing a more immersive and dynamic way to showcase your content.",
       benefits: [
         "High-impact visuals for engaging experiences",
         "Seamless multi-screen configurations",
@@ -163,146 +143,149 @@ export default function DigitalSignagePage() {
         hint: "room booking",
       },
     },
-    // {
-    //   title: "Interactive Displays",
-    //   description: "Engage users with touchscreens, wayfinding, directories, and data-driven content triggered by sensors for immersive interactive experiences.",
-    //   benefits: [
-    //     "Touch-interactive kiosks and monitors",
-    //     "Wayfinding and directory solutions",
-    //     "Data-driven content triggered by sensors",
-    //     "Large-format interactive displays"
-    //   ],
-    //   image: {
-    //     src: "/assets/solutionimg/shopping-girl-looking-store-window.jpg",
-    //     alt: "Interactive displays",
-    //     hint: "interactive displays"
-    //   }
-    // }
   ];
 
   return (
-    <div className="bg-transparent">
-      <DefaultHero solution={solution} />
+    <div className="relative">
+      {/* Full background image without any blur effects */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/assets/team-bg.jpg"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+      
+      <div className="relative z-10">
+        <DefaultHero solution={solution} />
 
-      {/* Render all centered-text sections */}
-      {centeredTextSections.map((section, index) => (
-        <section key={index} className="py-12 md:py-16 lg:py-20 bg-transparent">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
-            <AnimateInView>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">
-                {section.title}
-              </h2>
-              <div
-                className="text-foreground/80 leading-relaxed space-y-4 text-base md:text-lg"
-                dangerouslySetInnerHTML={{ __html: section.content || "" }}
-              />
-            </AnimateInView>
-          </div>
-        </section>
-      ))}
-
-      {/* Display Solutions Section */}
-      <section className="bg-transparent">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <AnimateInView>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">
-                Our Display Solutions
-              </h2>
-              <ul className="space-y-6 text-foreground/80 text-justify mx-auto max-w-3xl">
-                {[
-                  {
-                    title: "",
-                    description:
-                      "Touch-interactive kiosks and monitors for dynamic engagement",
-                  },
-                  {
-                    title: "",
-                    description:
-                      "Large-format interactive displays that captivate audiences",
-                  },
-                  {
-                    title: "",
-                    description:
-                      "Indoor and outdoor display solutions for any environment",
-                  },
-                  {
-                    title: "",
-                    description:
-                      "Video walls and direct-view LED systems for stunning visuals",
-                  },
-                  {
-                    title: "",
-                    description:
-                      "Create layouts, push updates, and manage content across networks with ease",
-                  },
-                ].map((item, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start justify-center bg-transparent"
-                  >
-                    <svg
-                      className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-left">
-                      <span className="font-bold text-pink-600">
-                        {item.title}
-                      </span>{" "}
-                     {item.description}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* ✅ Image Below the List */}
-              <div className="mt-10 flex justify-center">
-                <img
-                  src="/assets/solutionimg/shopping-girl-looking-store-window.jpg"
-                  alt="Display Solutions"
-                  className="max-w-full h-auto rounded-lg shadow-md"
+        {/* Render all centered-text sections without card styling */}
+        {centeredTextSections.map((section, index) => (
+          <section key={index} className="py-16 md:py-20 lg:py-24">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl">
+              <AnimateInView>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-pink-600 mb-6">
+                  {section.title}
+                </h2>
+                <div
+                  className="text-xl md:text-2xl text-black leading-relaxed space-y-6 mt-8"
+                  dangerouslySetInnerHTML={{ __html: section.content || "" }}
                 />
-              </div>
-            </AnimateInView>
-          </div>
-        </div>
-      </section>
+              </AnimateInView>
+            </div>
+          </section>
+        ))}
 
-      {/* Solutions Cards Section - Individual cards that appear as you scroll */}
-      <section className="py-12 md:py-16 lg:py-20 bg-transparent">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-12 md:gap-16 lg:gap-20">
-            {solutionsData.map((solution, index) => (
-              <div
-                key={index}
-                className="min-h-screen flex items-center justify-center py-8"
-              >
+        {/* Display Solutions Section - Side by side layout */}
+        <section className="py-16 md:py-20 lg:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 max-w-6xl mx-auto">
+              {/* Text Content - Left Side */}
+              <div className="lg:w-1/2">
                 <AnimateInView>
-                  <SolutionCard
-                    title={solution.title}
-                    description={solution.description}
-                    // benefits={solution.benefits}
-                    image={solution.image}
-                    number={index + 1}
-                  />
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">
+                    Our Display Solutions
+                  </h2>
+                  <ul className="space-y-6 text-black">
+                    {[
+                      {
+                        title: "",
+                        description:
+                          "Touch-interactive kiosks and monitors for dynamic engagement",
+                      },
+                      {
+                        title: "",
+                        description:
+                          "Large-format interactive displays that captivate audiences",
+                      },
+                      {
+                        title: "",
+                        description:
+                          "Indoor and outdoor display solutions for any environment",
+                      },
+                      {
+                        title: "",
+                        description:
+                          "Video walls and direct-view LED systems for stunning visuals",
+                      },
+                      {
+                        title: "",
+                        description:
+                          "Create layouts, push updates, and manage content across networks with ease",
+                      },
+                    ].map((item, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start"
+                      >
+                        <svg
+                          className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <span className="text-left">
+                          <span className="font-bold text-pink-600">
+                            {item.title}
+                          </span>{" "}
+                         {item.description}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </AnimateInView>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      <TrustedFeatures />
-      <Contact />
+              {/* Image - Right Side */}
+              <div className="lg:w-1/2">
+                <AnimateInView>
+                  <div className="flex justify-center lg:justify-end">
+                    <img
+                      src="/assets/solutionimg/shopping-girl-looking-store-window.jpg"
+                      alt="Display Solutions"
+                      className="max-w-full h-auto rounded-lg shadow-md"
+                    />
+                  </div>
+                </AnimateInView>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Solutions Cards Section - Individual cards that appear as you scroll */}
+        <section className="py-12 md:py-16 lg:py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col gap-12 md:gap-16 lg:gap-20">
+              {solutionsData.map((solution, index) => (
+                <div
+                  key={index}
+                  className="min-h-screen flex items-center justify-center py-8"
+                >
+                  <AnimateInView>
+                    <SolutionCard
+                      title={solution.title}
+                      description={solution.description}
+                      image={solution.image}
+                    />
+                  </AnimateInView>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <TrustedFeatures />
+        <Contact />
+      </div>
     </div>
   );
 }
