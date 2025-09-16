@@ -153,10 +153,10 @@ const ContactPage = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-primary">
       <Header />
-      <main className="flex-grow pt-20">
-        <section id="contact" className="py-12 bg-primary relative overflow-hidden">
+      <main className="flex-grow pt-20 bg-primary">
+        <section id="contact" className="py-12 relative overflow-hidden">
           {/* Airplane animations in background */}
           <div className="absolute inset-0 z-0 pointer-events-none">
             <Airplane animation="fly-path-1" delay="0s" />
@@ -186,7 +186,7 @@ const ContactPage = () => {
               viewport={{ once: true }}
               className="mb-16"
             >
-              <Card className="bg-background/95 border-primary/20 p-6 md:p-8 shadow-xl backdrop-blur-sm max-w-4xl mx-auto">
+              <Card className="bg-white border-primary/20 p-6 md:p-8 shadow-xl max-w-4xl mx-auto">
                 <CardContent className="p-0">
                   <h3 className="heading-3 text-center text-primary mb-6">Send Us a Message</h3>
                   <Form {...form}>
@@ -303,7 +303,7 @@ const ContactPage = () => {
                 transition={{ duration: 0.5, delay: 0.6 }}
                 viewport={{ once: true }}
               >
-                <Card className="bg-background/95 border-primary/20 shadow-xl backdrop-blur-sm h-full">
+                <Card className="bg-white border-primary/20 shadow-xl h-full">
                   <CardContent className="p-5">
                     <h3 className="heading-3 text-primary mb-5">Our Offices</h3>
                     
@@ -373,7 +373,7 @@ const ContactPage = () => {
                 transition={{ duration: 0.5, delay: 0.8 }}
                 viewport={{ once: true }}
               >
-                <div className="bg-background/90 border-primary/20 shadow-xl backdrop-blur-sm p-1 h-full rounded-lg">
+                <div className="bg-white border-primary/20 shadow-xl p-1 h-full rounded-lg">
                   <div className="h-96 rounded-lg overflow-hidden">
                     <MapWithNoSSR 
                       locations={locations} 

@@ -4,7 +4,6 @@ import Image from "next/image";
 import { AnimateInView } from "@/components/ui/animate-in-view";
 import type { Solution } from "../solutions-data";
 import Contact from "@/components/landing/contact";
-import { CheckCircle } from "lucide-react";
 import TrustedFeatures from "@/components/landing/trusted-features";
 
 const solution: Solution = {
@@ -28,58 +27,6 @@ const solution: Solution = {
       content: `<p>Create meeting spaces that truly connect people—whether on-site or remote. By integrating cutting-edge technology with best-fit audio, video, acoustic, and lighting solutions, we ensure your collaboration environment works seamlessly, delivering a smooth, productive experience every time.</p>`,
     },
   ],
-};
-
-// Card component for solutions
-const SolutionCard = ({
-  title,
-  description,
-  benefits,
-  image,
-}: {
-  title: string;
-  description: string;
-  benefits: string[];
-  image: { src: string; alt: string; hint: string };
-}) => {
-  return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-700 h-full flex flex-col mx-auto max-w-4xl border border-gray-200 relative">
-      <div className="relative h-64 md:h-80 lg:h-96">
-        <Image
-          src={image.src}
-          alt={image.alt}
-          data-ai-hint={image.hint}
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
-      <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col">
-        <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">
-          {title}
-        </h3>
-        <p className="text-black mb-4 md:mb-6 text-sm md:text-base">
-          {description}
-        </p>
-
-        <div className="border-t border-gray-200/50 pt-4 md:pt-6">
-          <h4 className="text-base md:text-lg font-semibold text-black mb-3 md:mb-4">
-            Benefits
-          </h4>
-          <ul className="space-y-2 md:space-y-3">
-            {benefits.map((benefit, index) => (
-              <li key={index} className="flex items-start">
-                <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-pink-600 flex-shrink-0 mt-0.5 mr-2 md:mr-3" />
-                <span className="text-black text-sm md:text-base">
-                  {benefit}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
 };
 
 const DefaultHero = ({ solution }: { solution: Solution }) => {
@@ -112,72 +59,75 @@ const DefaultHero = ({ solution }: { solution: Solution }) => {
   );
 };
 
-export default function MeetingRoomsPage() {
-  const scrollToContact = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const contactElement = document.getElementById("contact");
-    if (contactElement) {
-      contactElement.scrollIntoView({ behavior: "smooth" });
-    } else {
-      window.location.href = "/#contact";
-    }
-  };
+// Card component for the user experience section with image on top
+const ExperienceCard = () => {
+  return (
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl mx-auto max-w-4xl border border-gray-200">
+      {/* Image at the top */}
+      <div className="relative h-64 md:h-80 lg:h-96">
+        <Image
+          src="/assets/solutionimg/videocall.jpg"
+          alt="Seamless meeting experience"
+          data-ai-hint="meeting experience"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+      
+      {/* Content below the image */}
+      <div className="p-6 md:p-8">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6 text-center">
+          Ensuring a Seamless and Intuitive User Experience
+        </h2>
+        <ul className="space-y-6 text-black">
+          {[
+            {
+              title: "Collaboration Spaces",
+              description:
+                "With Inviot, experience the future of teamwork across physical and digital workplaces. Our technology solutions empower organizations to unlock the true potential of collaboration and bring its benefits into every part of the business.",
+            },
+            {
+              title: "Huddle Spaces",
+              description:
+                "Create more personalized collaboration settings with advanced audio-visual facilities. Inviot's Huddle Room Solutions support both local and remote participants, ensuring seamless communication in smaller, focused environments.",
+            },
+            {
+              title: "Room Scheduling & Hot-Desking",
+              description:
+                "Simplify workplace management with flexible scheduling. Inviot's solutions allow users to book and manage rooms or desks effortlessly—whether on-premises or through the cloud—offering freedom and efficiency from anywhere.",
+            },
+          ].map((item, index) => (
+            <li key={index} className="flex items-start text-justify">
+              <svg
+                className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span>
+                <span className="font-bold text-pink-600">{item.title}</span> –{" "}
+                {item.description}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
 
+export default function MeetingRoomsPage() {
   // Get all sections by type
   const centeredTextSections =
     solution.sections?.filter((s) => s.type === "centered-text") || [];
-
-  // Solutions data for cards
-  const solutionsData = [
-    {
-      title: "One-Touch Meeting Start",
-      description:
-        "Integrate with calendaring systems (like Outlook and Google) to start any meeting with a single tap, making meetings effortless and efficient.",
-      benefits: [
-        "Seamless integration with Outlook and Google Calendar",
-        "Single-tap meeting initiation",
-        "Automatic room configuration based on meeting type",
-        "Effortless meeting management for all users",
-      ],
-      image: {
-        src: "/assets/solutionimg/videocall.jpg",
-        alt: "One-touch meeting",
-        hint: "meeting start",
-      },
-    },
-    {
-      title: "Intelligent Audio Systems",
-      description:
-        "Deploy advanced DSPs and ceiling microphones that automatically focus on the active speaker, ensuring crystal-clear audio for all participants.",
-      benefits: [
-        "Advanced DSP technology for optimal audio",
-        "Ceiling microphones with automatic speaker focus",
-        "Crystal-clear audio for all participants",
-        "Noise cancellation and echo reduction",
-      ],
-      image: {
-        src: "/assets/solutionimg/Meeting room.jpg",
-        alt: "Intelligent audio",
-        hint: "audio systems",
-      },
-    },
-    {
-      title: "Room Scheduling & Management",
-      description:
-        "See room availability at a glance and book spaces on the fly with elegant panels outside each room, simplifying workplace management.",
-      benefits: [
-        "Real-time room availability display",
-        "On-the-fly booking capabilities",
-        "Elegant exterior panels for easy scheduling",
-        "Simplified workplace management system",
-      ],
-      image: {
-        src: "/assets/LANDSCAPE/AUDIO VISUAL/1.png",
-        alt: "Room scheduling",
-        hint: "scheduling system",
-      },
-    },
-  ];
 
   return (
     <div className="relative">
@@ -212,129 +162,16 @@ export default function MeetingRoomsPage() {
           </section>
         ))}
 
-        {/* Seamless User Experience Section */}
+        {/* Seamless User Experience Section with Card (Image on Top) */}
         <section className="py-16 md:py-20 lg:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <AnimateInView>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8 text-center">
-                  Ensuring a Seamless and Intuitive User Experience
-                </h2>
-                <ul className="space-y-6 text-black">
-                  {[
-                    {
-                      title: "Collaboration Spaces",
-                      description:
-                        "With Inviot, experience the future of teamwork across physical and digital workplaces. Our technology solutions empower organizations to unlock the true potential of collaboration and bring its benefits into every part of the business.",
-                    },
-                    {
-                      title: "Huddle Spaces",
-                      description:
-                        "Create more personalized collaboration settings with advanced audio-visual facilities. Inviot's Huddle Room Solutions support both local and remote participants, ensuring seamless communication in smaller, focused environments.",
-                    },
-                    {
-                      title: "Room Scheduling & Hot-Desking",
-                      description:
-                        "Simplify workplace management with flexible scheduling. Inviot's solutions allow users to book and manage rooms or desks effortlessly—whether on-premises or through the cloud—offering freedom and efficiency from anywhere.",
-                    },
-                  ].map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-start text-justify"
-                    >
-                      <svg
-                        className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span>
-                        <span className="font-bold text-pink-600">
-                          {item.title}
-                        </span>{" "}
-                        – {item.description}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </AnimateInView>
-            </div>
+            <AnimateInView>
+              <ExperienceCard />
+            </AnimateInView>
           </div>
         </section>
 
-        {/* Team Collaboration Section */}
-        <section className="py-16 md:py-20 lg:py-24">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <AnimateInView>
-                <div className="relative w-full h-64 md:h-80 lg:h-96 mb-8 rounded-xl overflow-hidden">
-                  <Image
-                    src="/assets/solutionimg/videocall.jpg"
-                    alt="Customer Experience Center"
-                    data-ai-hint="experience center"
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8 text-center">
-                  With Inviot, Discover What Team Collaboration Looks Like
-                </h2>
-                <ul className="space-y-6 ml-20 text-black">
-                  {[
-                    {
-                      title: "State-of-the-art displays & audio",
-                      description:
-                        "Deliver superior visuals and crystal-clear sound for every meeting.",
-                    },
-                    {
-                      title: "Smart control systems",
-                      description:
-                        "Manage and automate every aspect of your room solution with ease.",
-                    },
-                    {
-                      title: "Wireless presentation",
-                      description:
-                        "Share content instantly from any device for seamless collaboration.",
-                    },
-                  ].map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-start text-justify"
-                    >
-                      <svg
-                        className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span>
-                        <span className="font-bold text-pink-600">
-                          {item.title}
-                        </span>{" "}
-                        – {item.description}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </AnimateInView>
-            </div>
-          </div>
-        </section>
+       
 
         <TrustedFeatures />
         <Contact />

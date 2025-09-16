@@ -30,20 +30,34 @@ const solution: Solution = {
   ],
 };
 
+// Helper component to format the benefit text with pink before hyphen
+const FormattedBenefit = ({ text }: { text: string }) => {
+  const parts = text.split(' - ');
+  
+  if (parts.length > 1) {
+    return (
+      <span>
+        <span className="text-pink-600">{parts[0]}</span>
+        <span> - {parts.slice(1).join(' - ')}</span>
+      </span>
+    );
+  }
+  
+  return <span>{text}</span>;
+};
+
 // Card component for solutions
 const SolutionCard = ({
   title,
-  description,
   benefits,
   image,
 }: {
   title: string;
-  description: string;
   benefits: string[];
   image: { src: string; alt: string; hint: string };
 }) => {
   return (
-    <div className="bg-transparent rounded-xl shadow-lg overflow-hidden transition-all duration-700 h-full flex flex-col mx-auto max-w-4xl border border-gray-200 relative">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-700 h-full flex flex-col mx-auto max-w-4xl border border-gray-200 relative">
       <div className="relative h-64 md:h-80 lg:h-96">
         <Image
           src={image.src}
@@ -54,24 +68,18 @@ const SolutionCard = ({
           priority
         />
       </div>
-      <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col">
+      <div className="p-4 md:p-6 lg:p-8 flex-grow flex flex-col bg-white">
         <h3 className="text-xl md:text-2xl font-bold text-pink-600 mb-3 md:mb-4">
           {title}
         </h3>
-        <p className="text-black mb-4 md:mb-6 text-sm md:text-base">
-          {description}
-        </p>
 
-        <div className="border-t border-gray-200/50 pt-4 md:pt-6">
-          <h4 className="text-base md:text-lg font-semibold text-black mb-3 md:mb-4">
-            Benefits
-          </h4>
-          <ul className="space-y-2 md:space-y-3">
+        <div className="pt-4 md:pt-6">
+          <ul className="space-y-4 md:space-y-5">
             {benefits.map((benefit, index) => (
               <li key={index} className="flex items-start">
                 <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-pink-600 flex-shrink-0 mt-0.5 mr-2 md:mr-3" />
                 <span className="text-black text-sm md:text-base">
-                  {benefit}
+                  <FormattedBenefit text={benefit} />
                 </span>
               </li>
             ))}
@@ -179,6 +187,38 @@ export default function MonitoringCentresPage() {
     },
   ];
 
+  // Card data for the two sections - Updated with exact content and white backgrounds
+  const infoCardsData = [
+    {
+      title: "Deliver Critical Information for Situational Awareness",
+      benefits: [
+        "Security Operations Centers - Centralized facilities where analysts monitor organizational assets, ensuring both physical sites and information systems remain secure.",
+        "Social Media Command Centers - Dedicated spaces for your social media team to track conversations, engage with customers, and safeguard your brand identity and reputation.",
+        "Dedicated Experts - Our specialists work with you to define the purpose of your space, identify the key information operators need, and design ergonomic environments that optimize efficiency and focus."
+      ],
+      image: {
+        src: "/assets/LANDSCAPE/Monitoring room/1.png",
+        alt: "Situational Awareness",
+        hint: "situational awareness"
+      }
+    },
+    {
+      title: "Modern Network Operations Centers (NOCs)",
+      benefits: [
+        "Broad Support Capabilities - Today's NOCs manage and control resources for businesses, universities, utilities, and even government agencies.",
+        "Advanced Display Solutions - Narrow-bezel video walls and pixel-pitch panels deliver superior picture quality with intuitive usability.",
+        "Powerful Control Systems - Hardware and software-based video wall controllers ensure seamless monitoring and management.",
+        "Secure Infrastructure - Sensitive hardware remains protected within the organization's most secure facilities.",
+        "Global Monitoring - NOCs can oversee server banks and critical resources distributed worldwide, ensuring uninterrupted operations."
+      ],
+      image: {
+        src: "/assets/solutionimg/noc.jpg",
+        alt: "Network Operations Center",
+        hint: "network operations"
+      }
+    }
+  ];
+
   return (
     <div className="relative">
       {/* Full background image without any blur effects */}
@@ -212,146 +252,19 @@ export default function MonitoringCentresPage() {
           </section>
         ))}
 
-        {/* Critical Information Section */}
+        {/* Critical Information Section as Cards - One after another */}
         <section className="py-16 md:py-20 lg:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <AnimateInView>
-                <div className="relative w-full h-64 md:h-80 lg:h-96 mb-8 rounded-xl overflow-hidden">
-                  <Image
-                    src="/assets/LANDSCAPE/Monitoring room/1.png"
-                    alt="Customer Experience Center"
-                    data-ai-hint="experience center"
-                    fill
-                    className="object-cover"
-                    priority
+            <div className="flex flex-col gap-12 md:gap-16 lg:gap-20 max-w-4xl mx-auto">
+              {infoCardsData.map((card, index) => (
+                <AnimateInView key={index}>
+                  <SolutionCard
+                    title={card.title}
+                    benefits={card.benefits}
+                    image={card.image}
                   />
-                </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8 text-center">
-                  Deliver Critical Information for Situational Awareness
-                </h2>
-                <ul className="space-y-6 text-black">
-                  {[
-                    {
-                      title: "Security Operations Centers",
-                      description:
-                        "Centralized facilities where analysts monitor organizational assets, ensuring both physical sites and information systems remain secure.",
-                    },
-                    {
-                      title: "Social Media Command Centers",
-                      description:
-                        "Dedicated spaces for your social media team to track conversations, engage with customers, and safeguard your brand identity and reputation.",
-                    },
-                    {
-                      title: "Dedicated Experts",
-                      description:
-                        "Our specialists work with you to define the purpose of your space, identify the key information operators need, and design ergonomic environments that optimize efficiency and focus.",
-                    },
-                  ].map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-start text-justify"
-                    >
-                      <svg
-                        className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span>
-                        <span className="font-bold text-pink-600">
-                          {item.title}
-                        </span>{" "}
-                        - {item.description}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </AnimateInView>
-            </div>
-          </div>
-        </section>
-
-        {/* Network Operations Centers Section */}
-        <section className="py-16 md:py-20 lg:py-24">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <AnimateInView>
-                <div className="relative w-full h-64 md:h-80 lg:h-96 mb-8 rounded-xl overflow-hidden">
-                  <Image
-                    src="/assets/solutionimg/noc.jpg"
-                    alt="Customer Experience Center"
-                    data-ai-hint="experience center"
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8 text-center">
-                  Modern Network Operations Centers (NOCs)
-                </h2>
-                <ul className="space-y-6 text-black">
-                  {[
-                    {
-                      title: "Broad Support Capabilities",
-                      description:
-                        "Today's NOCs manage and control resources for businesses, universities, utilities, and even government agencies.",
-                    },
-                    {
-                      title: "Advanced Display Solutions",
-                      description:
-                        "Narrow-bezel video walls and pixel-pitch panels deliver superior picture quality with intuitive usability.",
-                    },
-                    {
-                      title: "Powerful Control Systems",
-                      description:
-                        "Hardware and software-based video wall controllers ensure seamless monitoring and management.",
-                    },
-                    {
-                      title: "Secure Infrastructure",
-                      description:
-                        "Sensitive hardware remains protected within the organization's most secure facilities.",
-                    },
-                    {
-                      title: "Global Monitoring",
-                      description:
-                        "NOCs can oversee server banks and critical resources distributed worldwide, ensuring uninterrupted operations.",
-                    },
-                  ].map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-start text-justify"
-                    >
-                      <svg
-                        className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span>
-                        <span className="font-bold text-pink-600">
-                          {item.title}
-                        </span>{" "}
-                        - {item.description}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </AnimateInView>
+                </AnimateInView>
+              ))}
             </div>
           </div>
         </section>
