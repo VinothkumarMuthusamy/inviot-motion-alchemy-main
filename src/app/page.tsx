@@ -23,112 +23,166 @@ import ProcessRail from "@/components/landing/process-rail";
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const contentRef = useRef(null);
 
   useEffect(() => {
-    // Simulate minimum loading time
+    // Check if mobile device
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    // Preload critical assets
+    const preloadImage = new Image();
+    preloadImage.src = '/assets/inviot-logo.svg';
+    
+    // Simulate minimum loading time - shorter on mobile
+    const loadTime = isMobile ? 1500 : 1800;
     const timer = setTimeout(() => {
       setLoading(false);
       document.body.style.overflow = 'auto';
-    }, 2200); // Slightly longer for smoother transition
+    }, loadTime);
     
     // Prevent scrolling during loading
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
     
     return () => {
       clearTimeout(timer);
+      window.removeEventListener('resize', checkMobile);
       document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
     };
-  }, []);
+  }, [isMobile]);
+
+  // Mobile-optimized values
+  const logoSize = isMobile ? 'w-28 h-28' : 'w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56';
+  const progressBarWidth = isMobile ? 'max-w-[200px]' : 'max-w-[280px] md:max-w-xs lg:max-w-sm';
+  const animationDuration = isMobile ? 1.5 : 1.8;
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Global Background Image */}
+      {/* Global Background Image - Mobile optimized */}
       <div 
         className="fixed inset-0 z-0"
         style={{
           backgroundImage: "url('/assets/team-bg.jpg')",
           backgroundSize: "cover",
-          backgroundPosition: "left",
-          backgroundAttachment: "fixed",
+          backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
+          // Mobile-specific optimizations
+          ...(isMobile && {
+            backgroundAttachment: 'scroll',
+            backgroundPosition: 'center center'
+          })
         }}
       />
       
-      {/* Loader with Background Image */}
-      <AnimatePresence>
+      {/* Loader - Mobile optimized with reduced motion */}
+      <AnimatePresence mode="wait">
         {loading && (
           <motion.div
             key="loader"
-            className="fixed inset-0 flex items-center justify-center z-50"
+            className="fixed inset-0 flex items-center justify-center z-50 touch-none" // touch-none prevents scrolling on mobile
             style={{
               backgroundImage: "url('/assets/team-bg.jpg')",
               backgroundSize: "cover",
-              backgroundPosition: "left",
-              backgroundAttachment: "fixed",
+              backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
+              // Prevent background scroll on mobile
+              ...(isMobile && { position: 'fixed' })
             }}
             initial={{ opacity: 1 }}
             exit={{ 
               opacity: 0,
-              transition: { duration: 0.6, ease: "easeOut" }
+              transition: { 
+                duration: isMobile ? 0.4 : 0.6, 
+                ease: "easeOut" 
+              }
             }}
           >
-            {/* Dark overlay for better contrast */}
-            <div className="absolute inset-0 bg-black/0"></div>
+            {/* Semi-transparent overlay - darker on mobile for better contrast */}
+            <div className={`absolute inset-0 ${isMobile ? 'bg-black/50' : 'bg-black/0'}`}></div>
             
-            <div className="flex flex-col items-center relative z-10">
+            <div className="flex flex-col items-center justify-center relative z-10 px-4 w-full">
+              {/* Logo with mobile-optimized animation */}
               <motion.div
-                initial={{ scale: 0, opacity: 0 }}
+                className="relative flex justify-center items-center"
+                initial={{ 
+                  scale: isMobile ? 0.9 : 0.8, 
+                  opacity: 0 
+                }}
                 animate={{ 
                   scale: 1, 
-                  opacity: 1,
-                  transition: { 
-                    duration: 0.8, 
-                    ease: "easeOut",
-                    scale: { type: "spring", damping: 15, stiffness: 300 }
-                  }
+                  opacity: 1 
                 }}
-                className="relative"
+                transition={{ 
+                  duration: isMobile ? 0.4 : 0.5,
+                  ease: "easeOut"
+                }}
               >
-                <motion.img
+                <img
                   src="/assets/inviot-logo.svg"
                   alt="Inviot Logo"
-                  className="w-80 h-90 object-contain" 
-                  animate={{
-                    opacity: [0, 1],
-                  }}
-                  transition={{
-                    duration: 1.2,
-                    ease: "easeInOut",
-                  }}
+                  className={`${logoSize} object-contain mx-auto`}
+                  // Preload and decode for better mobile performance
+                  loading="eager"
+                  decoding="async"
                 />
               </motion.div>
+              
+              {/* Progress bar - simpler animation for mobile */}
               <motion.div
+                className={`mt-4 md:mt-6 w-full ${progressBarWidth} mx-auto`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-                className="mt-8" 
+                transition={{ 
+                  delay: isMobile ? 0.3 : 0.5, 
+                  duration: 0.3 
+                }}
               >
-                <div className="h-1.5 w-64 bg-gray-200/70 rounded-full overflow-hidden">
+                <div className="h-1.5 w-full bg-gray-200/70 rounded-full overflow-hidden">
                   <motion.div
                     className="h-full bg-pink-600"
                     initial={{ width: "0%" }}
                     animate={{ width: "100%" }}
-                    transition={{ duration: 2, ease: "easeInOut" }}
+                    transition={{ 
+                      duration: animationDuration, 
+                      ease: "easeInOut",
+                      delay: 0.1
+                    }}
                   />
                 </div>
               </motion.div>
             </div>
+
+            {/* Mobile-specific loading text */}
+            {isMobile && (
+              <motion.div
+                className="absolute bottom-8 left-0 right-0 text-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.7 }}
+                transition={{ delay: 0.8, duration: 0.3 }}
+              >
+                <p className="text-white text-sm font-light">Loading your experience...</p>
+              </motion.div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Main content */}
+      {/* Main content - Optimized for mobile */}
       <div 
         ref={contentRef}
         className="relative z-10"
-        style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.5s ease-in' }}
+        style={{ 
+          visibility: loading ? 'hidden' : 'visible',
+          opacity: loading ? 0 : 1, 
+          transition: `opacity ${isMobile ? '0.3s' : '0.4s'} ease-in, visibility ${isMobile ? '0.3s' : '0.4s'}` 
+        }}
       >
         <Header />
         <main className="flex-grow">
@@ -146,6 +200,15 @@ export default function HomePage() {
         </main>
         <Footer />
       </div>
+
+      {/* Mobile viewport meta tag enforcement */}
+      <style jsx global>{`
+        @media (max-width: 768px) {
+          .fixed {
+            position: fixed;
+          }
+        }
+      `}</style>
     </div>
   );
 }
