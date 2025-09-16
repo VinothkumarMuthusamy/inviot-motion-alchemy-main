@@ -76,7 +76,7 @@ const Airplane = ({ animation, delay }: { animation: string; delay: string }) =>
   </div>
 );
 
-// CSS for airplane animations (should be added to your global CSS)
+// CSS for airplane animations
 const airplaneStyles = `
   @keyframes fly-path-1 {
     0% { transform: translate(-100px, 100px) rotate(10deg); opacity: 0; }
@@ -186,7 +186,7 @@ const ContactPage = () => {
               viewport={{ once: true }}
               className="mb-16"
             >
-              <Card className="bg-white border-primary/20 p-6 md:p-8 shadow-xl max-w-4xl mx-auto">
+              <Card className="bg-white border-primary/20 p-6 md:p-8 shadow-xl max-w-5xl mx-auto">
                 <CardContent className="p-0">
                   <h3 className="heading-3 text-center text-primary mb-6">Send Us a Message</h3>
                   <Form {...form}>
@@ -196,13 +196,14 @@ const ContactPage = () => {
                           control={form.control}
                           name="name"
                           render={({ field }) => (
-                            <FormItem>
+                            
+                              <FormItem>
                               <FormLabel className="text-black font-bold text-base">Name</FormLabel>
                               <FormControl>
                                 <Input 
                                   placeholder="Your Name" 
                                   {...field} 
-                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary" 
+                                  className="bg-background border-border/50 placeholder:text-muted-foreground focus:border-primary w-full" 
                                 />
                               </FormControl>
                               <FormMessage />
