@@ -374,7 +374,7 @@ const ContactPage = () => {
                 viewport={{ once: true }}
               >
                 <div className="bg-white border-primary/20 shadow-xl p-1 h-full rounded-lg">
-                  <div className="h-96 rounded-lg overflow-hidden">
+                  <div className="h-full rounded-lg overflow-hidden">
                     <MapWithNoSSR 
                       locations={locations} 
                       selectedLocation={selectedLocation}
