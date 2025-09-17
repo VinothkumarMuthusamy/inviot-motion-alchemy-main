@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -33,8 +33,20 @@ const TopBar = () => {
       setScrolled(window.scrollY > 10);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    // Use requestAnimationFrame for smoother scroll handling
+    let ticking = false;
+    const scrollHandler = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", scrollHandler, { passive: true });
+    return () => window.removeEventListener("scroll", scrollHandler);
   }, []);
 
   if (scrolled) return null;
@@ -87,7 +99,6 @@ const solutions = [
 const navLinks = [
   { name: "Home", href: "/#hero" },
   { name: "Room configurator", href: "/room-configurator" },
-  
   { name: "About Us", href: "/about-us" }
 ];
 
@@ -96,16 +107,29 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isHoveringNav, setIsHoveringNav] = useState(false);
   const [mobileSolutionsOpen, setMobileSolutionsOpen] = useState(false);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Throttle scroll handler
+  // Throttle scroll handler with requestAnimationFrame
   const handleScroll = useCallback(() => {
-    setScrolled(window.scrollY > 10);
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+    
+    scrollTimeout.current = setTimeout(() => {
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 10);
+      });
+    }, 10);
   }, []);
 
   useEffect(() => {
-    // Passive event listener for better performance
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+    };
   }, [handleScroll]);
 
   // Determine if header has white background
@@ -118,7 +142,15 @@ const Header = () => {
         const id = href.substring(2);
         const element = document.getElementById(id);
         if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
+          // Use smooth scroll with offset for header height
+          const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - headerHeight;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
         } else {
           window.location.href = href;
         }
@@ -192,7 +224,7 @@ const Header = () => {
                 alt="Inviot Logo"
                 width={120}
                 height={30}
-                className="h-8 w-auto"
+                className="h-8 w-auto transition-opacity duration-300"
               />
             ) : (
               <Image
@@ -200,7 +232,7 @@ const Header = () => {
                 alt="Inviot Logo"
                 width={100}
                 height={30}
-                className="h-6 w-auto"
+                className="h-6 w-auto transition-opacity duration-300"
               />
             )}
           </Link>
@@ -251,7 +283,10 @@ const Header = () => {
                   >
                     Solutions
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent>
+                  <NavigationMenuContent
+                    onMouseEnter={() => setIsHoveringNav(true)}
+                    onMouseLeave={() => setIsHoveringNav(false)}
+                  >
                     <ul className="grid gap-3 p-4 w-[300px]">
                       {solutions.map((solution) => (
                         <li key={solution.name}>
@@ -259,6 +294,7 @@ const Header = () => {
                             href={solution.href}
                             className="block rounded-md p-2 hover:bg-accent hover:text-accent-foreground transition text-base"
                             prefetch={false}
+                            onMouseEnter={() => setIsHoveringNav(true)}
                           >
                             {solution.name}
                           </Link>
@@ -355,6 +391,7 @@ const Header = () => {
                         <button
                           onClick={() => setMobileSolutionsOpen(!mobileSolutionsOpen)}
                           className="flex items-center justify-between text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2"
+                          onMouseEnter={() => setIsHoveringNav(true)}
                         >
                           Solutions
                           {mobileSolutionsOpen ? (
@@ -373,6 +410,7 @@ const Header = () => {
                                   onClick={() => setMobileMenuOpen(false)}
                                   className="text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2 block"
                                   prefetch={false}
+                                  onMouseEnter={() => setIsHoveringNav(true)}
                                 >
                                   {solution.name}
                                 </Link>
@@ -389,6 +427,7 @@ const Header = () => {
                             href={link.href}
                             onClick={(e) => handleSheetLinkClick(e, link.href)}
                             className="text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2 block"
+                            onMouseEnter={() => setIsHoveringNav(true)}
                           >
                             {link.name}
                           </Link>
@@ -402,6 +441,7 @@ const Header = () => {
                       <Button
                         className="font-headline btn-glow mt-auto w-full text-lg font-bold"
                         size="lg"
+                        onMouseEnter={() => setIsHoveringNav(true)}
                       >
                         Contact Us
                       </Button>
