@@ -15,7 +15,7 @@ const solution: Solution = {
   video:
     "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
   description:
-    "Streamline monitoring and control through automation, allowing your people to focus on high-value priorities. At the same time, Experience Centres provide an impactful way to engage customers, strengthen brand loyalty, and increase sales. With the right planning and technology, your business can design a Customer Experience Centre that delivers truly memorable interactions.",
+    "Automate monitoring and control so your team can focus on high-value work, while Experience Centres engage customers, build loyalty, and boost sales.",
   image: {
     src: "/assets/solutionimg/Monitoring Centers.jpg",
     alt: "Monitoring Center",

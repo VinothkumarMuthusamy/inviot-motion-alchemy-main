@@ -23,27 +23,37 @@ import ProcessRail from "@/components/landing/process-rail";
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
+  const [scalePhase, setScalePhase] = useState(false);
   const contentRef = useRef(null);
 
   useEffect(() => {
-    // Simulate minimum loading time
-    const timer = setTimeout(() => {
+    // Start the scale animation after initial drop
+    const timer1 = setTimeout(() => setScalePhase(true), 1000);
+    
+    // Preload the background image
+    const bgImage = new Image();
+    bgImage.src = "/assets/team-bg.jpg";
+    bgImage.onload = () => {
+      // Set a minimum display time for the loader
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    };
+
+    // Fallback in case image loading fails
+    const fallbackTimer = setTimeout(() => {
       setLoading(false);
-      document.body.style.overflow = 'auto';
-    }, 2200); // Slightly longer for smoother transition
-    
-    // Prevent scrolling during loading
-    document.body.style.overflow = 'hidden';
-    
+    }, 3000);
+
     return () => {
-      clearTimeout(timer);
-      document.body.style.overflow = 'auto';
+      clearTimeout(timer1);
+      clearTimeout(fallbackTimer);
     };
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Global Background Image */}
+      {/* Global Background Image - Always present */}
       <div 
         className="fixed inset-0 z-0"
         style={{
@@ -55,80 +65,45 @@ export default function HomePage() {
         }}
       />
       
-      {/* Loader with Background Image */}
+      {/* Overlay to control opacity */}
+      <div className="fixed inset-0 z-0 bg-white/0" />
+      
+      {/* Loader */}
       <AnimatePresence>
         {loading && (
           <motion.div
             key="loader"
-            className="fixed inset-0 flex items-center justify-center z-50"
-            style={{
-              backgroundImage: "url('/assets/team-bg.jpg')",
-              backgroundSize: "cover",
-              backgroundPosition: "left",
-              backgroundAttachment: "fixed",
-              backgroundRepeat: "no-repeat",
-            }}
+            className="fixed inset-0 flex items-center justify-center bg-white z-50"
             initial={{ opacity: 1 }}
             exit={{ 
               opacity: 0,
-              transition: { duration: 0.6, ease: "easeOut" }
+              transition: { duration: 0.5, ease: "easeOut" }
             }}
           >
-            {/* Dark overlay for better contrast */}
-            <div className="absolute inset-0 bg-black/0"></div>
-            
-            <div className="flex flex-col items-center relative z-10">
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ 
-                  scale: 1, 
-                  opacity: 1,
-                  transition: { 
-                    duration: 0.8, 
-                    ease: "easeOut",
-                    scale: { type: "spring", damping: 15, stiffness: 300 }
-                  }
-                }}
-                className="relative"
-              >
-                <motion.img
-                  src="/assets/inviot-logo.svg"
-                  alt="Inviot Logo"
-                  className="w-64 sm:w-80 h-auto object-contain" 
-                  animate={{
-                    opacity: [0, 1],
-                  }}
-                  transition={{
-                    duration: 1.2,
-                    ease: "easeInOut",
-                  }}
-                />
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-                className="mt-8" 
-              >
-                <div className="h-1.5 w-48 sm:w-64 bg-gray-200/70 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-pink-600"
-                    initial={{ width: "0%" }}
-                    animate={{ width: "100%" }}
-                    transition={{ duration: 2, ease: "easeInOut" }}
-                  />
-                </div>
-              </motion.div>
-            </div>
+            <motion.img
+              src="/assets/inviot-logo.svg"
+              alt="Inviot Logo"
+              className="w-24 h-24 object-contain"
+              initial={{ y: "-100vh", scale: 1, opacity: 0 }}
+              animate={
+                scalePhase
+                  ? { y: 0, scale: 10, opacity: 0 }
+                  : { y: 0, scale: 1, opacity: 1 }
+              }
+              transition={{
+                duration: scalePhase ? 1.5 : 1,
+                ease: "easeInOut",
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Main content */}
+      {/* Main content - Hidden while loading to prevent white space */}
       <div 
         ref={contentRef}
         className="relative z-10"
-        style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.5s ease-in' }}
+        style={{ display: loading ? 'none' : 'block' }}
       >
         <Header />
         <main className="flex-grow">

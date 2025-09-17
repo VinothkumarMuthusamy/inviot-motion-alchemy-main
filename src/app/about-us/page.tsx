@@ -13,6 +13,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import Leadership from "@/components/landing/leadership";
 
 const PDFViewer = ({ pdfUrl }: { pdfUrl: string }) => {
   return (
@@ -422,6 +423,7 @@ const AboutUsPage = () => {
   
           {/* Journey Timeline */}
           <Timeline />
+          <Leadership />
         </main>
         <Footer />
       </div>
