@@ -22,7 +22,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import Image from "next/image";
-import logoImage from "@/image/logo.png";
 
 // Top Bar Component
 const TopBar = () => {
@@ -33,7 +32,6 @@ const TopBar = () => {
       setScrolled(window.scrollY > 10);
     };
 
-    // Use requestAnimationFrame for smoother scroll handling
     let ticking = false;
     const scrollHandler = () => {
       if (!ticking) {
@@ -109,7 +107,6 @@ const Header = () => {
   const [mobileSolutionsOpen, setMobileSolutionsOpen] = useState(false);
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Throttle scroll handler with requestAnimationFrame
   const handleScroll = useCallback(() => {
     if (scrollTimeout.current) {
       clearTimeout(scrollTimeout.current);
@@ -142,7 +139,6 @@ const Header = () => {
         const id = href.substring(2);
         const element = document.getElementById(id);
         if (element) {
-          // Use smooth scroll with offset for header height
           const headerHeight = document.querySelector('header')?.offsetHeight || 0;
           const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
           const offsetPosition = elementPosition - headerHeight;
@@ -181,12 +177,10 @@ const Header = () => {
             onMouseLeave={() => setIsHoveringNav(false)}
             onClick={(e) => handleLinkClick(e as any, link.href)}
             className={cn(
-              // Conditional text color based on background
               hasWhiteBg 
                 ? "text-foreground hover:text-[#9B1B5C]" 
                 : "text-white hover:text-gray-200",
               "font-bold transition-colors hover:underline p-2 text-base",
-              // Remove all background styles
               "bg-transparent hover:bg-transparent focus:bg-transparent"
             )}
           >
@@ -207,10 +201,10 @@ const Header = () => {
             ? "bg-white backdrop-blur-sm shadow-md"
             : "bg-transparent"
         )}
-        style={{ top: scrolled ? 0 : "1.75rem" }} // Adjust header position based on top bar visibility
+        style={{ top: scrolled ? 0 : "1.75rem" }}
       >
         <div className="container-max flex items-center justify-between">
-          {/* Logo - Use PNG when header has white background, SVG when transparent */}
+          {/* Logo - Use SVG with dynamic color instead of switching images */}
           <Link
             href="/"
             className="flex items-center gap-2"
@@ -218,23 +212,35 @@ const Header = () => {
             onMouseEnter={() => setIsHoveringNav(true)}
             onMouseLeave={() => setIsHoveringNav(false)}
           >
-            {hasWhiteBg ? (
-              <Image
-                src="/assets/inviot-logo.svg"
-                alt="Inviot Logo"
-                width={120}
-                height={30}
-                className="h-8 w-auto transition-opacity duration-300"
-              />
-            ) : (
-              <Image
-                src="/assets/Inviot_Logo.png"
-                alt="Inviot Logo"
-                width={100}
-                height={30}
-                className="h-6 w-auto transition-opacity duration-300"
-              />
-            )}
+            <div className="relative h-8 w-[120px] transition-opacity duration-300">
+              {/* White logo for transparent background */}
+              <div className={cn(
+                "absolute inset-0 transition-opacity duration-300",
+                hasWhiteBg ? "opacity-0" : "opacity-100"
+              )}>
+                <Image
+                  src="/assets/Inviot_Logo.png"
+                  alt="Inviot Logo"
+                  width={120}
+                  height={32}
+                  className="h-8 w-auto"
+                />
+              </div>
+              
+              {/* Colored logo for white background */}
+              <div className={cn(
+                "absolute inset-0 transition-opacity duration-300",
+                hasWhiteBg ? "opacity-100" : "opacity-0"
+              )}>
+                <Image
+                  src="/assets/inviot-logo.svg"
+                  alt="Inviot Logo"
+                  width={120}
+                  height={32}
+                  className="h-8 w-auto"
+                />
+              </div>
+            </div>
           </Link>
 
           {/* Desktop Menu */}
@@ -253,12 +259,10 @@ const Header = () => {
                     onMouseLeave={() => setIsHoveringNav(false)}
                     onClick={(e) => handleLinkClick(e as any, "/#hero")}
                     className={cn(
-                      // Conditional text color based on background
                       hasWhiteBg 
                         ? "text-foreground hover:text-[#9B1B5C]" 
                         : "text-white hover:text-gray-200",
                       "font-bold transition-colors hover:underline p-2 text-base",
-                      // Remove all background styles
                       "bg-transparent hover:bg-transparent focus:bg-transparent"
                     )}
                   >
@@ -266,16 +270,14 @@ const Header = () => {
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-                {/* Solutions Dropdown - Placed right after Home */}
+                {/* Solutions Dropdown */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
                     className={cn(
-                      // Conditional text color based on background
                       hasWhiteBg 
                         ? "text-foreground hover:text-[#9B1B5C] data-[state=open]:text-[#9B1B5C]" 
                         : "text-white hover:text-gray-200 data-[state=open]:text-gray-200",
                       "font-bold transition-colors hover:underline p-2 text-base",
-                      // Remove all background styles
                       "bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent"
                     )}
                     onMouseEnter={() => setIsHoveringNav(true)}
@@ -313,12 +315,10 @@ const Header = () => {
                       onMouseLeave={() => setIsHoveringNav(false)}
                       onClick={(e) => handleLinkClick(e as any, link.href)}
                       className={cn(
-                        // Conditional text color based on background
                         hasWhiteBg 
                           ? "text-foreground hover:text-[#9B1B5C]" 
                           : "text-white hover:text-gray-200",
                         "font-bold transition-colors hover:underline p-2 text-base",
-                        // Remove all background styles
                         "bg-transparent hover:bg-transparent focus:bg-transparent"
                       )}
                     >
@@ -327,13 +327,12 @@ const Header = () => {
                   </NavigationMenuItem>
                 ))}
 
-                {/* Contact Us Button - Now links to contact page */}
+                {/* Contact Us Button */}
                 <Link href="/contact-us" passHref>
                   <Button
                     size="sm"
                     className={cn(
                       "font-headline btn-glow text-base",
-                      // Keep button colors consistent regardless of header background
                     )}
                     onMouseEnter={() => setIsHoveringNav(true)}
                     onMouseLeave={() => setIsHoveringNav(false)}
@@ -355,7 +354,6 @@ const Header = () => {
                   onMouseEnter={() => setIsHoveringNav(true)}
                   onMouseLeave={() => setIsHoveringNav(false)}
                   className={cn(
-                    // Conditional text color based on background
                     hasWhiteBg 
                       ? "text-foreground" 
                       : "text-white"
@@ -369,7 +367,6 @@ const Header = () => {
                 side="right"
                 className="w-[300px] sm:w-[400px] bg-background/90 backdrop-blur-sm"
               >
-                {/* Add SheetTitle for accessibility */}
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 
                 <div className="flex flex-col h-full">
@@ -435,7 +432,7 @@ const Header = () => {
                       ))}
                     </nav>
                   </div>
-                  {/* Mobile Contact Us Button - Now links to contact page */}
+                  {/* Mobile Contact Us Button */}
                   <SheetClose asChild>
                     <Link href="/contact-us" passHref>
                       <Button
