@@ -332,7 +332,7 @@ const AboutUsPage = () => {
                 </AnimateInView>
                 
                 <AnimateInView delay={200}>
-                <div className="bg-transparent p-8 rounded-lg">
+                <div className="bg-white p-8 rounded-lg">
                     <div className="relative h-48 w-full mb-6 rounded-lg overflow-hidden">
                     <Image
                         src="/assets/aboutus/aboutcompany.jpg"
