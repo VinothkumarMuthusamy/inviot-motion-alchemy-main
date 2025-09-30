@@ -1,74 +1,153 @@
-"use client";
+'use client';
 
+import { useState } from 'react';
 import { AnimateInView } from "@/components/ui/animate-in-view";
-import Image from "next/image";
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const features = [
+const approachSteps = [
   {
-    icon: "/assets/featurepage/Proven av excellence 1-01.png",
+    id: "consultancy",
     title: "Proven AV Excellence",
-    description: "Delivering world-class audio-visual solutions.",
-    hint: "110 years icon",
+    description: "Delivering world-class audio-visual solutions with precision and impact.",
+    image: "/assets/featurepage/Proven av excellence 1-01.png",
+    hint: "team consulting meeting"
   },
   {
-    icon: "/assets/featurepage/Future proof technology 1-01.png",
+    id: "design",
     title: "Future-Ready Technology",
-    description: "We design environments that evolve with tomorrow’s needs.",
-    hint: "customer support icon",
+    description: "We design environments that evolve with tomorrow’s needs, using cutting-edge AV systems.",
+    image: "/assets/featurepage/Future proof technology 1-01.png",
+    hint: "architectural design blueprint"
   },
   {
-    icon: "/assets/featurepage/GLOBAL REACH 1-01-01.png",
+    id: "integrate",
     title: "End-to-End Integration",
-    description: "Our team ensures precision and reliability at every step.",
-    hint: "handcrafted icon",
+    description: "Our team ensures seamless installation and integration for reliable performance at every step.",
+    image: "/assets/featurepage/GLOBAL REACH 1-01-01.png",
+    hint: "technician installing hardware"
   },
   {
-    icon: "/assets/featurepage/Worldwide Reach, Local Care 1-01.png",
+    id: "support",
     title: "Worldwide Reach, Local Care",
-    description: "Headquartered in India with global backing.",
-    hint: "sustainability icon",
+    description: "Headquartered in India with global backing, we deliver personalized support wherever you are.",
+    image: "/assets/featurepage/Worldwide Reach, Local Care 1-01.png",
+    hint: "customer support team"
   },
 ];
 
 const TrustedFeatures = () => {
-  return (
-    <section className="bg-transparent !bg-transparent py-16 md:py-20 lg:py-24">
-      <div className="container mx-auto px-4">
-        {/* Header Section */}
-        <div className="text-center mb-6 md:mb-8">
-          <AnimateInView>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              Often first, always trusted
-            </h1>
-            <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto">
-              Cutting-edge technology. 20+ years of experience.
-            </p>
-          </AnimateInView>
-        </div>
+  const [activeTab, setActiveTab] = useState(approachSteps[0].id);
+  const activeStep = approachSteps.find((step) => step.id === activeTab);
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
-          {features.map((feature, index) => (
-            <AnimateInView key={index} delay={index * 150} className="flex">
-              <div className="flex flex-col items-center text-center p-4 w-full bg-transparent">
-                <div className="relative w-28 h-28 md:w-32 md:h-32 mb-4">
+  return (
+    <section
+      className="section-padding bg-background"
+      style={{
+        backgroundImage: "url('/assets/team-bg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <div className="container-max">
+        {/* Section Header */}
+        <AnimateInView className="text-center mb-12 md:mb-16">
+          <h2 className="heading-2">Often first, always trusted</h2>
+          <p className="mt-4 max-w-3xl mx-auto text-foreground/80 text-base md:text-lg leading-relaxed">
+            Cutting-edge technology. 20+ years of experience.
+          </p>
+        </AnimateInView>
+
+        {/* Layout: Circle + Content */}
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-10">
+          {/* Circular Navigation */}
+          <div className="relative w-72 h-72 flex-shrink-0">
+            {/* Pink Circle PNG Background */}
+            <Image
+              src="/assets/pink-circle.png"
+              alt="Pink Circle Background"
+              fill
+              className="object-contain z-0"
+              priority
+            />
+
+            {/* Outer Circle Border */}
+            <div className="absolute inset-0 rounded-full border-2 border-primary/20 z-10" />
+
+            {/* Buttons with only numbers */}
+            {approachSteps.map((step, index) => {
+              const totalSteps = approachSteps.length;
+              const angle = (index * 360) / totalSteps - 90;
+              const radius = 100;
+              const x = Math.cos((angle * Math.PI) / 180) * radius;
+              const y = Math.sin((angle * Math.PI) / 180) * radius;
+
+              return (
+                <button
+                  key={step.id}
+                  type="button"
+                  className={`absolute w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-xs font-bold z-20 focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                    activeTab === step.id
+                      ? "bg-primary text-primary-foreground shadow-xl border-2 border-white"
+                      : "bg-card text-foreground/80 hover:bg-primary/20 shadow-md border border-border"
+                  }`}
+                  style={{
+                    left: `calc(50% + ${x}px)`,
+                    top: `calc(50% + ${y}px)`,
+                    transform: "translate(-50%, -50%)",
+                  }}
+                  onClick={() => setActiveTab(step.id)}
+                >
+                  0{index + 1}
+                </button>
+              );
+            })}
+
+            {/* Enlarged Center Circle */}
+            <div className="absolute inset-0 m-auto w-28 h-28 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-xl z-20">
+              <span className="text-primary-foreground font-bold text-sm sm:text-base text-center leading-tight px-2">
+                {activeStep?.title || "Our Approach"}
+              </span>
+            </div>
+          </div>
+
+          {/* Content Area with Image Left and Text Right */}
+          <div className="w-[500px] h-[200px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="h-full w-full flex items-center overflow-hidden rounded-xl shadow-lg border border-border/20"
+              >
+                {/* Image Left */}
+                <div className="relative w-[200px] h-full flex-shrink-0 rounded-l-xl overflow-hidden">
                   <Image
-                    src={feature.icon}
-                    alt={feature.title}
+                    src={activeStep?.image || ""}
+                    alt={activeStep?.title || "Approach Step"}
+                    data-ai-hint={activeStep?.hint}
                     fill
-                    data-ai-hint={feature.hint}
-                    className="object-contain"
+                    className="object-cover"
+                    sizes="200px"
+                    priority
                   />
                 </div>
-                <h3 className="text-lg md:text-xl font-semibold mb-2 text-secondary">
-                  {feature.title}
-                </h3>
-                <p className="text-foreground/70 text-base md:text-lg">
-                  {feature.description}
-                </p>
-              </div>
-            </AnimateInView>
-          ))}
+
+                {/* Text Right */}
+                <div className="flex-1 p-4">
+                  <h3 className="text-secondary text-base font-semibold mb-1">
+                    {activeStep?.title}
+                  </h3>
+                  <p className="text-foreground/80 text-sm leading-snug line-clamp-3">
+                    {activeStep?.description}
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>

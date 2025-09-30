@@ -12,8 +12,7 @@ const solution: Solution = {
     "A powerful corporate communication tool to connect with business prospects, partners and end-users alike.",
   video:
     "https://storage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
-  description:
-    "Experience Centres offer businesses an effective way to connect with customers, build brand loyalty and ultimately increase sales through immersive, interactive brand storytelling.",
+  
   image: {
     src: "/assets/solutionimg/Experience Centers.jpg",
     alt: "Experience Centre",
@@ -90,9 +89,7 @@ const DefaultHero = ({ solution }: { solution: Solution }) => {
         <AnimateInView>
           <div className="max-w-3xl">
             <h1 className="heading-1 !text-white">{solution.title}</h1>
-            <p className="mt-4 text-xl text-white/80 max-w-4xl">
-              {solution.description}
-            </p>
+            
           </div>
         </AnimateInView>
       </div>

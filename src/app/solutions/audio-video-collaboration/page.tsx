@@ -12,7 +12,7 @@ const solution: Solution = {
     title: "Audio and Video Collaboration",
     subtitle: "Collaborate and communicate seamlessly, anytime and anywhere.",
     video: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-    description: "With audio and video collaboration becoming essential across industries, empower your employees and clients to share multimedia content and connect more effectively across distances, devices, and platforms.",
+   
     image: {
         src: "/assets/solutionimg/Audio Visual.jpg", 
         alt: "Business meeting", 
@@ -52,9 +52,7 @@ const DefaultHero = ({ solution }: { solution: Solution }) => {
                 <AnimateInView>
                     <div className="max-w-3xl">
                         <h1 className="heading-1 !text-white">{solution.subtitle}</h1>
-                        <p className="mt-4 text-xl text-white/80 max-w-4xl">
-                        {solution.description}
-                        </p>
+                        
                     </div>
                 </AnimateInView>
             </div>

@@ -14,8 +14,7 @@ const solution: Solution = {
     "Digital Signage Solutions are a great way to share information with visitors, customers, and teams.",
   video:
     "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-  description:
-    "When you want to connect with your audience, digital signage is the easiest and most engaging way to do it. With digital signage, you can reach your audience wherever they are—whether at home, in a hotel room or on the road.",
+  
   image: {
     src: "/assets/solutionimg/Digital Signage.jpg",
     alt: "Interactive Digital Signage",
@@ -84,9 +83,7 @@ const DefaultHero = ({ solution }: { solution: Solution }) => {
         <AnimateInView>
           <div className="max-w-3xl">
             <h1 className="heading-1 !text-white">{solution.title}</h1>
-            <p className="mt-4 text-xl text-white/80 max-w-4xl">
-              {solution.description}
-            </p>
+           
           </div>
         </AnimateInView>
       </div>

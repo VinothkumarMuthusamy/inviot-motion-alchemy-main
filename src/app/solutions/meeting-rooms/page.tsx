@@ -13,8 +13,7 @@ const solution: Solution = {
     "Ultimate collaboration environment for all your meetings, seamlessly connecting on-site and remote.",
   video:
     "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-  description:
-    "We harness the latest cutting-edge technology and best-fit audio, video, acoustic, and lighting solutions for your requirements and environment so your meeting spaces work seamlessly.",
+  
   image: {
     src: "/assets/solutionimg/Meeting room.jpg",
     alt: "Seamless Meeting Room",
@@ -49,9 +48,7 @@ const DefaultHero = ({ solution }: { solution: Solution }) => {
         <AnimateInView>
           <div className="max-w-3xl">
             <h1 className="heading-1 !text-white">{solution.title}</h1>
-            <p className="mt-4 text-xl text-white/80 max-w-4xl">
-              {solution.description}
-            </p>
+           
           </div>
         </AnimateInView>
       </div>

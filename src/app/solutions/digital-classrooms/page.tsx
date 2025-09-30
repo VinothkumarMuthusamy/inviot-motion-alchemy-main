@@ -13,8 +13,7 @@ const solution: Solution = {
     "Deliver a Collaborative Education Experience with Innovative AV Solutions",
   video:
     "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-  description:
-    "Bringing all the benefits of advanced technology into today's classrooms and enabling tested, standards-based solutions that simply work for users.",
+ 
   image: {
     src: "/assets/solutionimg/EDUCATION.jpg",
     alt: "Pupils sitting next to their desks",
@@ -50,9 +49,7 @@ const DefaultHero = ({ solution }: { solution: Solution }) => {
         <AnimateInView>
           <div className="max-w-3xl">
             <h1 className="heading-1 !text-white">{solution.title}</h1>
-            <p className="mt-4 text-xl text-white/80 max-w-4xl">
-              {solution.description}
-            </p>
+            
           </div>
         </AnimateInView>
       </div>
@@ -130,6 +127,25 @@ export default function DigitalClassroomsPage() {
     }
   ];
 
+  const features = [
+    {
+      title: "Student engagement first",
+      description: "Collaboration technology continues to play a vital role in driving success both in classrooms and remotely."
+    },
+    {
+      title: "HyFlex classrooms",
+      description: "Seamlessly connect in-person and online students for immersive, interactive learning."
+    },
+    {
+      title: "Learning without isolation",
+      description: "Even in varied environments, students remain engaged and connected through innovative solutions."
+    },
+    {
+      title: "Beyond convenience",
+      description: "Schools need advanced AV tools and sustainable environments that foster collaboration and long-term success."
+    }
+  ];
+
   return (
     <div className="relative">
       {/* Full background image without any blur effects */}
@@ -163,56 +179,114 @@ export default function DigitalClassroomsPage() {
           </section>
         ))}
 
-        <section className="py-0">
+        <section className="py-16 md:py-20 lg:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-6xl mx-auto">
               <AnimateInView>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8 text-center">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-12 text-center">
                   Shaping Student Success with AV Solutions
                 </h2>
-                <ul className="space-y-6 text-black">
-                  {[
-                    {
-                      title: "Student engagement first",
-                      description:
-                        "Collaboration technology continues to play a vital role in driving success both in classrooms and remotely.",
-                    },
-                    {
-                      title: "HyFlex classrooms",
-                      description:
-                        "Seamlessly connect in-person and online students for immersive, interactive learning.",
-                    },
-                    {
-                      title: "Learning without isolation",
-                      description:
-                        "Even in varied environments, students remain engaged and connected through innovative solutions.",
-                    },
-                    {
-                      title: "Beyond convenience",
-                      description:
-                        "Schools need advanced AV tools and sustainable environments that foster collaboration and long-term success.",
-                    },
-                  ].map((item, index) => (
-                    <li key={index} className="flex items-start text-justify">
-                      <svg
-                        className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span>
-                        <span className="font-bold text-pink-600">{item.title}</span> – {item.description}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                
+                {/* Grid layout for the features */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Left Column */}
+                  <div className="space-y-8">
+                    {/* First feature - top left */}
+                    <div className="bg-transparent rounded-lg p-6">
+                      <div className="flex items-start">
+                        <svg
+                          className="h-6 w-6 text-pink-600 mr-4 mt-1 flex-shrink-0"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <div>
+                          <h3 className="font-bold text-pink-600 text-lg mb-2">{features[0].title}</h3>
+                          <p className="text-black text-justify">{features[0].description}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Third feature - bottom left */}
+                    <div className="bg-transparent rounded-lg p-6">
+                      <div className="flex items-start">
+                        <svg
+                          className="h-6 w-6 text-pink-600 mr-4 mt-1 flex-shrink-0"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <div>
+                          <h3 className="font-bold text-pink-600 text-lg mb-2">{features[2].title}</h3>
+                          <p className="text-black text-justify">{features[2].description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column */}
+                  <div className="space-y-8">
+                    {/* Second feature - top right */}
+                    <div className="bg-transparent rounded-lg p-6">
+                      <div className="flex items-start">
+                        <svg
+                          className="h-6 w-6 text-pink-600 mr-4 mt-1 flex-shrink-0"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <div>
+                          <h3 className="font-bold text-pink-600 text-lg mb-2">{features[1].title}</h3>
+                          <p className="text-black text-justify">{features[1].description}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Fourth feature - bottom right */}
+                    <div className="bg-transparent rounded-lg p-6">
+                      <div className="flex items-start">
+                        <svg
+                          className="h-6 w-6 text-pink-600 mr-4 mt-1 flex-shrink-0"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <div>
+                          <h3 className="font-bold text-pink-600 text-lg mb-2">{features[3].title}</h3>
+                          <p className="text-black text-justify">{features[3].description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </AnimateInView>
             </div>
           </div>

@@ -14,8 +14,7 @@ const solution: Solution = {
     "Automate your monitoring control and help human capital focus on the issues that matter the most.",
   video:
     "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-  description:
-    "Automate monitoring and control so your team can focus on high-value work, while Experience Centres engage customers, build loyalty, and boost sales.",
+  
   image: {
     src: "/assets/solutionimg/Monitoring Centers.jpg",
     alt: "Monitoring Center",
@@ -110,9 +109,7 @@ const DefaultHero = ({ solution }: { solution: Solution }) => {
         <AnimateInView>
           <div className="max-w-3xl">
             <h1 className="heading-1 !text-white">{solution.title}</h1>
-            <p className="mt-4 text-xl text-white/80 max-w-4xl">
-              {solution.description}
-            </p>
+            
           </div>
         </AnimateInView>
       </div>
