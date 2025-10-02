@@ -102,7 +102,7 @@ const ProcessRail = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="process-rail-section relative w-full bg-white/50 overflow-hidden py-8 md:py-16"
+      className="process-rail-section relative w-full bg-transparent overflow-hidden py-8 md:py-16"
     >
         {/* Section Header */}
         <div className="container-max text-center mb-8 md:mb-16">

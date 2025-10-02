@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -115,15 +114,24 @@ const Solutions = () => {
       className="relative"
       style={{
         height: device === "desktop" ? dynamicHeight : "auto",
-        backgroundImage: "url('/assets/team-bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: device === "desktop" ? "fixed" : "scroll",
       }}
     >
+      {/* Global Background Layer */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/assets/team-bg.jpg"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-pink-500 opacity-30 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-[400px] h-[400px] bg-blue-600 opacity-30 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+      </div>
+      
       <div
         className={cn(
-          "lg:sticky top-0 h-screen",
+          "lg:sticky top-0 h-screen relative z-10",
           device === "desktop" ? "overflow-hidden" : "h-auto py-24"
         )}
       >
@@ -141,7 +149,6 @@ const Solutions = () => {
               Our Solutions
             </h2>
             <p className="mt-4 text-sm md:text-base text-black max-w-6xl mx-auto text-center">
-
               We improve communication and collaboration within a company by
               treating audiovisual, unified collaboration, and digital media as
               part of a larger ecosystem. Our expertise and experience help us
@@ -235,9 +242,7 @@ const Solutions = () => {
                   }}
                 >
                   <Image
-                    src={
-                      solution.image.src
-                    }
+                    src={solution.image.src}
                     alt={solution.title}
                     fill
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"

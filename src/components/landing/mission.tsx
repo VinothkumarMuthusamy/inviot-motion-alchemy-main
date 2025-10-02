@@ -4,6 +4,7 @@ import { AnimateInView } from "@/components/ui/animate-in-view";
 import AffirmationDisplay from "./affirmation-display";
 import { Sparkles } from "lucide-react";
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 
 const keywords = [
   "INNOVATION",
@@ -56,18 +57,21 @@ const Mission = () => {
   }, []);
 
   return (
-    <section
-      className="py-12 text-card-foreground relative overflow-hidden"
-      style={{
-        backgroundImage: "url('/assets/team-bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <div className="absolute inset-0 bg-white/0 z-10"></div>
+    <section className="py-12 text-card-foreground relative overflow-hidden">
+      {/* Global Background Layer */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/assets/team-bg.jpg"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-pink-500 opacity-30 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-[400px] h-[400px] bg-blue-600 opacity-30 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+      </div>
 
-      <div className="container-max relative z-20">
+      <div className="container-max relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Left text */}
           <div className="flex flex-col justify-center">
@@ -84,7 +88,7 @@ const Mission = () => {
                 Technology with Purpose
               </h2>
 
-              <p className="mt-4 max-w-4xl text-lg text-justify text-balance font-light leading-relaxed text-black">
+              <p className="mt-4 max-w-4xl text-lg text-justify text-balance font-light leading-relaxed text-black bg-transparent backdrop-blur-sm p-4 rounded-lg">
                 At Inviot, we believe that the best way to improve communication
                 and collaboration within organizations is to treat audiovisual,
                 unified collaboration, and digital media as part of a larger
@@ -102,7 +106,7 @@ const Mission = () => {
           {/* Right video */}
           <AnimateInView delay={200} className="w-full">
             <div
-              className="relative w-full max-w-[500px] mx-auto h-[300px] md:h-[400px] rounded-lg overflow-hidden border-2 border-accent/20 shadow-lg group transition-transform duration-300 ease-in-out hover:scale-105"
+              className="relative w-full max-w-[500px] mx-auto h-[300px] md:h-[400px] rounded-lg overflow-hidden border-2 border-accent/20 shadow-lg group transition-transform duration-300 ease-in-out hover:scale-105 bg-white/10 backdrop-blur-sm"
               style={{
                 clipPath:
                   "polygon(52% 0, 64% 19%, 100% 19%, 100% 70%, 100% 100%, 42% 100%, 33% 80%, 0 80%, 0% 35%, 0 0)",

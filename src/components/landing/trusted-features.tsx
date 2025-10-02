@@ -16,7 +16,7 @@ const approachSteps = [
   {
     id: "design",
     title: "Future-Ready Technology",
-    description: "We design environments that evolve with tomorrow’s needs, using cutting-edge AV systems.",
+    description: "We design environments that evolve with tomorrow's needs, using cutting-edge AV systems.",
     image: "/assets/featurepage/Future proof technology 1-01.png",
     hint: "architectural design blueprint"
   },
@@ -41,16 +41,21 @@ const TrustedFeatures = () => {
   const activeStep = approachSteps.find((step) => step.id === activeTab);
 
   return (
-    <section
-      className="section-padding bg-background"
-      style={{
-        backgroundImage: "url('/assets/team-bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <div className="container-max">
+    <section className="section-padding relative">
+      {/* Background Layer - Same as global background */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/assets/team-bg.jpg"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-pink-500 opacity-30 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-[400px] h-[400px] bg-blue-600 opacity-30 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+      </div>
+      
+      <div className="container-max relative z-10">
         {/* Section Header */}
         <AnimateInView className="text-center mb-12 md:mb-16">
           <h2 className="heading-2">Often first, always trusted</h2>
@@ -121,7 +126,7 @@ const TrustedFeatures = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="h-full w-full flex items-center overflow-hidden rounded-xl shadow-lg border border-border/20"
+                className="h-full w-full flex items-center overflow-hidden rounded-xl shadow-lg border border-border/20 bg-transparent "
               >
                 {/* Image Left */}
                 <div className="relative w-[200px] h-full flex-shrink-0 rounded-l-xl overflow-hidden">

@@ -184,7 +184,7 @@ const TimelineEvent = ({
       <div className="md:pr-8 md:text-right order-1">
         {!isRight && (
           <motion.div
-            className="w-full max-w-sm ml-auto p-4 md:p-6 bg-card/80 backdrop-blur-sm rounded-lg shadow-lg border border-border/50"
+            className="w-full max-w-sm ml-auto p-4 md:p-6 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-border/50"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.12 }}
@@ -210,7 +210,7 @@ const TimelineEvent = ({
       <div className="md:pl-8 md:text-left order-2 md:order-3">
         {isRight && (
           <motion.div
-            className="w-full max-w-sm mr-auto p-4 md:p-6 bg-card/80 backdrop-blur-sm rounded-lg shadow-lg border border-border/50"
+            className="w-full max-w-sm mr-auto p-4 md:p-6 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-border/50"
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.12 }}
@@ -241,7 +241,7 @@ function Timeline() {
     <section className="section-padding bg-transparent" ref={containerRef}>
       <div className="container-max text-center mb-12 md:mb-16">
         <h2 className="heading-2">Our Journey</h2>
-        <p className="mt-4 text-lg md:text-xl text-foreground/70">
+        <p className="mt-4 text-lg md:text-xl text-black">
           A timeline of our milestones and achievements.
         </p>
       </div>
@@ -289,19 +289,24 @@ const AboutUsPage = () => {
     ];
   
     return (
-      <div 
-        className="flex flex-col min-h-screen bg-background"
-        style={{
-          backgroundImage: "url('/assets/team-bg.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
-        }}
-      >
+      <div className="flex flex-col min-h-screen relative">
+        {/* Global Background Layer */}
+        <div className="fixed inset-0 -z-10">
+          <Image
+            src="/assets/team-bg.jpg"
+            alt="Background"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-pink-500 opacity-30 rounded-full blur-[120px] animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-[400px] h-[400px] bg-blue-600 opacity-30 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+        </div>
+        
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow relative z-10">
           {/* Hero About Section */}
-          <section className="section-padding pt-32 bg-transparent">
+          <section className="section-padding pt-32">
             <div className="container-max grid lg:grid-cols-2 gap-12 items-center">
                 <AnimateInView>
                 <div>
@@ -320,7 +325,7 @@ const AboutUsPage = () => {
                             }}
                         />
                     </div>
-                    <p className="mt-4 text-lg text-foreground/70">
+                    <p className="mt-4 text-lg text-black bg-transparent backdrop-blur-sm p-4 rounded-lg">
                     At Inviot, we believe that the best way to improve communication
                     and collaboration within organizations is to treat audiovisual,
                     unified collaboration and digital media as part of a larger
@@ -332,7 +337,7 @@ const AboutUsPage = () => {
                 </AnimateInView>
                 
                 <AnimateInView delay={200}>
-                <div className="bg-white p-8 rounded-lg">
+                <div className="bg-white/95 backdrop-blur-sm p-8 rounded-lg shadow-lg border border-border/50">
                     <div className="relative h-48 w-full mb-6 rounded-lg overflow-hidden">
                     <Image
                         src="/assets/aboutus/aboutcompany.jpg"
@@ -347,7 +352,7 @@ const AboutUsPage = () => {
                       <h2 className="heading-3 text-secondary">Our Company</h2>
                       <PDFViewer pdfUrl="/assets/aboutus/INVIOT_COMPANY_PROFILE.pdf" />
                     </div>
-                    <div className="space-y-4 text-foreground/70 leading-relaxed">
+                    <div className="space-y-4 text-black leading-relaxed">
                     <p>
                         We are a leading design and engineering integration firm in
                         audiovisual technology with over 20 years of rich industry
@@ -360,12 +365,12 @@ const AboutUsPage = () => {
           </section>
 
           {/* Image Carousel Section */}
-          <section className="section-padding bg-transparent">
+          <section className="section-padding">
             <div className="container-max">
               <AnimateInView>
                 <div className="text-center mb-12">
                   <h2 className="heading-2">Our Work in Action</h2>
-                  <p className="mt-4 text-xl text-foreground/70 max-w-3xl mx-auto">
+                  <p className="mt-4 text-xl text-black max-w-3xl mx-auto bg-transparent backdrop-blur-sm p-4 rounded-lg">
                     Explore some of our innovative projects and solutions that have transformed 
                     how businesses communicate and collaborate.
                   </p>
@@ -378,14 +383,14 @@ const AboutUsPage = () => {
           </section>
   
           {/* Mission + Vision */}
-          <section className="section-padding bg-transparent">
+          <section className="section-padding">
             <div className="container-max">
               <div className="grid md:grid-cols-2 gap-8">
                 <AnimateInView>
-                  <Card className="h-full bg-transparent border-border/50">
+                  <Card className="h-full bg-white/95 backdrop-blur-sm border-border/50">
                     <CardContent className="p-6 md:p-8 text-center">
                       <div className="flex justify-center mb-4">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                        <div className="w-16 h-16 rounded-full bg-primary/30 flex items-center justify-center">
                           <Target className="w-8 h-8 text-primary" />
                         </div>
                       </div>
@@ -400,10 +405,10 @@ const AboutUsPage = () => {
                   </Card>
                 </AnimateInView>
                 <AnimateInView delay={200}>
-                  <Card className="h-full bg-transparent border-border/50">
+                  <Card className="h-full bg-white/95 backdrop-blur-sm border-border/50">
                     <CardContent className="p-6 md:p-8 text-center">
                       <div className="flex justify-center mb-4">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                        <div className="w-16 h-16 rounded-full bg-primary/30 flex items-center justify-center">
                           <Eye className="w-8 h-8 text-primary" />
                         </div>
                       </div>
@@ -431,9 +436,3 @@ const AboutUsPage = () => {
   };
   
   export default AboutUsPage;
-    
-    
-
-    
-
-    

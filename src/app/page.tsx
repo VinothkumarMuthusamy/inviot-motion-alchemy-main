@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 // Import your components
 import Header from '@/components/landing/header';
@@ -30,8 +31,8 @@ export default function HomePage() {
     // Start the scale animation after initial drop
     const timer1 = setTimeout(() => setScalePhase(true), 1000);
     
-    // Preload the background image
-    const bgImage = new Image();
+    // Preload the background image using HTMLImageElement
+    const bgImage = document.createElement('img');
     bgImage.src = "/assets/team-bg.jpg";
     bgImage.onload = () => {
       // Set a minimum display time for the loader
@@ -53,17 +54,18 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Global Background Image - Always present */}
-      <div 
-        className="fixed inset-0 z-0"
-        style={{
-          backgroundImage: "url('/assets/team-bg.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "left",
-          backgroundAttachment: "fixed",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
+      {/* Background Layer - Same as solution pages */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/assets/team-bg.jpg"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-pink-500 opacity-30 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-[400px] h-[400px] bg-blue-600 opacity-30 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+      </div>
       
       {/* Overlay to control opacity */}
       <div className="fixed inset-0 z-0 bg-white/0" />
@@ -116,7 +118,7 @@ export default function HomePage() {
           <TrustedFeatures/>
           <Affiliations />
           <ProcessRail/>
-          <Leadership />
+          
           <Contact />
         </main>
         <Footer />
