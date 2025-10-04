@@ -111,12 +111,13 @@ export default function HomePage() {
         <main className="flex-grow">
           <Hero />
           <Mission />
+          <Affiliations />
           <WhyChooseUs />
           <CounterBanner /> 
           <VisualSolutions />
           <Solutions />
           <TrustedFeatures/>
-          <Affiliations />
+          
           <ProcessRail/>
           
           <Contact />

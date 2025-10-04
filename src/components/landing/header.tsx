@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import {
   NavigationMenu,
@@ -11,7 +12,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Menu, Phone, Mail, HelpCircle, ChevronDown, ChevronUp } from "lucide-react";
 import {
@@ -60,7 +60,7 @@ const TopBar = () => {
             href="tel:+919513800036"
             className="flex items-center gap-1 hover:text-gray-200 transition-colors"
           >
-            <Phone size={12} /> <span>+91 95138 00036</span>
+            <Phone size={12} /> <span>+91 9513800036</span>
           </a>
           <span className="hidden sm:inline">|</span>
           <a
@@ -95,9 +95,9 @@ const solutions = [
 ];
 
 const navLinks = [
-  { name: "Home", href: "/#hero" },
+  { name: "Home", href: "/" },
   { name: "Room configurator", href: "/room-configurator" },
-  { name: "About Us", href: "/about-us" }
+  { name: "About Us", href: "/about-us" },
 ];
 
 const Header = () => {
@@ -106,6 +106,7 @@ const Header = () => {
   const [isHoveringNav, setIsHoveringNav] = useState(false);
   const [mobileSolutionsOpen, setMobileSolutionsOpen] = useState(false);
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+  const pathname = usePathname();
 
   const handleScroll = useCallback(() => {
     if (scrollTimeout.current) {
@@ -129,105 +130,113 @@ const Header = () => {
     };
   }, [handleScroll]);
 
-  // Determine if header has white background
   const hasWhiteBg = scrolled || mobileMenuOpen || isHoveringNav;
 
   const handleLinkClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       if (href.startsWith("/#")) {
         e.preventDefault();
-        const id = href.substring(2);
-        const element = document.getElementById(id);
-        if (element) {
-          const headerHeight = document.querySelector('header')?.offsetHeight || 0;
-          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-          const offsetPosition = elementPosition - headerHeight;
-          
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth"
-          });
+        if (pathname === '/') {
+          const id = href.substring(2);
+          const element = document.getElementById(id);
+          if (element) {
+            const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - headerHeight;
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth"
+            });
+          }
         } else {
           window.location.href = href;
         }
       } else if (href === "/") {
         e.preventDefault();
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (pathname === '/') {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          window.location.href = '/';
+        }
       }
     },
-    []
+    [pathname]
   );
 
   const handleSheetLinkClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-      handleLinkClick(e, href);
+    (href: string) => {
+      if (href.startsWith("/#")) {
+        if (pathname === '/') {
+          const id = href.substring(2);
+          const element = document.getElementById(id);
+          if (element) {
+             const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+             const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+             const offsetPosition = elementPosition - headerHeight;
+             window.scrollTo({top: offsetPosition, behavior: "smooth"});
+          }
+        } else {
+          window.location.href = href;
+        }
+      } else if (href === "/") {
+        if (pathname === '/') {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          window.location.href = '/';
+        }
+      }
       setMobileMenuOpen(false);
     },
-    [handleLinkClick]
+    [pathname]
   );
 
-  // Memoize navigation items to prevent unnecessary re-renders
-  const desktopNavItems = useMemo(
-    () =>
-      navLinks.map((link) => (
-        <NavigationMenuItem key={link.name}>
-          <NavigationMenuLink
-            href={link.href}
-            onMouseEnter={() => setIsHoveringNav(true)}
-            onMouseLeave={() => setIsHoveringNav(false)}
-            onClick={(e) => handleLinkClick(e as any, link.href)}
-            className={cn(
-              hasWhiteBg 
-                ? "text-foreground hover:text-[#9B1B5C]" 
-                : "text-white hover:text-gray-200",
-              "font-bold transition-colors hover:underline p-2 text-base",
-              "bg-transparent hover:bg-transparent focus:bg-transparent"
-            )}
-          >
-            {link.name}
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-      )),
-    [hasWhiteBg, handleLinkClick]
-  );
+  const isLinkActive = (href: string) => {
+    if (href === '/') {
+      return pathname === href;
+    }
+    return pathname.startsWith(href);
+  };
+  
+  const isSolutionsActive = pathname.startsWith('/solutions');
+
 
   return (
     <>
-      <TopBar />
+      <div className={cn("fixed top-0 left-0 w-full z-50 transition-transform duration-300", scrolled ? "-translate-y-full" : "translate-y-0")}>
+        <TopBar />
+      </div>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-2 transition-all duration-300",
+          "fixed top-0 left-0 right-0 z-40 flex items-center justify-between p-2 transition-all duration-300",
           hasWhiteBg
             ? "bg-white backdrop-blur-sm shadow-md"
-            : "bg-transparent"
+            : "bg-transparent",
+          scrolled ? "top-0" : "top-[30px]"
         )}
-        style={{ top: scrolled ? 0 : "1.75rem" }}
       >
         <div className="container-max flex items-center justify-between">
-          {/* Logo - Use SVG with dynamic color instead of switching images */}
           <Link
             href="/"
             className="flex items-center gap-2"
             prefetch={false}
             onMouseEnter={() => setIsHoveringNav(true)}
             onMouseLeave={() => setIsHoveringNav(false)}
+             onClick={(e) => handleLinkClick(e, "/")}
           >
             <div className="relative h-8 w-[120px] transition-opacity duration-300">
-              {/* White logo for transparent background */}
               <div className={cn(
                 "absolute inset-0 transition-opacity duration-300",
                 hasWhiteBg ? "opacity-0" : "opacity-100"
               )}>
                 <Image
-                  src="/assets/Inviot_Logo.png"
+                  src="/assets/whitelogof.svg"
                   alt="Inviot Logo"
                   width={120}
                   height={32}
-                  className="h-8 w-auto"
+                  className="h-6 w-auto"
                 />
               </div>
-              
-              {/* Colored logo for white background */}
               <div className={cn(
                 "absolute inset-0 transition-opacity duration-300",
                 hasWhiteBg ? "opacity-100" : "opacity-0"
@@ -243,7 +252,6 @@ const Header = () => {
             </div>
           </Link>
 
-          {/* Desktop Menu */}
           <div
             className="hidden lg:flex items-center gap-4"
             onMouseEnter={() => setIsHoveringNav(true)}
@@ -251,44 +259,45 @@ const Header = () => {
           >
             <NavigationMenu>
               <NavigationMenuList className="flex items-center gap-2">
-                {/* Home Link */}
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    href="/#hero"
-                    onMouseEnter={() => setIsHoveringNav(true)}
-                    onMouseLeave={() => setIsHoveringNav(false)}
-                    onClick={(e) => handleLinkClick(e as any, "/#hero")}
-                    className={cn(
-                      hasWhiteBg 
-                        ? "text-foreground hover:text-[#9B1B5C]" 
-                        : "text-white hover:text-gray-200",
-                      "font-bold transition-colors hover:underline p-2 text-base",
-                      "bg-transparent hover:bg-transparent focus:bg-transparent"
-                    )}
-                  >
-                    Home
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                
+                {navLinks.filter(l => l.name === 'Home').map((link) => (
+                  <NavigationMenuItem key={link.name}>
+                    <NavigationMenuLink
+                      asChild
+                      active={isLinkActive(link.href)}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={(e) => link.href.includes('#') || link.href === '/' ? handleLinkClick(e, link.href) : undefined}
+                        className={cn(
+                           "font-bold transition-colors p-2 text-base bg-transparent hover:bg-transparent focus:bg-transparent",
+                          isLinkActive(link.href)
+                            ? 'text-primary' 
+                            : hasWhiteBg
+                              ? "text-foreground hover:text-primary"
+                              : "text-white hover:text-gray-200"
+                        )}
+                      >
+                        {link.name}
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ))}
 
-                {/* Solutions Dropdown */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
                     className={cn(
-                      hasWhiteBg 
-                        ? "text-foreground hover:text-[#9B1B5C] data-[state=open]:text-[#9B1B5C]" 
-                        : "text-white hover:text-gray-200 data-[state=open]:text-gray-200",
-                      "font-bold transition-colors hover:underline p-2 text-base",
-                      "bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent"
+                      "font-bold transition-colors p-2 text-base bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent",
+                      isSolutionsActive
+                        ? "text-primary"
+                        : hasWhiteBg 
+                          ? "text-foreground hover:text-primary data-[state=open]:text-primary" 
+                          : "text-white hover:text-gray-200 data-[state=open]:text-gray-200"
                     )}
-                    onMouseEnter={() => setIsHoveringNav(true)}
-                    onMouseLeave={() => setIsHoveringNav(false)}
                   >
                     Solutions
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent
-                    onMouseEnter={() => setIsHoveringNav(true)}
-                    onMouseLeave={() => setIsHoveringNav(false)}
-                  >
+                  <NavigationMenuContent>
                     <ul className="grid gap-3 p-4 w-[300px]">
                       {solutions.map((solution) => (
                         <li key={solution.name}>
@@ -296,7 +305,6 @@ const Header = () => {
                             href={solution.href}
                             className="block rounded-md p-2 hover:bg-accent hover:text-accent-foreground transition text-base"
                             prefetch={false}
-                            onMouseEnter={() => setIsHoveringNav(true)}
                           >
                             {solution.name}
                           </Link>
@@ -305,37 +313,38 @@ const Header = () => {
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
-
-                {/* Other navigation links */}
-                {navLinks.filter(link => link.name !== "Home").map((link) => (
+                
+                {navLinks.filter(l => l.name !== 'Home').map((link) => (
                   <NavigationMenuItem key={link.name}>
                     <NavigationMenuLink
-                      href={link.href}
-                      onMouseEnter={() => setIsHoveringNav(true)}
-                      onMouseLeave={() => setIsHoveringNav(false)}
-                      onClick={(e) => handleLinkClick(e as any, link.href)}
-                      className={cn(
-                        hasWhiteBg 
-                          ? "text-foreground hover:text-[#9B1B5C]" 
-                          : "text-white hover:text-gray-200",
-                        "font-bold transition-colors hover:underline p-2 text-base",
-                        "bg-transparent hover:bg-transparent focus:bg-transparent"
-                      )}
+                      asChild
+                      active={isLinkActive(link.href)}
                     >
-                      {link.name}
+                      <Link
+                        href={link.href}
+                        onClick={(e) => link.href.includes('#') || link.href === '/' ? handleLinkClick(e, link.href) : undefined}
+                        className={cn(
+                           "font-bold transition-colors p-2 text-base bg-transparent hover:bg-transparent focus:bg-transparent",
+                          isLinkActive(link.href)
+                            ? 'text-primary' 
+                            : hasWhiteBg
+                              ? "text-foreground hover:text-primary"
+                              : "text-white hover:text-gray-200"
+                        )}
+                      >
+                        {link.name}
+                      </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
 
-                {/* Contact Us Button */}
                 <Link href="/contact-us" passHref>
                   <Button
                     size="sm"
                     className={cn(
                       "font-headline btn-glow text-base",
+                       isLinkActive('/contact-us') ? 'bg-primary/80' : ''
                     )}
-                    onMouseEnter={() => setIsHoveringNav(true)}
-                    onMouseLeave={() => setIsHoveringNav(false)}
                   >
                     Contact Us
                   </Button>
@@ -344,15 +353,12 @@ const Header = () => {
             </NavigationMenu>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="lg:hidden">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button
                   size="icon"
                   variant="ghost"
-                  onMouseEnter={() => setIsHoveringNav(true)}
-                  onMouseLeave={() => setIsHoveringNav(false)}
                   className={cn(
                     hasWhiteBg 
                       ? "text-foreground" 
@@ -372,23 +378,28 @@ const Header = () => {
                 <div className="flex flex-col h-full">
                   <div className="flex-grow mt-8">
                     <nav className="flex flex-col space-y-4">
-                      {/* Home Link */}
-                      <SheetClose asChild>
-                        <Link
-                          href="/#hero"
-                          onClick={(e) => handleSheetLinkClick(e, "/#hero")}
-                          className="text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2 block"
-                        >
-                          Home
-                        </Link>
-                      </SheetClose>
+                      {navLinks.filter(l => l.name === 'Home').map((link) => (
+                        <SheetClose asChild key={link.name}>
+                          <Link
+                            href={link.href}
+                            onClick={() => handleSheetLinkClick(link.href)}
+                            className={cn(
+                              "text-lg font-bold transition-colors p-2 block",
+                              isLinkActive(link.href) ? 'text-primary' : 'text-foreground hover:text-primary'
+                            )}
+                          >
+                            {link.name}
+                          </Link>
+                        </SheetClose>
+                      ))}
 
-                      {/* Mobile Solutions Dropdown */}
                       <div className="flex flex-col">
                         <button
                           onClick={() => setMobileSolutionsOpen(!mobileSolutionsOpen)}
-                          className="flex items-center justify-between text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2"
-                          onMouseEnter={() => setIsHoveringNav(true)}
+                          className={cn(
+                            "flex items-center justify-between text-lg font-bold transition-colors p-2",
+                            isSolutionsActive ? 'text-primary' : 'text-foreground hover:text-primary'
+                          )}
                         >
                           Solutions
                           {mobileSolutionsOpen ? (
@@ -405,9 +416,11 @@ const Header = () => {
                                 <Link
                                   href={solution.href}
                                   onClick={() => setMobileMenuOpen(false)}
-                                  className="text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2 block"
+                                  className={cn(
+                                    "text-base font-bold transition-colors p-2 block",
+                                    pathname === solution.href ? 'text-primary' : 'text-foreground hover:text-primary'
+                                  )}
                                   prefetch={false}
-                                  onMouseEnter={() => setIsHoveringNav(true)}
                                 >
                                   {solution.name}
                                 </Link>
@@ -417,14 +430,15 @@ const Header = () => {
                         )}
                       </div>
 
-                      {/* Other navigation links */}
-                      {navLinks.filter(link => link.name !== "Home").map((link) => (
+                      {navLinks.filter(l => l.name !== 'Home').map((link) => (
                         <SheetClose asChild key={link.name}>
                           <Link
                             href={link.href}
-                            onClick={(e) => handleSheetLinkClick(e, link.href)}
-                            className="text-lg font-bold text-foreground hover:text-[#9B1B5C] transition-colors hover:underline p-2 block"
-                            onMouseEnter={() => setIsHoveringNav(true)}
+                            onClick={() => handleSheetLinkClick(link.href)}
+                            className={cn(
+                              "text-lg font-bold transition-colors p-2 block",
+                              isLinkActive(link.href) ? 'text-primary' : 'text-foreground hover:text-primary'
+                            )}
                           >
                             {link.name}
                           </Link>
@@ -432,13 +446,11 @@ const Header = () => {
                       ))}
                     </nav>
                   </div>
-                  {/* Mobile Contact Us Button */}
                   <SheetClose asChild>
                     <Link href="/contact-us" passHref>
                       <Button
                         className="font-headline btn-glow mt-auto w-full text-lg font-bold"
                         size="lg"
-                        onMouseEnter={() => setIsHoveringNav(true)}
                       >
                         Contact Us
                       </Button>
