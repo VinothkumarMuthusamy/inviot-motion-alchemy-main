@@ -7,7 +7,7 @@ import Contact from "@/components/landing/contact";
 import { CheckCircle } from "lucide-react";
 import TrustedFeatures from "@/components/landing/trusted-features";
 import { motion } from "framer-motion";
-import { easeOut } from "framer-motion";
+import { easeOut, easeInOut } from "framer-motion";
 
 const solution: Solution = {
   slug: "digital-signage",
@@ -156,65 +156,118 @@ const SolutionCard = ({
   );
 };
 
-// ================= Animated Feature Item =================
-const FeatureItem = ({ 
+// ================= Animated Display Features =================
+const DisplayFeatureItem = ({ 
   item, 
   index 
 }: { 
   item: { description: string };
   index: number;
 }) => {
-  const featureVariants = {
-    hidden: { opacity: 0, x: -30 },
+  const containerVariants = {
+    hidden: { 
+      opacity: 0,
+      perspective: 1000,
+    },
     visible: {
       opacity: 1,
-      x: 0,
       transition: {
-        duration: 0.6,
-        delay: index * 0.1,
+        duration: 0.8,
+        delay: index * 0.15,
+        ease: easeOut
+      }
+    }
+  };
+
+  const textVariants = {
+    hidden: { 
+      x: -100,
+      opacity: 0,
+      rotateY: -45,
+      transformOrigin: "left center"
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+      rotateY: 0,
+      transition: {
+        duration: 0.7,
+        delay: index * 0.15 + 0.2,
         ease: easeOut
       }
     }
   };
 
   const iconVariants = {
-    hidden: { scale: 0, rotate: -180 },
+    hidden: { 
+      scale: 0, 
+      rotate: -180,
+      y: -50 
+    },
     visible: {
       scale: 1,
       rotate: 0,
+      y: 0,
       transition: {
-        duration: 0.5,
-        delay: index * 0.1 + 0.2
+        duration: 0.6,
+        delay: index * 0.15 + 0.1,
+        ease: easeOut
+      }
+    }
+  };
+
+  const hoverVariants = {
+    hover: {
+      x: 20,
+      paddingLeft: "1.5rem",
+      paddingRight: "1.5rem",
+      marginLeft: "-1.5rem",
+      marginRight: "-1.5rem",
+      borderLeftWidth: "4px",
+      borderLeftColor: "#ec4899",
+      backgroundColor: "rgba(236, 72, 153, 0.05)",
+      transition: {
+        duration: 0.3,
+        ease: easeOut
       }
     }
   };
 
   return (
     <motion.li
-      className="flex items-start transition-all duration-300 hover:translate-x-2"
+      className="flex items-start relative overflow-hidden"
       initial="hidden"
       whileInView="visible"
+      whileHover="hover"
       viewport={{ once: true, amount: 0.3 }}
-      variants={featureVariants}
+      variants={containerVariants}
     >
-      <motion.div variants={iconVariants}>
-        <svg
-          className="h-5 w-5 text-pink-600 mr-3 mt-1 flex-shrink-0 transition-colors duration-300 hover:text-purple-600"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      <motion.div
+        className="flex items-start w-full py-3 rounded-lg"
+        variants={hoverVariants}
+      >
+        <motion.div variants={iconVariants}>
+          <svg
+            className="h-6 w-6 text-pink-600 mr-4 mt-0.5 flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            />
+          </svg>
+        </motion.div>
+        <motion.span 
+          className="text-left text-black text-lg font-medium"
+          variants={textVariants}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 13l4 4L19 7"
-          />
-        </svg>
+          {item.description}
+        </motion.span>
       </motion.div>
-      <span className="text-left text-black transition-colors duration-300 hover:text-gray-700">
-        {item.description}
-      </span>
     </motion.li>
   );
 };
@@ -310,6 +363,44 @@ export default function DigitalSignagePage() {
     },
   ];
 
+  // Enhanced Animation for the display solutions image - Spin and move from left to right
+  const imageVariants = {
+    hidden: { 
+      opacity: 0,
+      x: -200, // Start from left side
+      scale: 0.5,
+      rotateY: -180, // Start with full spin backwards
+      rotateX: -45,
+      perspective: 1200,
+      transformOrigin: "center center"
+    },
+    visible: {
+      opacity: 1,
+      x: 0, // Move to final position
+      scale: 1,
+      rotateY: 0, // Complete the spin
+      rotateX: 0,
+      transition: {
+        duration: 1.5,
+        ease: easeInOut, // Use imported easing function
+        delay: 0.3
+      }
+    }
+  };
+
+  // Additional hover animation for the image
+  const imageHoverVariants = {
+    hover: {
+      scale: 1.08,
+      rotateY: 10,
+      rotateX: 5,
+      transition: {
+        duration: 0.6,
+        ease: easeOut
+      }
+    }
+  };
+
   return (
     <div className="relative">
       {/* Enhanced Background with Animations */}
@@ -371,12 +462,12 @@ export default function DigitalSignagePage() {
               {/* Text Content - Left Side */}
               <div className="lg:w-1/2">
                 <motion.div variants={titleVariants}>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-6">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8">
                     Our Display Solutions
                   </h2>
-                  <ul className="space-y-6 text-black">
+                  <ul className="space-y-4">
                     {displayFeatures.map((item, index) => (
-                      <FeatureItem 
+                      <DisplayFeatureItem 
                         key={index}
                         item={item}
                         index={index}
@@ -386,23 +477,43 @@ export default function DigitalSignagePage() {
                 </motion.div>
               </div>
 
-              {/* Image - Right Side */}
+              {/* Image - Right Side with Spin Animation */}
               <div className="lg:w-1/2">
                 <motion.div
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: easeOut }}
+                  initial="hidden"
+                  whileInView="visible"
+                  whileHover="hover"
+                  viewport={{ once: true, amount: 0.5 }}
+                  variants={imageVariants}
                 >
                   <div className="flex justify-center lg:justify-end">
                     <div className="relative group max-w-full">
-                      {/* Image glow effect */}
-                      <div className="absolute -inset-2 rounded-lg bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-30 blur-lg transition-all duration-500 ease-out"></div>
-                      <img
-                        src="/assets/solutionimg/shopping-girl-looking-store-window.jpg"
-                        alt="Display Solutions"
-                        className="max-w-full h-auto rounded-lg shadow-md transition-transform duration-700 ease-out group-hover:scale-105 relative z-10"
+                      {/* Enhanced Image glow effect */}
+                      <motion.div 
+                        className="absolute -inset-4 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-40 blur-xl"
+                        whileInView={{
+                          opacity: 0.2,
+                          transition: { duration: 1, delay: 0.8 }
+                        }}
                       />
+                      <motion.div
+                        variants={imageHoverVariants}
+                        className="relative z-10 rounded-xl overflow-hidden shadow-2xl"
+                        style={{
+                          transformStyle: "preserve-3d",
+                        }}
+                      >
+                       <img
+  src="/assets/solutionimg/shopping-girl-looking-store-window.jpg"
+  alt="Display Solutions"
+  className="max-w-full h-[500px] object-cover"
+  style={{
+    borderRadius: "12px",
+    borderWidth: "2px",
+    borderColor: "rgba(255,255,255,0.1)"
+  }}
+/>
+                      </motion.div>
                     </div>
                   </div>
                 </motion.div>

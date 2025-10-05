@@ -152,7 +152,7 @@ const SolutionCard = ({
   );
 };
 
-// ================= Animated Feature Item =================
+// ================= Animated Feature Item with Requested Animations =================
 const FeatureItem = ({ 
   title, 
   description, 
@@ -162,43 +162,91 @@ const FeatureItem = ({
   description: string; 
   index: number;
 }) => {
-  const featureVariants = {
-    hidden: { opacity: 0, y: 30 },
+  const containerVariants = {
+    hidden: { 
+      opacity: 0,
+      perspective: 1000,
+    },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
-        duration: 0.6,
-        delay: index * 0.1,
+        duration: 0.8,
+        delay: index * 0.15,
+        ease: easeOut
+      }
+    }
+  };
+
+  const textVariants = {
+    hidden: { 
+      x: -100,
+      opacity: 0,
+      rotateY: -45,
+      transformOrigin: "left center"
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+      rotateY: 0,
+      transition: {
+        duration: 0.7,
+        delay: index * 0.15 + 0.2,
         ease: easeOut
       }
     }
   };
 
   const iconVariants = {
-    hidden: { scale: 0, rotate: -180 },
+    hidden: { 
+      scale: 0, 
+      rotate: -180,
+      y: -50 
+    },
     visible: {
       scale: 1,
       rotate: 0,
+      y: 0,
       transition: {
-        duration: 0.5,
-        delay: index * 0.1 + 0.2
+        duration: 0.6,
+        delay: index * 0.15 + 0.1,
+        ease: easeOut
+      }
+    }
+  };
+
+  const hoverVariants = {
+    hover: {
+      x: 20,
+      paddingLeft: "1.5rem",
+      paddingRight: "1.5rem",
+      marginLeft: "-1.5rem",
+      marginRight: "-1.5rem",
+      borderLeftWidth: "4px",
+      borderLeftColor: "#ec4899",
+      backgroundColor: "rgba(236, 72, 153, 0.05)",
+      transition: {
+        duration: 0.3,
+        ease: easeOut
       }
     }
   };
 
   return (
     <motion.div
-      className="bg-transparent rounded-lg p-6 transition-all duration-300 hover:bg-white/10 hover:scale-105"
+      className="flex items-start relative overflow-hidden bg-transparent rounded-lg"
       initial="hidden"
       whileInView="visible"
+      whileHover="hover"
       viewport={{ once: true, amount: 0.3 }}
-      variants={featureVariants}
+      variants={containerVariants}
     >
-      <div className="flex items-start">
+      <motion.div
+        className="flex items-start w-full py-4"
+        variants={hoverVariants}
+      >
         <motion.div variants={iconVariants}>
           <svg
-            className="h-6 w-6 text-pink-600 mr-4 mt-1 flex-shrink-0 transition-colors duration-300 group-hover:text-purple-600"
+            className="h-6 w-6 text-pink-600 mr-4 mt-1 flex-shrink-0"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -207,19 +255,25 @@ const FeatureItem = ({
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M5 13l4 4L19 7"
+              d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
             />
           </svg>
         </motion.div>
         <div>
-          <h3 className="font-bold text-pink-600 text-lg mb-2 transition-colors duration-300 group-hover:text-purple-600">
+          <motion.h3 
+            className="font-bold text-pink-600 text-lg mb-2"
+            variants={textVariants}
+          >
             {title}
-          </h3>
-          <p className="text-black text-justify transition-colors duration-300 group-hover:text-gray-700">
+          </motion.h3>
+          <motion.p 
+            className="text-black text-justify"
+            variants={textVariants}
+          >
             {description}
-          </p>
+          </motion.p>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
@@ -285,11 +339,39 @@ export default function DigitalClassroomsPage() {
   };
 
   const titleVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { 
+      opacity: 0, 
+      y: 30,
+      perspective: 1000 
+    },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: easeOut }
+      transition: { 
+        duration: 0.8, 
+        ease: easeOut 
+      }
+    }
+  };
+
+  // Animation for the section title
+  const sectionTitleVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 50,
+      scale: 0.8,
+      rotateX: -15
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotateX: 0,
+      transition: {
+        duration: 1,
+        ease: easeOut,
+        delay: 0.2
+      }
     }
   };
 
@@ -351,7 +433,12 @@ export default function DigitalClassroomsPage() {
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
-              <motion.div variants={titleVariants}>
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={sectionTitleVariants}
+              >
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-12 text-center">
                   Shaping Student Success with AV Solutions
                 </h2>
