@@ -9,9 +9,7 @@ const Hero = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   
   const videos = [
-    "/videos/WEBSITEVIDEOFINAL 3.mp4",
-    "/videos/WEBSITEVIDEOFINAL 3.mp4",
-    "/videos/WEBSITEVIDEOFINAL 3.mp4"
+    "/videos/WEBSITE  VIDEO (OCT 8).mp4"
   ];
   
   const headlines = [
@@ -112,7 +110,7 @@ const Hero = () => {
       </div>
 
       {/* Carousel indicators - Centered at bottom */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3 z-10">
+      {/* <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3 z-10">
         {videos.map((_, index) => (
           <button
             key={index}
@@ -129,10 +127,10 @@ const Hero = () => {
             }}
           />
         ))}
-      </div>
+      </div> */}
 
       {/* Navigation arrows */}
-      <button 
+      {/* <button 
         className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 transition-colors"
         onClick={() => {
           setIsTransitioning(true);
@@ -202,7 +200,7 @@ const Hero = () => {
         .animation-delay-700 {
           animation-delay: 0.7s;
         }
-      `}</style>
+      `}</style> */}
     </section>
   );
 };

@@ -510,7 +510,7 @@ export default function DigitalSignagePage() {
   style={{
     borderRadius: "12px",
     borderWidth: "2px",
-    borderColor: "rgba(255,255,255,0.1)"
+    borderColor: "rgba(251, 110, 187, 0.1)"
   }}
 />
                       </motion.div>

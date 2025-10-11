@@ -119,7 +119,7 @@ const Mission = () => {
                 playsInline
                 className="w-full h-full object-cover"
               >
-                <source src="/videos/WEBSITE VIDEO OP.mp4" type="video/mp4" />
+                <source src="/videos/WEBSITE  VIDEO  INVIOT (OCT 11) V2.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-colors duration-300"></div>
