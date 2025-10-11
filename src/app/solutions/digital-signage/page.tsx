@@ -156,6 +156,88 @@ const SolutionCard = ({
   );
 };
 
+// ================= Display Solutions Card =================
+const DisplaySolutionsCard = () => {
+  const cardVariants = {
+    hidden: { rotateX: 90, opacity: 0, transformOrigin: "top center" },
+    visible: {
+      rotateX: 0,
+      opacity: 1,
+      transition: { duration: 0.8, ease: easeOut },
+    },
+  };
+
+  const displayFeatures = [
+    "Touch-interactive kiosks and monitors for dynamic engagement",
+    "Large-format interactive displays that captivate audiences",
+    "Indoor and outdoor display solutions for any environment",
+    "Video walls and direct-view LED systems for stunning visuals",
+    "Create layouts, push updates, and manage content across networks with ease"
+  ];
+
+  return (
+    <motion.div
+      className="relative group max-w-6xl w-full mx-auto"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={cardVariants}
+    >
+      {/* Gradient Glow */}
+      <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-30 group-hover:opacity-60 blur-lg transition-all duration-500 ease-out group-hover:scale-105"></div>
+
+      {/* Card Content */}
+      <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-500 group-hover:scale-[1.02] border border-gray-200 hover:shadow-xl flex flex-col md:flex-row">
+        {/* Text Content */}
+        <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
+          <div className="relative inline-block mb-4">
+            <h3 className="text-2xl font-bold text-pink-600 transition-colors duration-300 group-hover:text-pink-700">
+              Our Display Solutions
+            </h3>
+            <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-600 transition-all duration-500 group-hover:w-full"></div>
+          </div>
+
+          <p className="text-black mb-4 text-base md:text-lg transition-all duration-300 group-hover:text-gray-700">
+            Comprehensive display solutions designed to transform how you engage with your audience. From interactive kiosks to stunning video walls, we provide the technology to captivate and inspire.
+          </p>
+
+          <div className="border-t border-gray-200/50 pt-4 md:pt-6">
+            <h4 className="text-lg font-semibold text-black mb-3 md:mb-4 transition-colors duration-300 group-hover:text-gray-800">
+              Key Features
+            </h4>
+            <ul className="space-y-2 md:space-y-3">
+              {displayFeatures.map((feature, index) => (
+                <li
+                  key={index}
+                  className="flex items-start transition-all duration-300 hover:translate-x-2"
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  <CheckCircle className="h-5 w-5 text-pink-600 flex-shrink-0 mt-0.5 mr-3 transition-all duration-300 group-hover:scale-110 group-hover:text-purple-600" />
+                  <span className="text-black text-base md:text-base transition-colors duration-300 group-hover:text-gray-700">
+                    {feature}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Image */}
+        <div className="relative h-64 md:h-auto md:w-1/2 overflow-hidden">
+          <Image
+            src="/assets/solutionimg/shopping-girl-looking-store-window.jpg"
+            alt="Display Solutions - Interactive kiosks and digital displays"
+            data-ai-hint="display solutions interactive kiosk"
+            fill
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            priority
+          />
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 // ================= Animated Display Features =================
 const DisplayFeatureItem = ({ 
   item, 
@@ -345,24 +427,6 @@ export default function DigitalSignagePage() {
     },
   ];
 
-  const displayFeatures = [
-    {
-      description: "Touch-interactive kiosks and monitors for dynamic engagement",
-    },
-    {
-      description: "Large-format interactive displays that captivate audiences",
-    },
-    {
-      description: "Indoor and outdoor display solutions for any environment",
-    },
-    {
-      description: "Video walls and direct-view LED systems for stunning visuals",
-    },
-    {
-      description: "Create layouts, push updates, and manage content across networks with ease",
-    },
-  ];
-
   // Enhanced Animation for the display solutions image - Spin and move from left to right
   const imageVariants = {
     hidden: { 
@@ -449,75 +513,17 @@ export default function DigitalSignagePage() {
           </motion.section>
         ))}
 
-        {/* Display Solutions Section - Side by side layout with animations */}
+        {/* Display Solutions Card Section */}
         <motion.section 
-          className="py-16 md:py-20 lg:py-24"
+          className="py-12 md:py-16 lg:py-20"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={sectionVariants}
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 max-w-6xl mx-auto">
-              {/* Text Content - Left Side */}
-              <div className="lg:w-1/2">
-                <motion.div variants={titleVariants}>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-8">
-                    Our Display Solutions
-                  </h2>
-                  <ul className="space-y-4">
-                    {displayFeatures.map((item, index) => (
-                      <DisplayFeatureItem 
-                        key={index}
-                        item={item}
-                        index={index}
-                      />
-                    ))}
-                  </ul>
-                </motion.div>
-              </div>
-
-              {/* Image - Right Side with Spin Animation */}
-              <div className="lg:w-1/2">
-                <motion.div
-                  initial="hidden"
-                  whileInView="visible"
-                  whileHover="hover"
-                  viewport={{ once: true, amount: 0.5 }}
-                  variants={imageVariants}
-                >
-                  <div className="flex justify-center lg:justify-end">
-                    <div className="relative group max-w-full">
-                      {/* Enhanced Image glow effect */}
-                      <motion.div 
-                        className="absolute -inset-4 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-40 blur-xl"
-                        whileInView={{
-                          opacity: 0.2,
-                          transition: { duration: 1, delay: 0.8 }
-                        }}
-                      />
-                      <motion.div
-                        variants={imageHoverVariants}
-                        className="relative z-10 rounded-xl overflow-hidden shadow-2xl"
-                        style={{
-                          transformStyle: "preserve-3d",
-                        }}
-                      >
-                       <img
-  src="/assets/solutionimg/shopping-girl-looking-store-window.jpg"
-  alt="Display Solutions"
-  className="max-w-full h-[500px] object-cover"
-  style={{
-    borderRadius: "12px",
-    borderWidth: "2px",
-    borderColor: "rgba(251, 110, 187, 0.1)"
-  }}
-/>
-                      </motion.div>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
+            <div className="min-h-screen flex items-center justify-center py-8">
+              <DisplaySolutionsCard />
             </div>
           </div>
         </motion.section>

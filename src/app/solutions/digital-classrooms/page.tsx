@@ -152,6 +152,89 @@ const SolutionCard = ({
   );
 };
 
+// ================= Student Success Card =================
+const StudentSuccessCard = () => {
+  const cardVariants = {
+    hidden: { rotateX: 90, opacity: 0, transformOrigin: "top center" },
+    visible: {
+      rotateX: 0,
+      opacity: 1,
+      transition: { duration: 0.8, ease: easeOut },
+    },
+  };
+
+  const features = [
+    {
+      title: "Student engagement first",
+      description: "Collaboration technology continues to play a vital role in driving success both in classrooms and remotely."
+    },
+    {
+      title: "Learning without isolation",
+      description: "Even in varied environments, students remain engaged and connected through innovative solutions."
+    },
+    {
+      title: "HyFlex classrooms",
+      description: "Seamlessly connect in-person and online students for immersive, interactive learning."
+    },
+    {
+      title: "Beyond convenience",
+      description: "Schools need advanced AV tools and sustainable environments that foster collaboration and long-term success."
+    }
+  ];
+
+  return (
+    <motion.div
+      className="relative group max-w-6xl w-full mx-auto"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={cardVariants}
+    >
+      {/* Gradient Glow */}
+      <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-30 group-hover:opacity-60 blur-lg transition-all duration-500 ease-out group-hover:scale-105"></div>
+
+      {/* Card Content */}
+      <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-500 group-hover:scale-[1.02] border border-gray-200 hover:shadow-xl">
+        {/* Card Header */}
+        <div className="p-6 md:p-8 border-b border-gray-200/50">
+          <div className="relative inline-block">
+            <h3 className="text-2xl md:text-3xl font-bold text-pink-600 transition-colors duration-300 group-hover:text-pink-700 text-center w-full">
+              Shaping Student Success with AV Solutions
+            </h3>
+            <div className="absolute -bottom-2 left-0 w-0 h-0.5 bg-pink-600 transition-all duration-500 group-hover:w-full"></div>
+          </div>
+        </div>
+
+        {/* Features Grid */}
+        <div className="p-6 md:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="flex items-start transition-all duration-300 hover:translate-x-2 group/feature"
+                style={{ transitionDelay: `${index * 100}ms` }}
+              >
+                <CheckCircle className="h-6 w-6 text-pink-600 flex-shrink-0 mt-1 mr-4 transition-all duration-300 group-hover/feature:scale-110 group-hover/feature:text-purple-600" />
+                <div>
+                  <h4 className="text-lg font-semibold text-pink-600 mb-2 transition-colors duration-300 group-hover/feature:text-purple-600">
+                    {feature.title}
+                  </h4>
+                  <p className="text-black text-base transition-colors duration-300 group-hover/feature:text-gray-700">
+                    {feature.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Optional: Add an image at the bottom if needed */}
+       
+      </div>
+    </motion.div>
+  );
+};
+
 // ================= Animated Feature Item with Requested Animations =================
 const FeatureItem = ({ 
   title, 
@@ -307,25 +390,6 @@ export default function DigitalClassroomsPage() {
     }
   ];
 
-  const features = [
-    {
-      title: "Student engagement first",
-      description: "Collaboration technology continues to play a vital role in driving success both in classrooms and remotely."
-    },
-    {
-      title: "HyFlex classrooms",
-      description: "Seamlessly connect in-person and online students for immersive, interactive learning."
-    },
-    {
-      title: "Learning without isolation",
-      description: "Even in varied environments, students remain engaged and connected through innovative solutions."
-    },
-    {
-      title: "Beyond convenience",
-      description: "Schools need advanced AV tools and sustainable environments that foster collaboration and long-term success."
-    }
-  ];
-
   // Animation variants for sections
   const sectionVariants = {
     hidden: { opacity: 0 },
@@ -350,27 +414,6 @@ export default function DigitalClassroomsPage() {
       transition: { 
         duration: 0.8, 
         ease: easeOut 
-      }
-    }
-  };
-
-  // Animation for the section title
-  const sectionTitleVariants = {
-    hidden: { 
-      opacity: 0,
-      y: 50,
-      scale: 0.8,
-      rotateX: -15
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      rotateX: 0,
-      transition: {
-        duration: 1,
-        ease: easeOut,
-        delay: 0.2
       }
     }
   };
@@ -423,57 +466,17 @@ export default function DigitalClassroomsPage() {
           </motion.section>
         ))}
 
-        {/* Features Section with Enhanced Animations */}
+        {/* Student Success Card Section */}
         <motion.section 
-          className="py-4 md:py-8 lg:py-8"
+          className="py-12 md:py-16 lg:py-20"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={sectionVariants}
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-6xl mx-auto">
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={sectionTitleVariants}
-              >
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600 mb-12 text-center">
-                  Shaping Student Success with AV Solutions
-                </h2>
-              </motion.div>
-              
-              {/* Grid layout for the features */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Left Column */}
-                <div className="space-y-8">
-                  <FeatureItem 
-                    title={features[0].title} 
-                    description={features[0].description} 
-                    index={0}
-                  />
-                  <FeatureItem 
-                    title={features[2].title} 
-                    description={features[2].description} 
-                    index={2}
-                  />
-                </div>
-
-                {/* Right Column */}
-                <div className="space-y-8">
-                  <FeatureItem 
-                    title={features[1].title} 
-                    description={features[1].description} 
-                    index={1}
-                  />
-                  <FeatureItem 
-                    title={features[3].title} 
-                    description={features[3].description} 
-                    index={3}
-                  />
-                </div>
-              </div>
+            <div className="min-h-screen flex items-center justify-center py-8">
+              <StudentSuccessCard />
             </div>
           </div>
         </motion.section>
