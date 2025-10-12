@@ -41,8 +41,8 @@ const TrustedFeatures = () => {
   const activeStep = approachSteps.find((step) => step.id === activeTab);
 
   return (
-    <section className="section-padding relative">
-      {/* Background Layer - Same as global background */}
+    <section className="section-padding relative overflow-hidden">
+      {/* Background Layer */}
       <div className="fixed inset-0 -z-10">
         <Image
           src="/assets/team-bg.jpg"
@@ -51,24 +51,23 @@ const TrustedFeatures = () => {
           className="object-cover"
           priority
         />
-        <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-pink-500 opacity-30 rounded-full blur-[120px] animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-[400px] h-[400px] bg-blue-600 opacity-30 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+        <div className="absolute top-20 left-10 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-pink-500 opacity-30 rounded-full blur-[100px] animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-blue-600 opacity-30 rounded-full blur-[100px] animate-pulse delay-1000"></div>
       </div>
-      
+
       <div className="container-max relative z-10">
-        {/* Section Header */}
-        <AnimateInView className="text-center mb-12 md:mb-16">
-          <h2 className="heading-2">Often first, always trusted</h2>
-          <p className="mt-4 max-w-3xl mx-auto text-foreground/80 text-base md:text-lg leading-relaxed">
+        {/* Header */}
+        <AnimateInView className="text-center mb-10 md:mb-16">
+          <h2 className="heading-2 text-xl sm:text-2xl md:text-3xl">Often first, always trusted</h2>
+          <p className="mt-3 sm:mt-4 max-w-3xl mx-auto text-foreground/80 text-sm sm:text-base md:text-lg leading-relaxed">
             Cutting-edge technology. 20+ years of experience.
           </p>
         </AnimateInView>
 
-        {/* Layout: Circle + Content */}
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-10">
+        {/* Layout */}
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12">
           {/* Circular Navigation */}
-          <div className="relative w-72 h-72 flex-shrink-0">
-            {/* Pink Circle PNG Background */}
+          <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 flex-shrink-0 mb-6 lg:mb-0">
             <Image
               src="/assets/pink-circle.png"
               alt="Pink Circle Background"
@@ -76,15 +75,12 @@ const TrustedFeatures = () => {
               className="object-contain z-0"
               priority
             />
-
-            {/* Outer Circle Border */}
             <div className="absolute inset-0 rounded-full border-2 border-primary/20 z-10" />
 
-            {/* Buttons with only numbers */}
             {approachSteps.map((step, index) => {
               const totalSteps = approachSteps.length;
               const angle = (index * 360) / totalSteps - 90;
-              const radius = 100;
+              const radius = 85; // smaller for mobile
               const x = Math.cos((angle * Math.PI) / 180) * radius;
               const y = Math.sin((angle * Math.PI) / 180) * radius;
 
@@ -92,9 +88,9 @@ const TrustedFeatures = () => {
                 <button
                   key={step.id}
                   type="button"
-                  className={`absolute w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-xs font-bold z-20 focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                  className={`absolute w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold z-20 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-200 ${
                     activeTab === step.id
-                      ? "bg-primary text-primary-foreground shadow-xl border-2 border-white"
+                      ? "bg-primary text-primary-foreground shadow-xl border-2 border-white scale-105"
                       : "bg-card text-foreground/80 hover:bg-primary/20 shadow-md border border-border"
                   }`}
                   style={{
@@ -109,16 +105,16 @@ const TrustedFeatures = () => {
               );
             })}
 
-            {/* Enlarged Center Circle */}
-            <div className="absolute inset-0 m-auto w-28 h-28 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-xl z-20">
-              <span className="text-primary-foreground font-bold text-sm sm:text-base text-center leading-tight px-2">
+            {/* Center Circle */}
+            <div className="absolute inset-0 m-auto w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-xl z-20">
+              <span className="text-primary-foreground font-bold text-xs sm:text-sm md:text-base text-center leading-tight px-2">
                 {activeStep?.title || "Our Approach"}
               </span>
             </div>
           </div>
 
-          {/* Content Area with Image Left and Text Right */}
-          <div className="w-[500px] h-[200px]">
+          {/* Content Area */}
+          <div className="w-full sm:w-[450px] md:w-[500px] h-auto sm:h-[200px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -126,10 +122,10 @@ const TrustedFeatures = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="h-full w-full flex items-center overflow-hidden rounded-xl shadow-lg border border-border/20 bg-transparent "
+                className="flex flex-col sm:flex-row items-center sm:items-stretch overflow-hidden rounded-xl shadow-lg border border-border/20 bg-transparent"
               >
-                {/* Image Left */}
-                <div className="relative w-[200px] h-full flex-shrink-0 rounded-l-xl overflow-hidden">
+                {/* Image */}
+                <div className="relative w-full sm:w-[200px] h-[180px] sm:h-auto flex-shrink-0 rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none overflow-hidden">
                   <Image
                     src={activeStep?.image || ""}
                     alt={activeStep?.title || "Approach Step"}
@@ -141,12 +137,12 @@ const TrustedFeatures = () => {
                   />
                 </div>
 
-                {/* Text Right */}
-                <div className="flex-1 p-4">
-                  <h3 className="text-secondary text-base font-semibold mb-1">
+                {/* Text */}
+                <div className="flex-1 p-4 sm:p-5">
+                  <h3 className="text-secondary text-base sm:text-lg font-semibold mb-1 sm:mb-2">
                     {activeStep?.title}
                   </h3>
-                  <p className="text-foreground/80 text-sm leading-snug line-clamp-3">
+                  <p className="text-foreground/80 text-sm sm:text-base leading-snug sm:leading-relaxed">
                     {activeStep?.description}
                   </p>
                 </div>
