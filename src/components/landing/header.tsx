@@ -51,8 +51,8 @@ const TopBar = () => {
 
   return (
     <div className="w-full bg-pink-600 py-1.5 text-xs">
-      <div className="container-max flex flex-col sm:flex-row justify-between items-center gap-1 sm:gap-0 px-4">
-        <div className="text-white font-medium text-center sm:text-left">
+      <div className="container-max flex flex-row justify-between items-center gap-2 px-4 overflow-x-auto">
+        <div className="text-white font-medium text-xs whitespace-nowrap flex-shrink-0">
           Offices: Bengaluru • Kochi • Hyderabad • Dubai
         </div>
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 text-white">
