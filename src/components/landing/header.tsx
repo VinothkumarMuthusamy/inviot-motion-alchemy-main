@@ -226,7 +226,7 @@ const Header = () => {
           hasWhiteBg
             ? "bg-white backdrop-blur-sm shadow-md"
             : "bg-transparent",
-          scrolled ? "top-0" : "top-[30px]"
+          scrolled ? "top-0" : "top-[28px]"
         )}
       >
         <div className="container-max flex items-center justify-between w-full px-4 sm:px-6">
