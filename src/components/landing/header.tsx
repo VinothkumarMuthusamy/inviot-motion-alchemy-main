@@ -13,7 +13,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { Menu, Phone, Mail, HelpCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Menu, Phone, Mail, HelpCircle, ChevronDown, ChevronUp, X } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/sheet";
 import Image from "next/image";
 
-// Top Bar Component
+// Top Bar Component - Made responsive
 const TopBar = () => {
   const [scrolled, setScrolled] = useState(false);
 
@@ -51,30 +51,33 @@ const TopBar = () => {
 
   return (
     <div className="w-full bg-pink-600 py-1.5 text-xs">
-      <div className="container-max flex flex-col sm:flex-row justify-between items-center gap-1 sm:gap-0">
-        <div className="text-white font-medium">
+      <div className="container-max flex flex-col sm:flex-row justify-between items-center gap-1 sm:gap-0 px-4">
+        <div className="text-white font-medium text-center sm:text-left">
           Offices: Bengaluru • Kochi • Hyderabad • Dubai
         </div>
-        <div className="flex flex-wrap justify-center items-center gap-3 text-white">
+        <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 text-white">
           <a
             href="tel:+919513800036"
-            className="flex items-center gap-1 hover:text-gray-200 transition-colors"
+            className="flex items-center gap-1 hover:text-gray-200 transition-colors text-[11px] sm:text-xs"
           >
-            <Phone size={12} /> <span>+91 9513800036</span>
+            <Phone size={10} className="flex-shrink-0" /> 
+            <span className="hidden xs:inline">+91 9513800036</span>
           </a>
           <span className="hidden sm:inline">|</span>
           <a
             href="mailto:info@inviotav.com"
-            className="flex items-center gap-1 hover:text-gray-200 transition-colors"
+            className="flex items-center gap-1 hover:text-gray-200 transition-colors text-[11px] sm:text-xs"
           >
-            <Mail size={12} /> <span>info@inviotav.com</span>
+            <Mail size={10} className="flex-shrink-0" /> 
+            <span className="hidden xs:inline">info@inviotav.com</span>
           </a>
           <span className="hidden sm:inline">|</span>
           <a
             href="mailto:support@inviotav.com"
-            className="flex items-center gap-1 hover:text-gray-200 transition-colors"
+            className="flex items-center gap-1 hover:text-gray-200 transition-colors text-[11px] sm:text-xs"
           >
-            <HelpCircle size={12} /> <span>Support</span>
+            <HelpCircle size={10} className="flex-shrink-0" /> 
+            <span className="hidden xs:inline">Support</span>
           </a>
         </div>
       </div>
@@ -200,6 +203,17 @@ const Header = () => {
   
   const isSolutionsActive = pathname.startsWith('/solutions');
 
+  // Close mobile menu when window is resized to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <>
@@ -215,14 +229,15 @@ const Header = () => {
           scrolled ? "top-0" : "top-[30px]"
         )}
       >
-        <div className="container-max flex items-center justify-between">
+        <div className="container-max flex items-center justify-between w-full px-4 sm:px-6">
+          {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 flex-shrink-0"
             prefetch={false}
             onMouseEnter={() => setIsHoveringNav(true)}
             onMouseLeave={() => setIsHoveringNav(false)}
-             onClick={(e) => handleLinkClick(e, "/")}
+            onClick={(e) => handleLinkClick(e, "/")}
           >
             <div className="relative h-8 w-[120px] transition-opacity duration-300">
               <div className={cn(
@@ -235,6 +250,7 @@ const Header = () => {
                   width={120}
                   height={32}
                   className="h-6 w-auto"
+                  priority
                 />
               </div>
               <div className={cn(
@@ -247,11 +263,13 @@ const Header = () => {
                   width={120}
                   height={32}
                   className="h-8 w-auto"
+                  priority
                 />
               </div>
             </div>
           </Link>
 
+          {/* Desktop Navigation */}
           <div
             className="hidden lg:flex items-center gap-4"
             onMouseEnter={() => setIsHoveringNav(true)}
@@ -353,6 +371,7 @@ const Header = () => {
             </NavigationMenu>
           </div>
 
+          {/* Mobile Navigation */}
           <div className="lg:hidden">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
@@ -360,32 +379,56 @@ const Header = () => {
                   size="icon"
                   variant="ghost"
                   className={cn(
+                    "h-10 w-10",
                     hasWhiteBg 
                       ? "text-foreground" 
                       : "text-white"
                   )}
+                  aria-label="Toggle menu"
                 >
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Toggle menu</span>
+                  {mobileMenuOpen ? (
+                    <X className="h-5 w-5" />
+                  ) : (
+                    <Menu className="h-5 w-5" />
+                  )}
                 </Button>
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-[300px] sm:w-[400px] bg-background/90 backdrop-blur-sm"
+                className="w-full max-w-[320px] sm:max-w-[400px] bg-background/95 backdrop-blur-lg border-l-0"
               >
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 
-                <div className="flex flex-col h-full">
-                  <div className="flex-grow mt-8">
-                    <nav className="flex flex-col space-y-4">
+                <div className="flex flex-col h-full pt-6">
+                  {/* Mobile Logo */}
+                  <div className="px-4 pb-6 border-b border-gray-200">
+                    <Link
+                      href="/"
+                      onClick={() => handleSheetLinkClick("/")}
+                      className="flex items-center gap-2"
+                    >
+                      <Image
+                        src="/assets/inviot-logo.svg"
+                        alt="Inviot Logo"
+                        width={120}
+                        height={32}
+                        className="h-8 w-auto"
+                      />
+                    </Link>
+                  </div>
+
+                  <div className="flex-grow mt-4 overflow-y-auto">
+                    <nav className="flex flex-col space-y-1">
                       {navLinks.filter(l => l.name === 'Home').map((link) => (
                         <SheetClose asChild key={link.name}>
                           <Link
                             href={link.href}
                             onClick={() => handleSheetLinkClick(link.href)}
                             className={cn(
-                              "text-lg font-bold transition-colors p-2 block",
-                              isLinkActive(link.href) ? 'text-primary' : 'text-foreground hover:text-primary'
+                              "text-lg font-bold transition-colors py-3 px-4 block rounded-lg mx-2",
+                              isLinkActive(link.href) 
+                                ? 'text-primary bg-primary/10' 
+                                : 'text-foreground hover:text-primary hover:bg-gray-100'
                             )}
                           >
                             {link.name}
@@ -393,32 +436,37 @@ const Header = () => {
                         </SheetClose>
                       ))}
 
-                      <div className="flex flex-col">
+                      {/* Mobile Solutions Dropdown */}
+                      <div className="flex flex-col mx-2">
                         <button
                           onClick={() => setMobileSolutionsOpen(!mobileSolutionsOpen)}
                           className={cn(
-                            "flex items-center justify-between text-lg font-bold transition-colors p-2",
-                            isSolutionsActive ? 'text-primary' : 'text-foreground hover:text-primary'
+                            "flex items-center justify-between text-lg font-bold transition-colors py-3 px-4 rounded-lg",
+                            isSolutionsActive 
+                              ? 'text-primary bg-primary/10' 
+                              : 'text-foreground hover:text-primary hover:bg-gray-100'
                           )}
                         >
                           Solutions
                           {mobileSolutionsOpen ? (
-                            <ChevronUp size={16} />
+                            <ChevronUp size={18} />
                           ) : (
-                            <ChevronDown size={16} />
+                            <ChevronDown size={18} />
                           )}
                         </button>
                         
                         {mobileSolutionsOpen && (
-                          <div className="pl-4 mt-2 space-y-3">
+                          <div className="pl-4 mt-1 space-y-1">
                             {solutions.map((solution) => (
                               <SheetClose asChild key={solution.name}>
                                 <Link
                                   href={solution.href}
                                   onClick={() => setMobileMenuOpen(false)}
                                   className={cn(
-                                    "text-base font-bold transition-colors p-2 block",
-                                    pathname === solution.href ? 'text-primary' : 'text-foreground hover:text-primary'
+                                    "text-base font-medium transition-colors py-2 px-4 block rounded-lg",
+                                    pathname === solution.href 
+                                      ? 'text-primary bg-primary/10' 
+                                      : 'text-foreground hover:text-primary hover:bg-gray-100'
                                   )}
                                   prefetch={false}
                                 >
@@ -436,8 +484,10 @@ const Header = () => {
                             href={link.href}
                             onClick={() => handleSheetLinkClick(link.href)}
                             className={cn(
-                              "text-lg font-bold transition-colors p-2 block",
-                              isLinkActive(link.href) ? 'text-primary' : 'text-foreground hover:text-primary'
+                              "text-lg font-bold transition-colors py-3 px-4 block rounded-lg mx-2",
+                              isLinkActive(link.href) 
+                                ? 'text-primary bg-primary/10' 
+                                : 'text-foreground hover:text-primary hover:bg-gray-100'
                             )}
                           >
                             {link.name}
@@ -446,16 +496,38 @@ const Header = () => {
                       ))}
                     </nav>
                   </div>
-                  <SheetClose asChild>
-                    <Link href="/contact-us" passHref>
-                      <Button
-                        className="font-headline btn-glow mt-auto w-full text-lg font-bold"
-                        size="lg"
+
+                  {/* Mobile Contact Button */}
+                  <div className="p-4 border-t border-gray-200">
+                    <SheetClose asChild>
+                      <Link href="/contact-us" passHref>
+                        <Button
+                          className="font-headline btn-glow w-full text-lg font-bold py-3"
+                          size="lg"
+                        >
+                          Contact Us
+                        </Button>
+                      </Link>
+                    </SheetClose>
+                    
+                    {/* Mobile Contact Info */}
+                    <div className="mt-4 space-y-2 text-sm">
+                      <a
+                        href="tel:+919513800036"
+                        className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
                       >
-                        Contact Us
-                      </Button>
-                    </Link>
-                  </SheetClose>
+                        <Phone size={14} />
+                        <span>+91 9513800036</span>
+                      </a>
+                      <a
+                        href="mailto:info@inviotav.com"
+                        className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Mail size={14} />
+                        <span>info@inviotav.com</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>
