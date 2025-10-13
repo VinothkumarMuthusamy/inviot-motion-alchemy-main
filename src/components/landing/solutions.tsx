@@ -24,6 +24,58 @@ const Solutions = () => {
 
   const [dynamicHeight, setDynamicHeight] = useState("200vh");
 
+  // ✅ Navigate to next card
+  const nextCard = () => {
+    if (device !== "mobile") return;
+    
+    const cardsContainer = mobileCardsContainerRef.current;
+    if (!cardsContainer) return;
+
+    const getCardWidth = () => {
+      const firstCard = cardsContainer.querySelector('[data-card-index]') as HTMLElement;
+      if (!firstCard) return 0;
+      const cardRect = firstCard.getBoundingClientRect();
+      return cardRect.width + 24;
+    };
+
+    const cardWidth = getCardWidth();
+    const scrollLeft = cardsContainer.scrollLeft;
+    const currentIndex = Math.round(scrollLeft / cardWidth);
+    const nextIndex = (currentIndex + 1) % solutions.length;
+    const scrollPosition = cardWidth * nextIndex;
+    
+    cardsContainer.scrollTo({
+      left: scrollPosition,
+      behavior: 'smooth'
+    });
+  };
+
+  // ✅ Navigate to previous card
+  const prevCard = () => {
+    if (device !== "mobile") return;
+    
+    const cardsContainer = mobileCardsContainerRef.current;
+    if (!cardsContainer) return;
+
+    const getCardWidth = () => {
+      const firstCard = cardsContainer.querySelector('[data-card-index]') as HTMLElement;
+      if (!firstCard) return 0;
+      const cardRect = firstCard.getBoundingClientRect();
+      return cardRect.width + 24;
+    };
+
+    const cardWidth = getCardWidth();
+    const scrollLeft = cardsContainer.scrollLeft;
+    const currentIndex = Math.round(scrollLeft / cardWidth);
+    const prevIndex = currentIndex === 0 ? solutions.length - 1 : currentIndex - 1;
+    const scrollPosition = cardWidth * prevIndex;
+    
+    cardsContainer.scrollTo({
+      left: scrollPosition,
+      behavior: 'smooth'
+    });
+  };
+
   // ✅ Detect device type based on width
   useEffect(() => {
     const detectDevice = () => {
@@ -91,6 +143,10 @@ const Solutions = () => {
 
     if (!section || !cardsContainer) return;
 
+    // ✅ FIXED: Use regular variables instead of useRef inside useEffect
+    let interactionTimeout: NodeJS.Timeout | null = null;
+    let currentCardIndex = 0;
+
     const handleMobileScroll = () => {
       const { top, height } = section.getBoundingClientRect();
       const windowHeight = window.innerHeight;
@@ -128,6 +184,28 @@ const Solutions = () => {
           }
         }
       });
+    };
+
+    // ✅ Calculate card width for precise scrolling
+    const getCardWidth = () => {
+      const firstCard = cardsContainer.querySelector('[data-card-index]') as HTMLElement;
+      if (!firstCard) return 0;
+      const cardRect = firstCard.getBoundingClientRect();
+      return cardRect.width + 24; // 24px for gap-6
+    };
+
+    // ✅ Scroll to specific card index
+    const scrollToCard = (index: number) => {
+      const cardWidth = getCardWidth();
+      const scrollPosition = cardWidth * index;
+      
+      cardsContainer.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+      
+      currentCardIndex = index;
+      currentScrollRef.current = scrollPosition;
     };
 
     // ✅ Infinite automatic horizontal scrolling function
@@ -178,24 +256,14 @@ const Solutions = () => {
       }
     };
 
-    // Initialize and start auto-scroll
-    currentScrollRef.current = 0;
-    scrollDirectionRef.current = 1;
-    
-    // Small delay to ensure DOM is ready
-    const startDelay = setTimeout(() => {
-      startInfiniteAutoScroll();
-    }, 1000);
-
     // Handle user interaction to pause/resume auto-scroll
-    let interactionTimeout: NodeJS.Timeout;
-    
     const handleUserInteractionStart = () => {
       stopAutoScroll();
       
       // Clear any existing timeout
       if (interactionTimeout) {
         clearTimeout(interactionTimeout);
+        interactionTimeout = null;
       }
     };
 
@@ -206,17 +274,36 @@ const Solutions = () => {
       }, 3000);
     };
 
+    // Handle manual scroll to detect current card
+    const handleManualScroll = () => {
+      const cardWidth = getCardWidth();
+      const scrollLeft = cardsContainer.scrollLeft;
+      
+      // Calculate which card is currently in view
+      const newCardIndex = Math.round(scrollLeft / cardWidth);
+      currentCardIndex = Math.max(0, Math.min(solutions.length - 1, newCardIndex));
+      currentScrollRef.current = scrollLeft;
+    };
+
     const scrollContainer = mobileCardsContainerRef.current;
     if (scrollContainer) {
-      scrollContainer.addEventListener('touchstart', handleUserInteractionStart);
-      scrollContainer.addEventListener('touchend', handleUserInteractionEnd);
-      scrollContainer.addEventListener('wheel', handleUserInteractionStart);
-      
-      // Resume on wheel end
-      scrollContainer.addEventListener('wheel', handleUserInteractionEnd, { passive: true });
+      scrollContainer.addEventListener('touchstart', handleUserInteractionStart, { passive: true });
+      scrollContainer.addEventListener('touchend', handleUserInteractionEnd, { passive: true });
+      scrollContainer.addEventListener('touchcancel', handleUserInteractionEnd, { passive: true });
+      scrollContainer.addEventListener('wheel', handleUserInteractionStart, { passive: true });
+      scrollContainer.addEventListener('scroll', handleManualScroll, { passive: true });
     }
 
     window.addEventListener("scroll", handleMobileScroll, { passive: true });
+
+    // Initialize and start auto-scroll
+    currentCardIndex = 0;
+    currentScrollRef.current = 0;
+    
+    // Small delay to ensure DOM is ready
+    const startDelay = setTimeout(() => {
+      startInfiniteAutoScroll();
+    }, 1000);
 
     return () => {
       window.removeEventListener("scroll", handleMobileScroll);
@@ -230,8 +317,9 @@ const Solutions = () => {
       if (scrollContainer) {
         scrollContainer.removeEventListener('touchstart', handleUserInteractionStart);
         scrollContainer.removeEventListener('touchend', handleUserInteractionEnd);
+        scrollContainer.removeEventListener('touchcancel', handleUserInteractionEnd);
         scrollContainer.removeEventListener('wheel', handleUserInteractionStart);
-        scrollContainer.removeEventListener('wheel', handleUserInteractionEnd);
+        scrollContainer.removeEventListener('scroll', handleManualScroll);
       }
     };
   }, [device]);
@@ -416,61 +504,85 @@ const Solutions = () => {
           </div>
         )}
 
-        {/* Mobile/Tablet Cards with Horizontal Scroll */}
+        {/* Mobile/Tablet Cards with Horizontal Scroll and Arrows */}
         {device !== "desktop" && (
-          <div
-            ref={mobileCardsContainerRef}
-            className="flex items-center mt-12 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-            style={{ 
-              scrollBehavior: 'smooth',
-              overflowX: 'auto'
-            }}
-          >
-            <div className="flex gap-6 min-w-max px-4">
-              {solutions.map((solution, index) => (
-                <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
-                  <div
-                    data-card-index={index}
-                    className={cn(
-                      "group relative flex-shrink-0 rounded-xl shadow-2xl flex flex-col justify-between text-left p-6 transform transition-all duration-300 border border-border/50 overflow-hidden backdrop-blur-sm bg-background/90 snap-center",
-                      "w-[85vw] h-[60vh] max-h-[400px]"
-                    )}
-                  >
-                    <Image
-                      src={solution.image.src}
-                      alt={solution.title}
-                      fill
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    {solution.video && (
-                      <video
-                        ref={(el) => {
-                          videoRefs.current[index] = el;
-                        }}
-                        src={solution.video}
-                        loop
-                        muted
-                        playsInline
-                        autoPlay
-                        className="absolute inset-0 w-full h-full object-cover z-10"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-black/60 z-20"></div>
+          <div className="relative">
+            {/* Left Arrow */}
+            <button
+              onClick={prevCard}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 z-30 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-300 backdrop-blur-sm"
+              style={{ left: '0.5rem' }}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
 
-                    <div className="relative z-30">
-                      <h3 className="font-headline text-primary text-xl font-bold uppercase tracking-widest text-white">
-                        {solution.title}
-                      </h3>
-                      <p className="text-white/80 text-base mt-2">
-                        {solution.subtitle}
-                      </p>
+            {/* Right Arrow */}
+            <button
+              onClick={nextCard}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 z-30 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-300 backdrop-blur-sm"
+              style={{ right: '0.5rem' }}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            <div
+              ref={mobileCardsContainerRef}
+              className="flex items-center mt-12 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+              style={{ 
+                scrollBehavior: 'smooth',
+                overflowX: 'auto'
+              }}
+            >
+              <div className="flex gap-6 min-w-max px-4">
+                {solutions.map((solution, index) => (
+                  <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
+                    <div
+                      data-card-index={index}
+                      className={cn(
+                        "group relative flex-shrink-0 rounded-xl shadow-2xl flex flex-col justify-between text-left p-6 transform transition-all duration-300 border border-border/50 overflow-hidden backdrop-blur-sm bg-background/90 snap-center",
+                        "w-[85vw] h-[60vh] max-h-[400px]"
+                      )}
+                    >
+                      <Image
+                        src={solution.image.src}
+                        alt={solution.title}
+                        fill
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                      {solution.video && (
+                        <video
+                          ref={(el) => {
+                            videoRefs.current[index] = el;
+                          }}
+                          src={solution.video}
+                          loop
+                          muted
+                          playsInline
+                          autoPlay
+                          className="absolute inset-0 w-full h-full object-cover z-10"
+                        />
+                      )}
+                      <div className="absolute inset-0 bg-black/60 z-20"></div>
+
+                      <div className="relative z-30">
+                        <h3 className="font-headline text-primary text-xl font-bold uppercase tracking-widest text-white">
+                          {solution.title}
+                        </h3>
+                        <p className="text-white/80 text-base mt-2">
+                          {solution.subtitle}
+                        </p>
+                      </div>
+                      <span className="relative z-30 font-bold text-secondary text-base mt-4 self-start">
+                        Learn More &rarr;
+                      </span>
                     </div>
-                    <span className="relative z-30 font-bold text-secondary text-base mt-4 self-start">
-                      Learn More &rarr;
-                    </span>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         )}
