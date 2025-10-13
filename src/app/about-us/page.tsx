@@ -313,7 +313,7 @@ const AboutUsPage = () => {
                     <h1 className="heading-1 text-primary mb-6">
                     About Us
                     </h1>
-                    <div className="heading-2 text-foreground mb-6 h-20 md:h-auto">
+                    <div className="heading-2 text-foreground mb-6 min-h-[80px] md:min-h-0">
                         <Typewriter
                             options={{
                                 strings: ["Redefining experiences by connecting technology with people."],
