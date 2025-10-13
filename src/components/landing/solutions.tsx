@@ -18,6 +18,7 @@ const Solutions = () => {
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const mobileCardsContainerRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const autoScrollRef = useRef<number | null>(null);
 
   const [dynamicHeight, setDynamicHeight] = useState("200vh");
 
@@ -79,7 +80,7 @@ const Solutions = () => {
     };
   }, [device, folderOpen]);
 
-  // ✅ Mobile horizontal scroll and video autoplay
+  // ✅ Mobile horizontal scroll and video autoplay with automatic scrolling
   useEffect(() => {
     if (device !== "mobile") return;
 
@@ -127,8 +128,73 @@ const Solutions = () => {
       });
     };
 
+    // ✅ Automatic horizontal scrolling function
+    const startAutoScroll = () => {
+      if (autoScrollRef.current) return; // Already running
+
+      const scrollContainer = mobileCardsContainerRef.current;
+      if (!scrollContainer) return;
+
+      const scrollWidth = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      let currentScroll = 0;
+      let direction = 1; // 1 for right, -1 for left
+
+      const autoScroll = () => {
+        if (!scrollContainer) return;
+
+        currentScroll += direction * 0.5; // Adjust speed here (lower = slower)
+
+        // Reverse direction at boundaries
+        if (currentScroll >= scrollWidth) {
+          currentScroll = scrollWidth;
+          direction = -1;
+        } else if (currentScroll <= 0) {
+          currentScroll = 0;
+          direction = 1;
+        }
+
+        scrollContainer.scrollLeft = currentScroll;
+        autoScrollRef.current = requestAnimationFrame(autoScroll);
+      };
+
+      autoScrollRef.current = requestAnimationFrame(autoScroll);
+    };
+
+    // ✅ Stop automatic scrolling function
+    const stopAutoScroll = () => {
+      if (autoScrollRef.current) {
+        cancelAnimationFrame(autoScrollRef.current);
+        autoScrollRef.current = null;
+      }
+    };
+
+    // Start auto-scroll when component mounts
+    startAutoScroll();
+
+    // Handle user interaction to pause/resume auto-scroll
+    const handleUserInteraction = () => {
+      stopAutoScroll();
+      // Resume auto-scroll after 3 seconds of inactivity
+      setTimeout(startAutoScroll, 3000);
+    };
+
+    const scrollContainer = mobileCardsContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('touchstart', handleUserInteraction);
+      scrollContainer.addEventListener('wheel', handleUserInteraction);
+    }
+
     window.addEventListener("scroll", handleMobileScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleMobileScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleMobileScroll);
+      stopAutoScroll();
+      
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('touchstart', handleUserInteraction);
+        scrollContainer.removeEventListener('wheel', handleUserInteraction);
+      }
+    };
   }, [device]);
 
   // ✅ Horizontal scroll offset for desktop
@@ -136,13 +202,6 @@ const Solutions = () => {
     cardsContainerRef.current && device === "desktop"
       ? -scrollProgress *
         (cardsContainerRef.current.scrollWidth - window.innerWidth)
-      : 0;
-
-  // ✅ Horizontal scroll offset for mobile
-  const mobileXOffset =
-    mobileCardsContainerRef.current && device === "mobile"
-      ? -mobileScrollProgress *
-        (mobileCardsContainerRef.current.scrollWidth - window.innerWidth) * 0.8
       : 0;
 
   // ✅ Handle video hover/click for desktop
@@ -324,8 +383,8 @@ const Solutions = () => {
             ref={mobileCardsContainerRef}
             className="flex items-center mt-12 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
             style={{ 
-              transform: device === "mobile" ? `translateX(${mobileXOffset}px)` : 'none',
-              transition: device === "mobile" ? 'transform 0.1s ease-out' : 'none'
+              scrollBehavior: 'smooth',
+              overflowX: 'auto'
             }}
           >
             <div className="flex gap-6 min-w-max px-4">
