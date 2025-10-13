@@ -12,9 +12,11 @@ const Solutions = () => {
   const [folderOpen, setFolderOpen] = useState(false);
   const [cardsVisible, setCardsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [mobileScrollProgress, setMobileScrollProgress] = useState(0);
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
+  const mobileCardsContainerRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const [dynamicHeight, setDynamicHeight] = useState("200vh");
@@ -77,6 +79,58 @@ const Solutions = () => {
     };
   }, [device, folderOpen]);
 
+  // ✅ Mobile horizontal scroll and video autoplay
+  useEffect(() => {
+    if (device !== "mobile") return;
+
+    const section = sectionRef.current;
+    const cardsContainer = mobileCardsContainerRef.current;
+
+    if (!section || !cardsContainer) return;
+
+    const handleMobileScroll = () => {
+      const { top, height } = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate scroll progress for mobile horizontal scrolling
+      const sectionStart = windowHeight * 0.1;
+      const sectionEnd = height - windowHeight * 0.1;
+      
+      if (top <= sectionStart && top >= -sectionEnd) {
+        const progress = Math.max(0, Math.min(1, (sectionStart - top) / (height - windowHeight)));
+        setMobileScrollProgress(progress);
+      }
+
+      // Auto-play videos when they come into view
+      videoRefs.current.forEach((video, index) => {
+        if (video) {
+          const card = video.closest('[data-card-index]') as HTMLElement;
+          if (card) {
+            const cardRect = card.getBoundingClientRect();
+            const isInView = cardRect.top < windowHeight * 0.8 && cardRect.bottom > windowHeight * 0.2;
+            
+            if (isInView) {
+              const playPromise = video.play();
+              if (playPromise !== undefined) {
+                playPromise.catch((error) => {
+                  if (error.name !== "AbortError") {
+                    console.error("Video play failed:", error);
+                  }
+                });
+              }
+            } else {
+              video.pause();
+              video.currentTime = 0;
+            }
+          }
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleMobileScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleMobileScroll);
+  }, [device]);
+
   // ✅ Horizontal scroll offset for desktop
   const xOffset =
     cardsContainerRef.current && device === "desktop"
@@ -84,8 +138,17 @@ const Solutions = () => {
         (cardsContainerRef.current.scrollWidth - window.innerWidth)
       : 0;
 
-  // ✅ Handle video hover/click
+  // ✅ Horizontal scroll offset for mobile
+  const mobileXOffset =
+    mobileCardsContainerRef.current && device === "mobile"
+      ? -mobileScrollProgress *
+        (mobileCardsContainerRef.current.scrollWidth - window.innerWidth) * 0.8
+      : 0;
+
+  // ✅ Handle video hover/click for desktop
   const handleVideoPlay = (index: number) => {
+    if (device !== "desktop") return;
+    
     const video = videoRefs.current[index];
     if (video) {
       const playPromise = video.play();
@@ -100,6 +163,8 @@ const Solutions = () => {
   };
 
   const handleVideoStop = (index: number) => {
+    if (device !== "desktop") return;
+    
     const video = videoRefs.current[index];
     if (video) {
       video.pause();
@@ -186,97 +251,131 @@ const Solutions = () => {
           </div>
         )}
 
-        {/* Cards */}
-        <div
-          ref={cardsContainerRef}
-          className={cn(
-            "flex items-center",
-            device === "desktop"
-              ? "absolute top-[40%] md:top-[42%] left-0 -translate-y-1/2 transition-opacity duration-300"
-              : "flex-wrap justify-center gap-6 mt-12 px-4",
-            cardsVisible || device !== "desktop" ? "opacity-100" : "opacity-0"
-          )}
-          style={device === "desktop" ? { transform: `translateX(${xOffset}px)` } : {}}
-        >
+        {/* Desktop Cards */}
+        {device === "desktop" && (
           <div
+            ref={cardsContainerRef}
             className={cn(
-              "flex",
-              device === "desktop"
-                ? "space-x-6 md:space-x-12 px-6 md:px-12"
-                : "flex-col w-full gap-6"
+              "flex items-center absolute top-[40%] md:top-[42%] left-0 -translate-y-1/2 transition-opacity duration-300",
+              cardsVisible ? "opacity-100" : "opacity-0"
             )}
+            style={{ transform: `translateX(${xOffset}px)` }}
           >
-            {/* Empty space for scroll effect */}
-            {device === "desktop" && (
+            <div className="flex space-x-6 md:space-x-12 px-6 md:px-12">
+              {/* Empty space for scroll effect */}
               <div className="flex-shrink-0 w-[18rem] h-[14rem] lg:w-[28rem] lg:h-[20rem] opacity-0" />
-            )}
 
-            {solutions.map((solution, index) => (
-              <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
-                <div
-                  className={cn(
-                    "group relative flex-shrink-0 rounded-xl shadow-2xl flex flex-col justify-between text-left p-4 md:p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-primary/20 border border-border/50 overflow-hidden backdrop-blur-sm bg-background/90",
-                    "w-full sm:w-[90%] md:w-[18rem] h-[14rem] lg:w-[28rem] lg:h-[20rem]"
-                  )}
-                  style={
-                    device === "desktop"
-                      ? {
-                          animation: cardsVisible
-                            ? `cardAppear 0.5s ease-out ${(index + 1) * 0.1}s both`
-                            : `cardDisappear 0.3s ease-in ${(index + 1) * 0.05}s both`,
-                        }
-                      : {}
-                  }
-                  onMouseEnter={() =>
-                    device === "desktop" && handleVideoPlay(index)
-                  }
-                  onMouseLeave={() =>
-                    device === "desktop" && handleVideoStop(index)
-                  }
-                  onClick={() => {
-                    if (device !== "desktop") {
-                      const video = videoRefs.current[index];
-                      if (video?.paused) handleVideoPlay(index);
-                      else handleVideoStop(index);
-                    }
-                  }}
-                >
-                  <Image
-                    src={solution.image.src}
-                    alt={solution.title}
-                    fill
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  {solution.video && (
-                    <video
-                      ref={(el) => {
-                        videoRefs.current[index] = el;
-                      }}
-                      src={solution.video}
-                      loop
-                      muted
-                      playsInline
-                      className="absolute inset-0 w-full h-full object-cover z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              {solutions.map((solution, index) => (
+                <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
+                  <div
+                    className={cn(
+                      "group relative flex-shrink-0 rounded-xl shadow-2xl flex flex-col justify-between text-left p-4 md:p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-primary/20 border border-border/50 overflow-hidden backdrop-blur-sm bg-background/90",
+                      "w-full sm:w-[90%] md:w-[18rem] h-[14rem] lg:w-[28rem] lg:h-[20rem]"
+                    )}
+                    style={{
+                      animation: cardsVisible
+                        ? `cardAppear 0.5s ease-out ${(index + 1) * 0.1}s both`
+                        : `cardDisappear 0.3s ease-in ${(index + 1) * 0.05}s both`,
+                    }}
+                    onMouseEnter={() => handleVideoPlay(index)}
+                    onMouseLeave={() => handleVideoStop(index)}
+                  >
+                    <Image
+                      src={solution.image.src}
+                      alt={solution.title}
+                      fill
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                  )}
-                  <div className="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition-colors duration-300 z-20"></div>
+                    {solution.video && (
+                      <video
+                        ref={(el) => {
+                          videoRefs.current[index] = el;
+                        }}
+                        src={solution.video}
+                        loop
+                        muted
+                        playsInline
+                        className="absolute inset-0 w-full h-full object-cover z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition-colors duration-300 z-20"></div>
 
-                  <div className="relative z-30">
-                    <h3 className="font-headline text-primary text-lg md:text-2xl font-bold uppercase tracking-widest text-white">
-                      {solution.title}
-                    </h3>
-                    <p className="text-white/80 text-sm md:text-base mt-1 md:mt-2">
-                      {solution.subtitle}
-                    </p>
+                    <div className="relative z-30">
+                      <h3 className="font-headline text-primary text-lg md:text-2xl font-bold uppercase tracking-widest text-white">
+                        {solution.title}
+                      </h3>
+                      <p className="text-white/80 text-sm md:text-base mt-1 md:mt-2">
+                        {solution.subtitle}
+                      </p>
+                    </div>
+                    <span className="relative z-30 font-bold text-secondary hover:underline text-sm md:text-base mt-2 md:mt-4 self-start">
+                      Learn More &rarr;
+                    </span>
                   </div>
-                  <span className="relative z-30 font-bold text-secondary hover:underline text-sm md:text-base mt-2 md:mt-4 self-start">
-                    Learn More &rarr;
-                  </span>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Mobile/Tablet Cards with Horizontal Scroll */}
+        {device !== "desktop" && (
+          <div
+            ref={mobileCardsContainerRef}
+            className="flex items-center mt-12 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+            style={{ 
+              transform: device === "mobile" ? `translateX(${mobileXOffset}px)` : 'none',
+              transition: device === "mobile" ? 'transform 0.1s ease-out' : 'none'
+            }}
+          >
+            <div className="flex gap-6 min-w-max px-4">
+              {solutions.map((solution, index) => (
+                <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
+                  <div
+                    data-card-index={index}
+                    className={cn(
+                      "group relative flex-shrink-0 rounded-xl shadow-2xl flex flex-col justify-between text-left p-6 transform transition-all duration-300 border border-border/50 overflow-hidden backdrop-blur-sm bg-background/90 snap-center",
+                      "w-[85vw] h-[60vh] max-h-[400px]"
+                    )}
+                  >
+                    <Image
+                      src={solution.image.src}
+                      alt={solution.title}
+                      fill
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    {solution.video && (
+                      <video
+                        ref={(el) => {
+                          videoRefs.current[index] = el;
+                        }}
+                        src={solution.video}
+                        loop
+                        muted
+                        playsInline
+                        autoPlay
+                        className="absolute inset-0 w-full h-full object-cover z-10"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-black/60 z-20"></div>
+
+                    <div className="relative z-30">
+                      <h3 className="font-headline text-primary text-xl font-bold uppercase tracking-widest text-white">
+                        {solution.title}
+                      </h3>
+                      <p className="text-white/80 text-base mt-2">
+                        {solution.subtitle}
+                      </p>
+                    </div>
+                    <span className="relative z-30 font-bold text-secondary text-base mt-4 self-start">
+                      Learn More &rarr;
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
