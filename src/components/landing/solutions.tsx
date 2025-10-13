@@ -19,6 +19,8 @@ const Solutions = () => {
   const mobileCardsContainerRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const autoScrollRef = useRef<number | null>(null);
+  const scrollDirectionRef = useRef<number>(1); // 1 for right, -1 for left
+  const currentScrollRef = useRef<number>(0);
 
   const [dynamicHeight, setDynamicHeight] = useState("200vh");
 
@@ -80,7 +82,7 @@ const Solutions = () => {
     };
   }, [device, folderOpen]);
 
-  // ✅ Mobile horizontal scroll and video autoplay with automatic scrolling
+  // ✅ Mobile horizontal scroll and video autoplay with infinite automatic scrolling
   useEffect(() => {
     if (device !== "mobile") return;
 
@@ -128,32 +130,40 @@ const Solutions = () => {
       });
     };
 
-    // ✅ Automatic horizontal scrolling function
-    const startAutoScroll = () => {
-      if (autoScrollRef.current) return; // Already running
+    // ✅ Infinite automatic horizontal scrolling function
+    const startInfiniteAutoScroll = () => {
+      if (autoScrollRef.current) {
+        cancelAnimationFrame(autoScrollRef.current);
+      }
 
       const scrollContainer = mobileCardsContainerRef.current;
       if (!scrollContainer) return;
 
-      const scrollWidth = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-      let currentScroll = 0;
-      let direction = 1; // 1 for right, -1 for left
+      const scrollWidth = scrollContainer.scrollWidth;
+      const containerWidth = scrollContainer.clientWidth;
+      const maxScroll = scrollWidth - containerWidth;
 
       const autoScroll = () => {
         if (!scrollContainer) return;
 
-        currentScroll += direction * 0.5; // Adjust speed here (lower = slower)
+        // Update current scroll position
+        currentScrollRef.current += scrollDirectionRef.current * 0.3; // Adjust speed here
 
-        // Reverse direction at boundaries
-        if (currentScroll >= scrollWidth) {
-          currentScroll = scrollWidth;
-          direction = -1;
-        } else if (currentScroll <= 0) {
-          currentScroll = 0;
-          direction = 1;
+        // Check boundaries and reverse direction
+        if (currentScrollRef.current >= maxScroll) {
+          currentScrollRef.current = maxScroll;
+          scrollDirectionRef.current = -1; // Reverse to left
+        } else if (currentScrollRef.current <= 0) {
+          currentScrollRef.current = 0;
+          scrollDirectionRef.current = 1; // Reverse to right
         }
 
-        scrollContainer.scrollLeft = currentScroll;
+        // Apply smooth scrolling
+        scrollContainer.scrollTo({
+          left: currentScrollRef.current,
+          behavior: 'smooth'
+        });
+
         autoScrollRef.current = requestAnimationFrame(autoScroll);
       };
 
@@ -168,20 +178,42 @@ const Solutions = () => {
       }
     };
 
-    // Start auto-scroll when component mounts
-    startAutoScroll();
+    // Initialize and start auto-scroll
+    currentScrollRef.current = 0;
+    scrollDirectionRef.current = 1;
+    
+    // Small delay to ensure DOM is ready
+    const startDelay = setTimeout(() => {
+      startInfiniteAutoScroll();
+    }, 1000);
 
     // Handle user interaction to pause/resume auto-scroll
-    const handleUserInteraction = () => {
+    let interactionTimeout: NodeJS.Timeout;
+    
+    const handleUserInteractionStart = () => {
       stopAutoScroll();
+      
+      // Clear any existing timeout
+      if (interactionTimeout) {
+        clearTimeout(interactionTimeout);
+      }
+    };
+
+    const handleUserInteractionEnd = () => {
       // Resume auto-scroll after 3 seconds of inactivity
-      setTimeout(startAutoScroll, 3000);
+      interactionTimeout = setTimeout(() => {
+        startInfiniteAutoScroll();
+      }, 3000);
     };
 
     const scrollContainer = mobileCardsContainerRef.current;
     if (scrollContainer) {
-      scrollContainer.addEventListener('touchstart', handleUserInteraction);
-      scrollContainer.addEventListener('wheel', handleUserInteraction);
+      scrollContainer.addEventListener('touchstart', handleUserInteractionStart);
+      scrollContainer.addEventListener('touchend', handleUserInteractionEnd);
+      scrollContainer.addEventListener('wheel', handleUserInteractionStart);
+      
+      // Resume on wheel end
+      scrollContainer.addEventListener('wheel', handleUserInteractionEnd, { passive: true });
     }
 
     window.addEventListener("scroll", handleMobileScroll, { passive: true });
@@ -189,10 +221,17 @@ const Solutions = () => {
     return () => {
       window.removeEventListener("scroll", handleMobileScroll);
       stopAutoScroll();
+      clearTimeout(startDelay);
+      
+      if (interactionTimeout) {
+        clearTimeout(interactionTimeout);
+      }
       
       if (scrollContainer) {
-        scrollContainer.removeEventListener('touchstart', handleUserInteraction);
-        scrollContainer.removeEventListener('wheel', handleUserInteraction);
+        scrollContainer.removeEventListener('touchstart', handleUserInteractionStart);
+        scrollContainer.removeEventListener('touchend', handleUserInteractionEnd);
+        scrollContainer.removeEventListener('wheel', handleUserInteractionStart);
+        scrollContainer.removeEventListener('wheel', handleUserInteractionEnd);
       }
     };
   }, [device]);

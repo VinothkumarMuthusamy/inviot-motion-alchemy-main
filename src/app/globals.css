@@ -1,7 +1,7 @@
 
-@import "./../components/landing/ImageAssembly.css";
+
 @import "./../components/ui/hotspot.css";
-@import "./../components/landing/HolographicProjector.css";
+
 @import "./../components/landing/ProfileCard.css";
 @import "./../components/landing/FlowingMenu.css";
 @tailwind base;
