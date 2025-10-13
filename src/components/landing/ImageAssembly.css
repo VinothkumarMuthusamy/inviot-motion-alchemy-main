@@ -1,0 +1,145 @@
+/* ImageAssembly.css */
+.assembly-container {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.transparent-base {
+  position: relative;
+  width: 80%;
+  height: 80%;
+  background-color: transparent;
+}
+
+/* Permanent wall image */
+.wall.permanent {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+}
+
+/* Common image styles */
+.table, .tv, .camera, .touch {
+  position: absolute;
+  z-index: 2;
+  transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform, opacity;
+}
+
+/* Assembled positions */
+.table.assembled {
+  width: 40%;
+  bottom: 10%;
+  left: 30%;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tv.assembled {
+  width: 25%;
+  top: 30%;
+  left: 20%;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.camera.assembled {
+  width: 15%;
+  top: 15%;
+  right: 25%;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.touch.assembled {
+  width: 20%;
+  bottom: 25%;
+  right: 20%;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Starting positions (before assembly) */
+.from-bottom {
+  width: 40%;
+  opacity: 0;
+  transform: translateY(50vh);
+}
+
+.from-left {
+  width: 25%;
+  opacity: 0;
+  transform: translateX(-50vw);
+}
+
+.from-top {
+  width: 15%;
+  opacity: 0;
+  transform: translateY(-50vh);
+}
+
+.from-right {
+  width: 20%;
+  opacity: 0;
+  transform: translateX(50vw);
+}
+
+/* Tablet responsive */
+@media (max-width: 1024px) {
+    .table.assembled {
+        width: 50%;
+        left: 25%;
+    }
+    .tv.assembled {
+        width: 30%;
+        left: 15%;
+    }
+    .camera.assembled {
+        width: 20%;
+        right: 20%;
+    }
+    .touch.assembled {
+        width: 25%;
+        right: 15%;
+    }
+}
+
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .transparent-base {
+    width: 95%;
+    height: 95%;
+  }
+  
+  .table.assembled {
+    width: 60%;
+    bottom: 5%;
+    left: 20%;
+  }
+  
+  .tv.assembled {
+    width: 35%;
+    top: 25%;
+    left: 10%;
+  }
+  
+  .camera.assembled {
+    width: 25%;
+    top: 10%;
+    right: 15%;
+  }
+  
+  .touch.assembled {
+    width: 30%;
+    bottom: 20%;
+    right: 10%;
+  }
+}
