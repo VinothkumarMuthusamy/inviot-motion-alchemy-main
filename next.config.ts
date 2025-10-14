@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
 
-  // ✅ Fix: allow remote images and disable optimization to avoid 'null image' errors
   images: {
     remotePatterns: [
       {
@@ -43,10 +42,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-    unoptimized: true, // ✅ ensures Next.js doesn't try to optimize or validate remote images
   },
-
-  // ✅ Optional build optimizations for Netlify
   
 };
 

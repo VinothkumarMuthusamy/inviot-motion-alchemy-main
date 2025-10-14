@@ -372,8 +372,9 @@ const Solutions = () => {
         <Image
           src="/assets/team-bg.jpg"
           alt="Background"
-          fill
-          className="object-cover"
+          width={1920}
+          height={1080}
+          className="object-cover w-full h-full"
           priority
         />
         <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-pink-500 opacity-30 rounded-full blur-[120px] animate-pulse"></div>
@@ -470,6 +471,7 @@ const Solutions = () => {
                       src={solution.image.src}
                       alt={solution.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     {solution.video && (
@@ -481,6 +483,7 @@ const Solutions = () => {
                         loop
                         muted
                         playsInline
+                        preload="metadata"
                         className="absolute inset-0 w-full h-full object-cover z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                       />
                     )}
@@ -551,6 +554,7 @@ const Solutions = () => {
                         src={solution.image.src}
                         alt={solution.title}
                         fill
+                        sizes="(max-width: 640px) 85vw, 50vw"
                         className="absolute inset-0 w-full h-full object-cover"
                       />
                       {solution.video && (
@@ -563,6 +567,7 @@ const Solutions = () => {
                           muted
                           playsInline
                           autoPlay
+                          preload="metadata"
                           className="absolute inset-0 w-full h-full object-cover z-10"
                         />
                       )}

@@ -160,7 +160,7 @@ const Mission = () => {
                 preload="metadata"
               >
                 <source 
-                  src="/videos/WEBSITE%20%20VIDEO%20%20INVIOT%20(OCT%2011)%20V2.mp4" 
+                  src="/videos/WEBSITE  VIDEO  INVIOT (OCT 11) V2.mp4" 
                   type="video/mp4" 
                 />
                 Your browser does not support the video tag.

@@ -7,12 +7,13 @@ import { Saira } from 'next/font/google';
 const saira = Saira({
   subsets: ['latin'],
   variable: '--font-saira',
-  weight: ['300', '400', '500', '600', '700']
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
   title: 'Inviot Edge',
-  description: 'Empowering collaboration through innovative audiovisual integration.',
+  description: 'Empowering collaboration through innovative audiovisual integration. Inviot provides leading AV solutions for corporate, education, and healthcare sectors.',
 };
 
 export default function RootLayout({
