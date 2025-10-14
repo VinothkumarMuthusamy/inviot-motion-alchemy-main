@@ -2,11 +2,25 @@ import { AnimateInView } from "@/components/ui/animate-in-view";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ImageAssembly from "./ImageAssembly";
+import Image from "next/image";
 
 const RoomConfigurator = () => {
   return (
-    <section className="section-padding bg-card">
-      <div className="container-max">
+    <section className="section-padding relative overflow-hidden">
+      {/* Background Layer - relative to section */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/assets/team-bg.jpg"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-pink-500 opacity-30 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-[400px] h-[400px] bg-blue-600 opacity-30 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+      </div>
+
+      <div className="container-max relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <ImageAssembly />

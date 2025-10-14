@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -22,7 +21,6 @@ const Toaster = dynamic(
   () => import("@/components/ui/toaster").then((c) => c.Toaster),
   { ssr: false }
 );
-
 
 interface EquipmentItem {
   id: string;
@@ -115,15 +113,12 @@ const microphoneOptions = {
     large: ["shure", "sennheiser", "audio-technica", "clearone"]
 };
 
-
 const carouselImages = [
   "/assets/roompage/r5.jpg",
   "/assets/roompage/r2.jpg",
   "/assets/roompage/r3.jpg",
   "/assets/roompage/r4.jpg",
 ];
-
-
 
 const StepIndicator = ({ current, total }: { current: number; total: number }) => (
     <p className="font-bold text-lg text-primary">
@@ -170,7 +165,6 @@ const Home = ({ onNext }: { onNext: () => void; }) => {
       </motion.div>
     );
   };
-  
 
 const RoomSizeSelector = ({ onNext, onBack, selected, setSelected, totalSteps }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; totalSteps: number; }) => {
     return (
@@ -533,7 +527,6 @@ const MicrophoneSelector = ({ onNext, onBack, selected, setSelected, roomType }:
     )
 };
 
-
 const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } : {
     onNext: () => void;
     onBack: () => void;
@@ -551,6 +544,10 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
         if (nextStep === 3 && roomType === 'huddle') {
             nextStep++;
         }
+        // Skip speaker for medium rooms
+        if (nextStep === 4 && roomType === 'medium') {
+            nextStep++;
+        }
         // Skip speaker for booth & huddle
         if (nextStep === 4 && (roomType === 'booth' || roomType === 'huddle')) {
             nextStep++;
@@ -562,7 +559,7 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
 
         const totalConfigSteps = 
             selections.roomType === 'large' ? 6 :
-            selections.roomType === 'medium' ? 5 :
+            selections.roomType === 'medium' ? 4 : // Reduced from 5 to 4 (skip speaker)
             selections.roomType === 'huddle' ? 4 :
             2;
 
@@ -577,6 +574,9 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
         let prevStep = configStep - 1;
         const roomType = selections.roomType;
 
+        if (prevStep === 4 && roomType === 'medium') {
+            prevStep--; // Skip speaker step when going back
+        }
          if (prevStep === 4 && roomType === 'booth') {
              prevStep--;
          }
@@ -591,7 +591,6 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
 
         setConfigStep(prevStep);
     }
-
 
     const currentStepNumber = 3 + configStep;
 
@@ -637,13 +636,24 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                         roomType={selections.roomType}
                     />
             case 4:
-                 return <SpeakerSelector
+                 // Skip speaker for medium rooms
+                 if (selections.roomType === 'medium') {
+                    return <MicrophoneSelector
+                        onNext={onNext}
+                        onBack={() => setConfigStep(3)}
+                        selected={selections.microphone}
+                        setSelected={(value) => updateSelection('microphone', value)}
+                        roomType={selections.roomType}
+                    />
+                 } else {
+                    return <SpeakerSelector
                         onNext={handleNextConfig}
                         onBack={() => setConfigStep(3)}
                         selected={selections.speaker}
                         setSelected={(value) => updateSelection('speaker', value)}
                         roomType={selections.roomType}
                     />
+                 }
             case 5:
                  return <MicrophoneSelector
                         onNext={onNext}
@@ -656,7 +666,6 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                 return null;
         }
     }
-
 
     return (
          <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{duration: 0.5}}>
@@ -700,7 +709,7 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                            alt="Roof" fill style={{objectFit: 'contain'}}
                           />
                     )}
-                    {selections.speaker && (
+                    {selections.speaker && selections.roomType !== 'medium' && (
                          <Image 
                            src={`https://resurgent.co.in/room-configurator/images/${selections.roomType}/speaker/${selections.speaker}-speaker.webp`}
                            alt="Speaker" fill style={{objectFit: 'contain'}}
@@ -708,7 +717,7 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                     )}
                      {selections.microphone && (
                          <Image 
-                           src={`https://resurgent.co.in/room-configurator/images/${selections.roomType}/microphone/${selections.microphone}-microphone.webp`}
+                           src="https://resurgent.co.in/room-configurator/images/large/micro/shure-microphone.webp"
                            alt="Microphone" fill style={{objectFit: 'contain'}}
                           />
                     )}
@@ -717,7 +726,6 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
         </motion.div>
     )
 }
-
 
 const QuoteForm = ({ onBack, onSubmit, selections, setFormValue, formValues, totalSteps }: { 
     onBack: () => void; 
@@ -822,7 +830,7 @@ const QuoteForm = ({ onBack, onSubmit, selections, setFormValue, formValues, tot
                                             />
                                         </motion.div>
                                     )}
-                                    {selections.speaker && (
+                                    {selections.speaker && selections.roomType !== 'medium' && (
                                         <motion.div key="speaker" className="absolute w-full h-full" {...animationVariants.speaker}>
                                             <Image 
                                             src={`https://resurgent.co.in/room-configurator/images/${selections.roomType}/speaker/${selections.speaker}-speaker.webp`}
@@ -833,7 +841,7 @@ const QuoteForm = ({ onBack, onSubmit, selections, setFormValue, formValues, tot
                                     {selections.microphone && (
                                         <motion.div key="microphone" className="absolute w-full h-full" {...animationVariants.microphone}>
                                             <Image 
-                                            src={`https://resurgent.co.in/room-configurator/images/${selections.roomType}/microphone/${selections.microphone}-microphone.webp`}
+                                            src="https://resurgent.co.in/room-configurator/images/large/micro/shure-microphone.webp"
                                             alt="Microphone" fill style={{objectFit: 'contain'}}
                                             />
                                         </motion.div>
@@ -858,6 +866,7 @@ const QuoteForm = ({ onBack, onSubmit, selections, setFormValue, formValues, tot
                                 )}
                                 {Object.entries(selections).map(([key, value]) => {
                                    if (!value || typeof value === 'object' || ['roomType', 'vc'].includes(key)) return null;
+                                   if (key === 'speaker' && selections.roomType === 'medium') return null; // Hide speaker for medium rooms
                                    
                                    let item;
                                     try {
@@ -905,7 +914,6 @@ const QuoteForm = ({ onBack, onSubmit, selections, setFormValue, formValues, tot
     );
 };
 
-
 export default function RoomConfiguratorPage() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [step, setStep] = useState(0); // 0:home, 1:room, 2:vc, 3:config, 4:quote
@@ -941,7 +949,7 @@ export default function RoomConfiguratorPage() {
     const roomType = selections.roomType;
     let configSteps = 0;
     if (roomType === 'large') configSteps = 6;
-    else if (roomType === 'medium') configSteps = 5;
+    else if (roomType === 'medium') configSteps = 4; // Reduced from 5 to 4 (skip speaker)
     else if (roomType === 'huddle') configSteps = 4;
     else if (roomType === 'booth') configSteps = 2;
     return baseSteps + configSteps;
@@ -999,18 +1007,22 @@ export default function RoomConfiguratorPage() {
   }
 
   return (
-    <div 
-      className="flex flex-col min-h-screen bg-background"
-      style={{
-        backgroundImage: "url('https://resurgent.co.in/room-configurator/images/bg.webp')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      }}
-    >
+     <div className="flex flex-col min-h-screen relative">
+      {/* Background Layer */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/assets/team-bg.jpg"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-pink-500 opacity-30 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-[400px] h-[400px] bg-blue-600 opacity-30 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+      </div>
       <Header />
       <main className="flex-grow pt-20">
-        <section className="section-padding bg-card/80 backdrop-blur-sm min-h-[80vh] flex items-center">
+        <section className="section-padding bg-card/0  min-h-[80vh] flex items-center">
           <div className="container-max">
             <AnimatePresence mode="wait">
                 {step === 0 && <Home key="step0" onNext={handleNext} />}
@@ -1064,5 +1076,3 @@ export default function RoomConfiguratorPage() {
     </div>
   );
 }
-
-    

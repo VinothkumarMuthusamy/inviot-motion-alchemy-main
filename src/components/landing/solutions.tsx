@@ -12,12 +12,15 @@ const Solutions = () => {
   const [folderOpen, setFolderOpen] = useState(false);
   const [cardsVisible, setCardsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [mobileScrollProgress, setMobileScrollProgress] = useState(0);
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const mobileCardsContainerRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const autoScrollRef = useRef<number | null>(null);
+  const scrollDirectionRef = useRef<number>(1); // 1 for right, -1 for left
+  const currentScrollRef = useRef<number>(0);
 
   const [dynamicHeight, setDynamicHeight] = useState("200vh");
 
@@ -36,15 +39,15 @@ const Solutions = () => {
     };
 
     const cardWidth = getCardWidth();
-    const nextIndex = (currentCardIndex + 1) % solutions.length;
+    const scrollLeft = cardsContainer.scrollLeft;
+    const currentIndex = Math.round(scrollLeft / cardWidth);
+    const nextIndex = (currentIndex + 1) % solutions.length;
     const scrollPosition = cardWidth * nextIndex;
     
     cardsContainer.scrollTo({
       left: scrollPosition,
       behavior: 'smooth'
     });
-    
-    setCurrentCardIndex(nextIndex);
   };
 
   // ✅ Navigate to previous card
@@ -62,15 +65,15 @@ const Solutions = () => {
     };
 
     const cardWidth = getCardWidth();
-    const prevIndex = currentCardIndex === 0 ? solutions.length - 1 : currentCardIndex - 1;
+    const scrollLeft = cardsContainer.scrollLeft;
+    const currentIndex = Math.round(scrollLeft / cardWidth);
+    const prevIndex = currentIndex === 0 ? solutions.length - 1 : currentIndex - 1;
     const scrollPosition = cardWidth * prevIndex;
     
     cardsContainer.scrollTo({
       left: scrollPosition,
       behavior: 'smooth'
     });
-    
-    setCurrentCardIndex(prevIndex);
   };
 
   // ✅ Detect device type based on width
@@ -131,12 +134,57 @@ const Solutions = () => {
     };
   }, [device, folderOpen]);
 
-  // ✅ Mobile horizontal scroll with manual navigation only
+  // ✅ Mobile horizontal scroll and video autoplay with infinite automatic scrolling
   useEffect(() => {
     if (device !== "mobile") return;
 
+    const section = sectionRef.current;
     const cardsContainer = mobileCardsContainerRef.current;
-    if (!cardsContainer) return;
+
+    if (!section || !cardsContainer) return;
+
+    // ✅ FIXED: Use regular variables instead of useRef inside useEffect
+    let interactionTimeout: NodeJS.Timeout | null = null;
+    let currentCardIndex = 0;
+
+    const handleMobileScroll = () => {
+      const { top, height } = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate scroll progress for mobile horizontal scrolling
+      const sectionStart = windowHeight * 0.1;
+      const sectionEnd = height - windowHeight * 0.1;
+      
+      if (top <= sectionStart && top >= -sectionEnd) {
+        const progress = Math.max(0, Math.min(1, (sectionStart - top) / (height - windowHeight)));
+        setMobileScrollProgress(progress);
+      }
+
+      // Auto-play videos when they come into view
+      videoRefs.current.forEach((video, index) => {
+        if (video) {
+          const card = video.closest('[data-card-index]') as HTMLElement;
+          if (card) {
+            const cardRect = card.getBoundingClientRect();
+            const isInView = cardRect.top < windowHeight * 0.8 && cardRect.bottom > windowHeight * 0.2;
+            
+            if (isInView) {
+              const playPromise = video.play();
+              if (playPromise !== undefined) {
+                playPromise.catch((error) => {
+                  if (error.name !== "AbortError") {
+                    console.error("Video play failed:", error);
+                  }
+                });
+              }
+            } else {
+              video.pause();
+              video.currentTime = 0;
+            }
+          }
+        }
+      });
+    };
 
     // ✅ Calculate card width for precise scrolling
     const getCardWidth = () => {
@@ -146,6 +194,86 @@ const Solutions = () => {
       return cardRect.width + 24; // 24px for gap-6
     };
 
+    // ✅ Scroll to specific card index
+    const scrollToCard = (index: number) => {
+      const cardWidth = getCardWidth();
+      const scrollPosition = cardWidth * index;
+      
+      cardsContainer.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+      
+      currentCardIndex = index;
+      currentScrollRef.current = scrollPosition;
+    };
+
+    // ✅ Infinite automatic horizontal scrolling function
+    const startInfiniteAutoScroll = () => {
+      if (autoScrollRef.current) {
+        cancelAnimationFrame(autoScrollRef.current);
+      }
+
+      const scrollContainer = mobileCardsContainerRef.current;
+      if (!scrollContainer) return;
+
+      const scrollWidth = scrollContainer.scrollWidth;
+      const containerWidth = scrollContainer.clientWidth;
+      const maxScroll = scrollWidth - containerWidth;
+
+      const autoScroll = () => {
+        if (!scrollContainer) return;
+
+        // Update current scroll position
+        currentScrollRef.current += scrollDirectionRef.current * 0.3; // Adjust speed here
+
+        // Check boundaries and reverse direction
+        if (currentScrollRef.current >= maxScroll) {
+          currentScrollRef.current = maxScroll;
+          scrollDirectionRef.current = -1; // Reverse to left
+        } else if (currentScrollRef.current <= 0) {
+          currentScrollRef.current = 0;
+          scrollDirectionRef.current = 1; // Reverse to right
+        }
+
+        // Apply smooth scrolling
+        scrollContainer.scrollTo({
+          left: currentScrollRef.current,
+          behavior: 'smooth'
+        });
+
+        autoScrollRef.current = requestAnimationFrame(autoScroll);
+      };
+
+      autoScrollRef.current = requestAnimationFrame(autoScroll);
+    };
+
+    // ✅ Stop automatic scrolling function
+    const stopAutoScroll = () => {
+      if (autoScrollRef.current) {
+        cancelAnimationFrame(autoScrollRef.current);
+        autoScrollRef.current = null;
+      }
+    };
+
+    // Handle user interaction to pause/resume auto-scroll
+    const handleUserInteractionStart = () => {
+      stopAutoScroll();
+      
+      // Clear any existing timeout
+      if (interactionTimeout) {
+        clearTimeout(interactionTimeout);
+        interactionTimeout = null;
+      }
+    };
+
+    const handleUserInteractionEnd = () => {
+      // Resume auto-scroll after 3 seconds of inactivity
+      interactionTimeout = setTimeout(() => {
+        startInfiniteAutoScroll();
+      }, 3000);
+    };
+
     // Handle manual scroll to detect current card
     const handleManualScroll = () => {
       const cardWidth = getCardWidth();
@@ -153,75 +281,48 @@ const Solutions = () => {
       
       // Calculate which card is currently in view
       const newCardIndex = Math.round(scrollLeft / cardWidth);
-      const validIndex = Math.max(0, Math.min(solutions.length - 1, newCardIndex));
-      
-      if (validIndex !== currentCardIndex) {
-        setCurrentCardIndex(validIndex);
-      }
+      currentCardIndex = Math.max(0, Math.min(solutions.length - 1, newCardIndex));
+      currentScrollRef.current = scrollLeft;
     };
 
-    // Setup video autoplay with Intersection Observer
-    const setupVideoObserver = () => {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            const video = entry.target as HTMLVideoElement;
-            if (entry.isIntersecting) {
-              const playPromise = video.play();
-              if (playPromise !== undefined) {
-                playPromise.catch((error) => {
-                  if (error.name !== "AbortError" && error.name !== "NotAllowedError") {
-                    console.error("Video play failed:", error);
-                  }
-                });
-              }
-            } else {
-              video.pause();
-              video.currentTime = 0;
-            }
-          });
-        },
-        { 
-          threshold: 0.6,
-          rootMargin: "0px 0px -10% 0px"
-        }
-      );
+    const scrollContainer = mobileCardsContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('touchstart', handleUserInteractionStart, { passive: true });
+      scrollContainer.addEventListener('touchend', handleUserInteractionEnd, { passive: true });
+      scrollContainer.addEventListener('touchcancel', handleUserInteractionEnd, { passive: true });
+      scrollContainer.addEventListener('wheel', handleUserInteractionStart, { passive: true });
+      scrollContainer.addEventListener('scroll', handleManualScroll, { passive: true });
+    }
 
-      // Observe all videos
-      videoRefs.current.forEach((video) => {
-        if (video) {
-          observer.observe(video);
-        }
-      });
+    window.addEventListener("scroll", handleMobileScroll, { passive: true });
 
-      return observer;
-    };
-
-    // Add event listeners
-    cardsContainer.addEventListener('scroll', handleManualScroll, { passive: true });
-
-    // Setup video observer
-    const videoObserver = setupVideoObserver();
-
-    // Scroll to first card on initial load
-    const initialScroll = setTimeout(() => {
-      const cardWidth = getCardWidth();
-      cardsContainer.scrollTo({
-        left: cardWidth * currentCardIndex,
-        behavior: 'auto'
-      });
-    }, 100);
+    // Initialize and start auto-scroll
+    currentCardIndex = 0;
+    currentScrollRef.current = 0;
+    
+    // Small delay to ensure DOM is ready
+    const startDelay = setTimeout(() => {
+      startInfiniteAutoScroll();
+    }, 1000);
 
     return () => {
-      clearTimeout(initialScroll);
+      window.removeEventListener("scroll", handleMobileScroll);
+      stopAutoScroll();
+      clearTimeout(startDelay);
       
-      if (videoObserver) {
-        videoObserver.disconnect();
+      if (interactionTimeout) {
+        clearTimeout(interactionTimeout);
       }
       
-      cardsContainer.removeEventListener('scroll', handleManualScroll);
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('touchstart', handleUserInteractionStart);
+        scrollContainer.removeEventListener('touchend', handleUserInteractionEnd);
+        scrollContainer.removeEventListener('touchcancel', handleUserInteractionEnd);
+        scrollContainer.removeEventListener('wheel', handleUserInteractionStart);
+        scrollContainer.removeEventListener('scroll', handleManualScroll);
+      }
     };
-  }, [device, currentCardIndex]);
+  }, [device]);
 
   // ✅ Horizontal scroll offset for desktop
   const xOffset =
@@ -461,6 +562,7 @@ const Solutions = () => {
                           loop
                           muted
                           playsInline
+                          autoPlay
                           className="absolute inset-0 w-full h-full object-cover z-10"
                         />
                       )}
@@ -482,26 +584,12 @@ const Solutions = () => {
                 ))}
               </div>
             </div>
-
-            {/* Scroll Indicator Dots */}
-            <div className="flex justify-center mt-4 space-x-2">
-              {solutions.map((_, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-300",
-                    currentCardIndex === index 
-                      ? "bg-blue-500 scale-125" 
-                      : "bg-gray-300"
-                  )}
-                />
-              ))}
-            </div>
           </div>
         )}
       </div>
     </section>
   );
 };
+
 
 export default Solutions;
