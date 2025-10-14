@@ -2,6 +2,7 @@
 import React from 'react';
 import { gsap } from 'gsap';
 import './FlowingMenu.css';
+import Image from 'next/image';
 
 interface MenuItemProps {
   link?: string; // Made optional with ?
@@ -78,7 +79,15 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
     return Array.from({ length: 4 }).map((_, idx) => (
       <React.Fragment key={idx}>
         <span>{text}</span>
-        <div className="marquee__img" style={{ backgroundImage: `url(${image})` }} />
+        <div className="marquee__img">
+          <Image 
+            src={image} 
+            alt={text}
+            width={150}
+            height={50}
+            className="w-full h-full object-cover"
+          />
+        </div>
       </React.Fragment>
     ));
   }, [text, image]);

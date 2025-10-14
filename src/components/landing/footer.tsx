@@ -67,10 +67,8 @@ const Footer = () => {
 
   return (
     <footer className="bg-gradient-to-b from-background to-background/95 border-t border-border/50 relative overflow-hidden">
-      {/* Simplified background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/3 via-transparent to-transparent"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent"></div>
       
-      {/* Minimal floating particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(8)].map((_, i) => (
           <div
@@ -102,10 +100,10 @@ const Footer = () => {
         }
       `}</style>
 
-      <div className="container-max py-8 relative z-10">
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
+      <div className="container-max py-8 md:py-12 relative z-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           
-          <div className="flex flex-col gap-3 items-start">
+          <div className="flex flex-col gap-4 items-start col-span-2 sm:col-span-1 lg:col-span-1">
             <Link 
               href="/" 
               className="font-headline text-2xl font-black text-secondary uppercase tracking-widest relative group"
@@ -116,7 +114,7 @@ const Footer = () => {
                 alt="Inviot Logo"
                 width={100}
                 height={30}
-                className="h-6 w-auto"
+                className="h-8 w-auto"
               />
             </Link>
             <p className="text-foreground/70 text-sm">
@@ -170,7 +168,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div>
+          <div className="col-span-1">
             <h4 className="font-headline text-lg text-primary mb-3 flex items-center">
               Quick Links
               <span className="h-px flex-1 bg-primary/10 ml-2"></span>
@@ -179,8 +177,8 @@ const Footer = () => {
               {['About Us', 'Solutions', 'Blogs', 'Room configurator', 'Contact Us'].map((item, index) => (
                 <li key={item}>
                   <Link 
-                    href={index === 0 ? "/#aboutus" : index === 1 ? "/#solutions" : index === 4 ? "#contact" : `/${item.toLowerCase()}`} 
-                    onClick={(e) => index === 4 ? scrollToContact(e) : index < 2 ? handleLinkClick(e, `/#${item.toLowerCase().replace(' ', '')}`) : null}
+                    href={index === 0 ? "/#aboutus" : index === 1 ? "/#solutions" : index === 4 ? "#contact" : `/${item.toLowerCase().replace(/ /g, '-')}`} 
+                    onClick={(e) => index === 4 ? scrollToContact(e) : index < 2 ? handleLinkClick(e, `/#${item.toLowerCase().replace(' ', '')}`) : undefined}
                     className="text-foreground/60 hover:text-primary transition-colors flex items-center group text-sm"
                     onMouseEnter={() => setHoveredItem(`quick-${index}`)}
                     onMouseLeave={() => setHoveredItem(null)}
@@ -193,7 +191,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="col-span-1">
             <h4 className="font-headline text-lg text-primary mb-3 flex items-center">
               Solutions
               <span className="h-px flex-1 bg-primary/10 ml-2"></span>
@@ -225,14 +223,14 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="col-span-2 sm:col-span-1 lg:col-span-1">
             <h4 className="font-headline text-lg text-primary mb-3 flex items-center">
               Get In Touch
               <span className="h-px flex-1 bg-primary/10 ml-2"></span>
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               <li className="text-foreground/60 flex items-start text-sm">
-                <MapPin size={14} className="text-primary mt-0.5 mr-2 flex-shrink-0" />
+                <MapPin size={16} className="text-primary mt-0.5 mr-2 flex-shrink-0" />
                 <span>1233, New Tippasandra, Bengaluru, Karnataka 560075</span>
               </li>
               <li className="text-foreground/60 flex items-center text-sm">
@@ -257,7 +255,6 @@ const Footer = () => {
         </div>
       </div>
       
-      {/* Scroll to top button */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
@@ -269,7 +266,7 @@ const Footer = () => {
       )}
       
       <div className="border-t border-border/40 py-4 relative z-10">
-        <div className="container-max flex flex-col md:flex-row justify-between items-center gap-2 text-foreground/50 text-xs">
+        <div className="container-max flex flex-col md:flex-row justify-between items-center gap-2 text-foreground/50 text-xs text-center md:text-left">
           <p>
             &copy; {year ?? ""} Inviot AV Solutions Pvt. Ltd. All Rights Reserved.
           </p>
