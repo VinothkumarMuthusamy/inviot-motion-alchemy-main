@@ -26,6 +26,8 @@ export default function HomePage() {
           fill
           className="object-cover"
           priority
+          quality={60} // reduces image file size
+          sizes="100vw"
         />
         <div className="absolute top-20 left-10 w-[400px] h-[400px] bg-pink-500 opacity-30 rounded-full blur-[120px] animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-[400px] h-[400px] bg-blue-600 opacity-30 rounded-full blur-[120px] animate-pulse delay-1000"></div>

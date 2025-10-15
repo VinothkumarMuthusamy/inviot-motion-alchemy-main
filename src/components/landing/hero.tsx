@@ -33,22 +33,7 @@ const Hero = () => {
     }, 500);
   }, [videos.length]);
 
-  useEffect(() => {
-    document.querySelectorAll('[fdprocessedid]').forEach(el => {
-      el.removeAttribute('fdprocessedid');
-    });
-    
-    // Add the robot font to the document head
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap";
-    document.head.appendChild(link);
-    
-    // Set up the carousel auto-advance
-    const interval = setInterval(nextVideo, 5000);
-    
-    return () => clearInterval(interval);
-  }, [nextVideo]);
+  
 
   return (
     <section
@@ -79,7 +64,7 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 container-max w-full flex flex-col items-start px-4 sm:px-6 md:px-12 lg:px-24">
         <div className="animate-fade-in-scale-up max-w-2xl bg-black/30 backdrop-blur-sm p-4 sm:p-6 rounded-lg border border-gray-700">
-          <h1 className="heading-1 text-white text-3xl sm:text-4xl md:text-6xl font-['Orbitron'] font-bold mb-4">
+          <h1 className="heading-1 text-white text-3xl sm:text-4xl md:text-6xl font-['Orbitron'] font-bold mb-4 min-h-[120px] sm:min-h-[160px] md:min-h-[200px]">
             <Typewriter
               options={{
                 strings: headlines,
@@ -92,13 +77,13 @@ const Hero = () => {
             />
           </h1>
           
-          <div className="animate-fade-up animation-delay-300">
+          <div className="animate-fade-up animation-delay-300 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
             <p className="mt-4 text-base sm:text-lg md:text-xl text-gray-200 text-balance font-['Roboto_Mono']">
              Premium AV for Modern Spaces.
             </p>
           </div>
 
-          <div className="animate-fade-up animation-delay-700 mt-6 sm:mt-8">
+          <div className="animate-fade-up animation-delay-700 mt-6 sm:mt-8 min-h-[60px]">
             <Button 
               size="lg" 
               className="font-headline bg-blue-600 hover:bg-blue-700 font-['Orbitron']" 
