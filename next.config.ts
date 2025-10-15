@@ -46,4 +46,17 @@ const nextConfig: NextConfig = {
   
 };
 
-export default nextConfig;
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+const combinedConfig: NextConfig = withBundleAnalyzer({
+  ...nextConfig, // Merge the existing nextConfig
+  reactStrictMode: true,
+  images: {
+    ...nextConfig.images, // Merge existing image configurations
+    formats: ['image/avif', 'image/webp'],
+  },
+});
+
+module.exports = combinedConfig;
