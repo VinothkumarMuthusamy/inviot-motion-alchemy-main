@@ -136,17 +136,25 @@ const HorizontalMarquee = ({
           <div
             key={`${item.name}-${index}`}
             className="inline-flex items-center justify-center mx-4 md:mx-8"
-            style={{ minWidth: "120px", height: "80px" }}
+            style={{ width: 120, height: 80 }}
           >
-            <Image
-              src={item.logo}
-              alt={item.name}
-              width={120}
-              height={60}
-              data-ai-hint={item.hint}
-              className="hover:scale-105 transition-all duration-300 hover:opacity-100 object-contain max-h-[60px]"
-              style={{ opacity: `${opacity}%` }}
-            />
+            {/* Reserve explicit width/height on the wrapper so the layout doesn't shift
+                when the image is loaded. Next/Image with numeric width/height will
+                generate a sized placeholder, but having the wrapper helps when
+                CSS transforms or parent rules could cause reflow. */}
+            <div style={{ width: 120, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Image
+                src={item.logo}
+                alt={item.name}
+                width={120}
+                height={60}
+                data-ai-hint={item.hint}
+                className="hover:scale-105 transition-all duration-300 hover:opacity-100 object-contain max-h-[60px]"
+                // use numeric opacity (0-1) to avoid passing invalid CSS values
+                style={{ opacity: opacity / 100 }}
+                loading="lazy"
+              />
+            </div>
           </div>
         ))}
       </div>

@@ -172,18 +172,22 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
                     {word.split("").map((letter) => {
                         const currentLetterIndex = letterIndex++;
                         return (
-                            <motion.span
-                                key={currentLetterIndex}
-                                ref={(el) => { letterRefs.current[currentLetterIndex] = el; }}
-                                style={{
-                                    display: "inline-block",
-                                    fontVariationSettings:
-                                        interpolatedSettingsRef.current[currentLetterIndex],
-                                }}
-                                aria-hidden="true"
-                            >
-                                {letter}
-                            </motion.span>
+                                    <motion.span
+                                        key={currentLetterIndex}
+                                        ref={(el) => { letterRefs.current[currentLetterIndex] = el; }}
+                                        style={{
+                                            display: "inline-block",
+                                            // Use the interpolated settings if available, otherwise
+                                            // set the initial font variation to the `from` settings
+                                            // to avoid a layout shift when JS first runs and applies
+                                            // the same settings via requestAnimationFrame.
+                                            fontVariationSettings:
+                                                interpolatedSettingsRef.current[currentLetterIndex] ?? fromFontVariationSettings,
+                                        }}
+                                        aria-hidden="true"
+                                    >
+                                        {letter}
+                                    </motion.span>
                         );
                     })}
                     {wordIndex < words.length - 1 && (
