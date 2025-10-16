@@ -43,14 +43,13 @@ const Contact = () => {
       style={{ paddingTop: "2cm", paddingBottom: "2cm" }}
     >
       {/* Colored background with 2cm transparent top and bottom */}
-      <div
-        className="absolute inset-0 bg-gradient-to-br from-primary/95 to-primary/80"
-        style={{
-          top: "2cm",
-        }}
-      >
-        <div className="absolute inset-0 bg-grid-white/10 bg-[size:60px_60px]"></div>
-      </div>
+      {/* Colored background with 2cm transparent top and bottom on large screens */}
+<div
+  className="absolute inset-0 bg-gradient-to-br from-primary/95 to-primary/80 lg:top-[2cm] top-0"
+>
+  <div className="absolute inset-0 bg-grid-white/10 bg-[size:60px_60px]"></div>
+</div>
+
 
       <div className="container-max relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
