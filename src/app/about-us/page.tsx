@@ -350,7 +350,7 @@ const AboutUsPage = () => {
                     </div>
                     <div className="flex justify-between items-center mb-4">
                       <h2 className="heading-3 text-secondary">Our Company</h2>
-                      <PDFViewer pdfUrl="/assets/aboutus/INVIOT_COMPANY_PROFILE.pdf" />
+                      <PDFViewer pdfUrl="/assets/aboutus/INVIOT_AI.pdf" />
                     </div>
                     <div className="space-y-4 text-black leading-relaxed">
                     <p>

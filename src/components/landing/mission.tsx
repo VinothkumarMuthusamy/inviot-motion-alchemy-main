@@ -46,26 +46,16 @@ const Mission = () => {
 
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
-    const handleLoadedData = () => {
-      console.log("Video loaded successfully");
-    };
-    const handleError = (e: Event) => {
-      console.error("Video error:", e);
-    };
 
     videoElement.addEventListener("play", handlePlay);
     videoElement.addEventListener("pause", handlePause);
-    videoElement.addEventListener("loadeddata", handleLoadedData);
-    videoElement.addEventListener("error", handleError);
 
-    // Don't autoplay initially - wait for user interaction
+    // Initially pause video
     videoElement.pause();
 
     return () => {
       videoElement.removeEventListener("play", handlePlay);
       videoElement.removeEventListener("pause", handlePause);
-      videoElement.removeEventListener("loadeddata", handleLoadedData);
-      videoElement.removeEventListener("error", handleError);
     };
   }, []);
 
@@ -74,30 +64,39 @@ const Mission = () => {
       const newMutedState = !videoRef.current.muted;
       videoRef.current.muted = newMutedState;
       setIsMuted(newMutedState);
-      
-      // If unmuting and video is playing, ensure it continues playing
+
       if (!newMutedState && isPlaying) {
         videoRef.current.play().catch(console.error);
       }
     }
   };
 
-  const togglePlay = async () => {
-    if (videoRef.current) {
-      setHasInteracted(true);
-      try {
-        if (videoRef.current.paused) {
-          await videoRef.current.play();
-          setIsPlaying(true);
-        } else {
-          videoRef.current.pause();
-          setIsPlaying(false);
+  const togglePlay = async (goFullScreen = false) => {
+    const video = videoRef.current;
+    if (!video) return;
+    setHasInteracted(true);
+
+    try {
+      // If fullscreen requested on first click
+      if (goFullScreen) {
+        if (video.requestFullscreen) {
+          await video.requestFullscreen();
+        } else if ((video as any).webkitEnterFullscreen) {
+          // For iOS Safari
+          (video as any).webkitEnterFullscreen();
         }
-      } catch (error) {
-        console.error("Error toggling play:", error);
-        // If autoplay fails due to browser restrictions, show a message
-        alert("Please click the play button to start the video with audio.");
       }
+
+      if (video.paused) {
+        await video.play();
+        setIsPlaying(true);
+      } else {
+        video.pause();
+        setIsPlaying(false);
+      }
+    } catch (error) {
+      console.error("Error toggling play:", error);
+      alert("Please click the play button to start the video with audio.");
     }
   };
 
@@ -133,7 +132,7 @@ const Mission = () => {
                 Technology with Purpose
               </h2>
 
-              <p className="mt-4 max-w-4xl text-lg text-justify text-balance font-light leading-relaxed text-black bg-transparent backdrop-blur-sm p-4 rounded-lg">
+              <p className="mt-4 max-w-4xl text-lg text-justify font-light leading-relaxed text-black bg-transparent backdrop-blur-sm p-4 rounded-lg">
                 At Inviot, we believe that the best way to improve communication
                 and collaboration within organizations is to treat audiovisual,
                 unified collaboration, and digital media as part of a larger
@@ -150,7 +149,13 @@ const Mission = () => {
 
           {/* Right video */}
           <AnimateInView delay={200} className="w-full">
-            <div className="relative w-full max-w-[500px] mx-auto h-[300px] md:h-[400px] rounded-lg overflow-hidden border-2 border-accent/20 shadow-lg group transition-transform duration-300 ease-in-out hover:scale-105 bg-white/10 backdrop-blur-sm">
+            <div
+              className="relative w-full max-w-[500px] mx-auto h-[300px] md:h-[400px] rounded-lg overflow-hidden border-2 border-accent/20 shadow-lg group transition-transform duration-300 ease-in-out hover:scale-105 bg-white/10 backdrop-blur-sm"
+              style={{
+                clipPath:
+                  "polygon(52% 0, 64% 19%, 100% 19%, 100% 70%, 100% 100%, 42% 100%, 33% 80%, 0 80%, 0% 35%, 0 0)",
+              }}
+            >
               <video
                 ref={videoRef}
                 muted={isMuted}
@@ -159,18 +164,18 @@ const Mission = () => {
                 loop
                 preload="metadata"
               >
-                <source 
-                  src="/videos/WEBSITE  VIDEO  INVIOT (OCT 11) V2.mp4" 
-                  type="video/mp4" 
+                <source
+                  src="/videos/WEBSITE  VIDEO  INVIOT (OCT 11) V2.mp4"
+                  type="video/mp4"
                 />
                 Your browser does not support the video tag.
               </video>
-              
+
               {/* Video Controls */}
               <div className="absolute bottom-4 right-4 flex gap-2">
                 {/* Play/Pause Button */}
                 <button
-                  onClick={togglePlay}
+                  onClick={() => togglePlay(false)}
                   className="p-3 bg-black/80 rounded-full text-white hover:bg-black transition-colors backdrop-blur-sm"
                   aria-label={isPlaying ? "Pause video" : "Play video"}
                 >
@@ -197,9 +202,9 @@ const Mission = () => {
 
               {/* Play overlay for first interaction */}
               {!hasInteracted && (
-                <div 
+                <div
                   className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer"
-                  onClick={togglePlay}
+                  onClick={() => togglePlay(true)} // 🔥 Fullscreen trigger
                 >
                   <div className="text-center">
                     <div className="bg-white/90 rounded-full p-4 mb-2 inline-block">
