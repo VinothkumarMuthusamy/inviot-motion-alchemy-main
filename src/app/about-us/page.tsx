@@ -428,7 +428,7 @@ const AboutUsPage = () => {
   
           {/* Journey Timeline */}
           <Timeline />
-          <Leadership />
+          {/* <Leadership /> */}
         </main>
         <Footer />
       </div>

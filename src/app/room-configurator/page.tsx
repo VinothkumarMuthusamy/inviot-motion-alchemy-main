@@ -113,6 +113,10 @@ const microphoneOptions = {
     large: ["shure", "sennheiser", "audio-technica", "clearone"]
 };
 
+const desktopOptions = {
+    booth: ["cisco", "logitech", "yealink"]
+};
+
 const carouselImages = [
   "/assets/roompage/r5.jpg",
   "/assets/roompage/r2.jpg",
@@ -260,9 +264,150 @@ const VcSelector = ({ onNext, onBack, selected, setSelected, totalSteps }: { onN
     );
 };
 
-const TableSelector = ({ onNext, onBack, selected, setSelected, roomType }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; roomType: keyof typeof tableOptions; }) => {
+const BoothTypeSelector = ({ onNext, onBack, selected, setSelected, totalSteps }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; totalSteps: number; }) => {
+    const boothTypes = [
+        { value: 'dual', label: 'dual seater' }
+    ];
+
+    return (
+        <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{duration: 0.5}}>
+            <div className="text-center">
+                <StepIndicator current={3} total={totalSteps} />
+                <h2 className="heading-2 mt-4">Choose your <span>booth type</span></h2>
+                <div className="grid grid-cols-1 gap-4 md:gap-6 mt-8 max-w-md mx-auto">
+                    {boothTypes.map((booth, index) => (
+                        <AnimateInView key={booth.value} delay={index * 100}>
+                            <label className={cn(
+                                "relative block cursor-pointer rounded-lg border-2 p-6 text-center transition-all duration-300",
+                                selected === booth.value
+                                    ? "border-primary bg-primary/10 shadow-lg"
+                                    : "border-border hover:border-primary/50"
+                            )}>
+                                <div className="flex items-center justify-center gap-4">
+                                    <Image src="https://resurgent.co.in/room-configurator/images/booth/table/dual-icon.webp" alt={booth.label} width={80} height={80} className="mx-auto" />
+                                    <span className="table-label font-bold text-foreground">{booth.label}</span>
+                                </div>
+                                {selected === booth.value && (
+                                    <Image src="https://resurgent.co.in/room-configurator/images/select.webp" alt="selected" width={24} height={24} className="absolute top-3 right-3" />
+                                )}
+                                <input
+                                    type="radio"
+                                    name="boothType"
+                                    value={booth.value}
+                                    className="sr-only"
+                                    onChange={() => setSelected(booth.value)}
+                                    checked={selected === booth.value}
+                                />
+                            </label>
+                        </AnimateInView>
+                    ))}
+                </div>
+                
+                {/* Image Preview */}
+                <div className="mt-8 relative w-full max-w-2xl mx-auto aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                    <div className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                        All images shown are for demonstration purpose
+                    </div>
+                    <Image 
+                        src="https://resurgent.co.in/room-configurator/images/booth/wall.webp" 
+                        alt="Booth background" 
+                        fill 
+                        style={{objectFit: 'cover'}} 
+                    />
+                    <Image 
+                        src="https://resurgent.co.in/room-configurator/images/booth/table/dual.webp" 
+                        alt="Booth table" 
+                        fill 
+                        style={{objectFit: 'contain'}} 
+                        className="relative z-1"
+                    />
+                </div>
+
+                <div className="mt-8 flex justify-center gap-4">
+                    <Button onClick={onBack} size="lg" variant="outline">Back</Button>
+                    <Button onClick={onNext} size="lg" className="font-headline btn-glow" disabled={!selected}>Next</Button>
+                </div>
+            </div>
+        </motion.div>
+    )
+};
+
+const DesktopConferencingSelector = ({ onNext, onBack, selected, setSelected, totalSteps }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; totalSteps: number; }) => {
+    return (
+        <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{duration: 0.5}}>
+            <div className="text-center">
+                <StepIndicator current={4} total={totalSteps} />
+                <h2 className="heading-2 mt-4">Choose your <span>desktop conferencing solution</span></h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 max-w-2xl mx-auto">
+                    {(desktopOptions.booth || []).map((brand, index) => (
+                        <AnimateInView key={brand} delay={index * 100}>
+                            <label className={cn(
+                                "relative block cursor-pointer rounded-lg border-2 p-6 text-center transition-all duration-300",
+                                selected === brand
+                                    ? "border-primary bg-primary/10 shadow-lg"
+                                    : "border-border hover:border-primary/50"
+                            )}>
+                                <Image src={`https://resurgent.co.in/room-configurator/images/${brand}.webp`} alt={brand} width={120} height={60} className="mx-auto h-12 object-contain" />
+                                {selected === brand && (
+                                    <Image src="https://resurgent.co.in/room-configurator/images/select.webp" alt="selected" width={24} height={24} className="absolute top-3 right-3" />
+                                )}
+                                <input
+                                    type="radio"
+                                    name="desktopType"
+                                    value={brand}
+                                    className="sr-only"
+                                    onChange={() => setSelected(brand)}
+                                    checked={selected === brand}
+                                />
+                            </label>
+                        </AnimateInView>
+                    ))}
+                </div>
+                
+                {/* Image Preview */}
+                <div className="mt-8 relative w-full max-w-2xl mx-auto aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                    <div className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                        All images shown are for demonstration purpose
+                    </div>
+                    <Image 
+                        src="https://resurgent.co.in/room-configurator/images/booth/wall.webp" 
+                        alt="Booth background" 
+                        fill 
+                        style={{objectFit: 'cover'}} 
+                    />
+                    <Image 
+                        src="https://resurgent.co.in/room-configurator/images/booth/table/dual.webp" 
+                        alt="Booth table" 
+                        fill 
+                        style={{objectFit: 'contain'}} 
+                        className="relative z-1"
+                    />
+                    {selected && (
+                        <Image 
+                            src={`https://resurgent.co.in/room-configurator/images/booth/desktop-conferencing/${selected}.webp`}
+                            alt="Desktop conferencing" 
+                            fill 
+                            style={{objectFit: 'contain'}} 
+                            className="relative z-2"
+                        />
+                    )}
+                </div>
+
+                <div className="mt-8 flex justify-center gap-4">
+                    <Button onClick={onBack} size="lg" variant="outline">Back</Button>
+                    <Button onClick={onNext} size="lg" className="font-headline btn-glow" disabled={!selected}>Next</Button>
+                </div>
+            </div>
+        </motion.div>
+    )
+};
+
+const TableSelector = ({ onNext, onBack, selected, setSelected, roomType, totalSteps }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; roomType: keyof typeof tableOptions; totalSteps: number; }) => {
     return (
         <div className="text-center">
+            <StepIndicator current={3} total={totalSteps} />
             <h2 className="heading-2 mt-4">Choose your <span>table type</span></h2>
              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mt-8">
                 {(tableOptions[roomType] || []).map((table, index) => (
@@ -300,7 +445,7 @@ const TableSelector = ({ onNext, onBack, selected, setSelected, roomType }: { on
     )
 }
 
-const DisplaySelector = ({ onNext, onBack, selected, setSelected, roomType, onModeChange, displayMode }: {
+const DisplaySelector = ({ onNext, onBack, selected, setSelected, roomType, onModeChange, displayMode, totalSteps }: {
     onNext: () => void;
     onBack: () => void;
     selected: string;
@@ -308,11 +453,13 @@ const DisplaySelector = ({ onNext, onBack, selected, setSelected, roomType, onMo
     roomType: keyof typeof displayOptions;
     onModeChange: (mode: 'Single' | 'Dual') => void;
     displayMode: 'Single' | 'Dual';
+    totalSteps: number;
 }) => {
     const showToggle = selected && roomType !== 'booth' && roomType !== 'huddle';
 
     return (
         <div className="text-center">
+            <StepIndicator current={4} total={totalSteps} />
             <h2 className="heading-2 mt-4">Choose your <span>display provider</span></h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
                 {(displayOptions[roomType] || []).map((brand, index) => (
@@ -360,13 +507,15 @@ const DisplaySelector = ({ onNext, onBack, selected, setSelected, roomType, onMo
     );
 }
 
-const CameraSelector = ({ onNext, onBack, selected, setSelected, roomType, vc }: {
+const CameraSelector = ({ onNext, onBack, selected, setSelected, roomType, vc, selections, totalSteps }: {
     onNext: () => void;
     onBack: () => void;
     selected: string;
     setSelected: (value: string) => void;
     roomType: keyof typeof cameraOptions;
     vc: string[];
+    selections: Record<string, any>;
+    totalSteps: number;
 }) => {
     const options = (cameraOptions[roomType] || []);
     const isMSBooth = vc.length === 1 && vc[0] === 'msteams' && roomType === 'booth';
@@ -374,7 +523,8 @@ const CameraSelector = ({ onNext, onBack, selected, setSelected, roomType, vc }:
 
     return (
         <div className="text-center">
-            <h2 className="heading-2 mt-4">Choose your <span>camera provider</span></h2>
+            <StepIndicator current={5} total={totalSteps} />
+            <h2 className="heading-2 mt-4">Choose your conference <span>camera provider</span></h2>
              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
                 {filteredOptions.map((brand, index) => (
                      <AnimateInView key={brand} delay={index * 100}>
@@ -402,6 +552,50 @@ const CameraSelector = ({ onNext, onBack, selected, setSelected, roomType, vc }:
                     </AnimateInView>
                 ))}
             </div>
+            
+            {/* Image Preview for Huddle Room */}
+            {roomType === 'huddle' && (
+                <div className="mt-8 relative w-full max-w-2xl mx-auto aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                    <div className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                        All images shown are for demonstration purpose
+                    </div>
+                    <Image 
+                        src="https://resurgent.co.in/room-configurator/images/huddle/wall.webp" 
+                        alt="Huddle background" 
+                        fill 
+                        style={{objectFit: 'cover'}} 
+                    />
+                    {selections.table && (
+                        <Image 
+                            src={`https://resurgent.co.in/room-configurator/images/huddle/table/${selections.table}.webp`}
+                            alt="Table" 
+                            fill 
+                            style={{objectFit: 'contain'}} 
+                            className="relative z-1"
+                        />
+                    )}
+                    {selections.display && (
+                        <Image 
+                            src={`https://resurgent.co.in/room-configurator/images/huddle/display/Single-${selections.display}-display.webp`}
+                            alt="Display" 
+                            fill 
+                            style={{objectFit: 'contain'}} 
+                            className="relative z-2"
+                        />
+                    )}
+                    {selected && (
+                        <Image 
+                            src={`https://resurgent.co.in/room-configurator/images/huddle/camera/${selected}-camera.webp`}
+                            alt="Camera" 
+                            fill 
+                            style={{objectFit: 'contain'}} 
+                            className="relative z-3"
+                        />
+                    )}
+                </div>
+            )}
+
             <div className="mt-8 flex justify-center gap-4">
                 <Button onClick={onBack} size="lg" variant="outline">Back</Button>
                 <Button onClick={onNext} size="lg" className="font-headline btn-glow" disabled={!selected && roomType !== 'booth'}>Next</Button>
@@ -410,9 +604,10 @@ const CameraSelector = ({ onNext, onBack, selected, setSelected, roomType, vc }:
     )
 };
 
-const TouchpadSelector = ({ onNext, onBack, selected, setSelected, roomType }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; roomType: keyof typeof touchpadOptions; }) => {
+const TouchpadSelector = ({ onNext, onBack, selected, setSelected, roomType, totalSteps }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; roomType: keyof typeof touchpadOptions; totalSteps: number; }) => {
     return (
         <div className="text-center">
+            <StepIndicator current={6} total={totalSteps} />
             <h2 className="heading-2 mt-4">Choose your <span>touchpad provider</span></h2>
              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
                 {(touchpadOptions[roomType] || []).map((brand, index) => (
@@ -449,9 +644,10 @@ const TouchpadSelector = ({ onNext, onBack, selected, setSelected, roomType }: {
     )
 };
 
-const SpeakerSelector = ({ onNext, onBack, selected, setSelected, roomType }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; roomType: keyof typeof speakerOptions; }) => {
+const SpeakerSelector = ({ onNext, onBack, selected, setSelected, roomType, totalSteps }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; roomType: keyof typeof speakerOptions; totalSteps: number; }) => {
     return (
         <div className="text-center">
+            <StepIndicator current={7} total={totalSteps} />
             <h2 className="heading-2 mt-4">Choose your <span>speaker provider</span></h2>
              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
                 {(speakerOptions[roomType] || []).map((brand, index) => (
@@ -488,9 +684,10 @@ const SpeakerSelector = ({ onNext, onBack, selected, setSelected, roomType }: { 
     )
 };
 
-const MicrophoneSelector = ({ onNext, onBack, selected, setSelected, roomType }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; roomType: keyof typeof microphoneOptions; }) => {
+const MicrophoneSelector = ({ onNext, onBack, selected, setSelected, roomType, totalSteps }: { onNext: () => void; onBack: () => void; selected: string; setSelected: (value: string) => void; roomType: keyof typeof microphoneOptions; totalSteps: number; }) => {
     return (
         <div className="text-center">
+            <StepIndicator current={8} total={totalSteps} />
             <h2 className="heading-2 mt-4">Choose your <span>microphone provider</span></h2>
              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
                 {(microphoneOptions[roomType] || []).map((brand, index) => (
@@ -607,6 +804,7 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                         selected={selections.table}
                         setSelected={(value) => updateSelection('table', value)}
                         roomType={selections.roomType}
+                        totalSteps={totalSteps}
                     />
             case 1:
                 return <DisplaySelector 
@@ -617,6 +815,7 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                         roomType={selections.roomType}
                         displayMode={selections.displayMode}
                         onModeChange={(value) => updateSelection('displayMode', value)}
+                        totalSteps={totalSteps}
                     />
             case 2:
                  return <CameraSelector
@@ -626,6 +825,8 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                         setSelected={(value) => updateSelection('camera', value)}
                         roomType={selections.roomType}
                         vc={selections.vc}
+                        selections={selections}
+                        totalSteps={totalSteps}
                     />
             case 3:
                  return <TouchpadSelector
@@ -634,6 +835,7 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                         selected={selections.touchpad}
                         setSelected={(value) => updateSelection('touchpad', value)}
                         roomType={selections.roomType}
+                        totalSteps={totalSteps}
                     />
             case 4:
                  // Skip speaker for medium rooms
@@ -644,6 +846,7 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                         selected={selections.microphone}
                         setSelected={(value) => updateSelection('microphone', value)}
                         roomType={selections.roomType}
+                        totalSteps={totalSteps}
                     />
                  } else {
                     return <SpeakerSelector
@@ -652,6 +855,7 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                         selected={selections.speaker}
                         setSelected={(value) => updateSelection('speaker', value)}
                         roomType={selections.roomType}
+                        totalSteps={totalSteps}
                     />
                  }
             case 5:
@@ -661,6 +865,7 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                         selected={selections.microphone}
                         setSelected={(value) => updateSelection('microphone', value)}
                         roomType={selections.roomType}
+                        totalSteps={totalSteps}
                     />
             default:
                 return null;
@@ -691,10 +896,9 @@ const Configurator = ({ onNext, onBack, selections, setSelections, totalSteps } 
                     )}
                     {selections.camera && (
                          <Image 
-                           src={`https://resurgent.co.in/room-configurator/images/${selections.roomType}/camera/${selections.displayMode}-${selections.camera}-camera.webp`}
+                           src={`https://resurgent.co.in/room-configurator/images/${selections.roomType}/camera/${selections.camera}-camera.webp`}
                            alt="Camera" fill style={{objectFit: 'contain'}}
                            className="transition-all duration-500"
-                           onError={(e) => { (e.target as HTMLImageElement).src = `https://resurgent.co.in/room-configurator/images/${selections.roomType}/camera/${selections.camera}-camera.webp`}}
                           />
                     )}
                      {selections.touchpad && (
@@ -808,9 +1012,8 @@ const QuoteForm = ({ onBack, onSubmit, selections, setFormValue, formValues, tot
                                     {selections.camera && (
                                         <motion.div key="camera" className="absolute w-full h-full" {...animationVariants.camera}>
                                             <Image 
-                                            src={`https://resurgent.co.in/room-configurator/images/${selections.roomType}/camera/${selections.displayMode}-${selections.camera}-camera.webp`}
+                                            src={`https://resurgent.co.in/room-configurator/images/${selections.roomType}/camera/${selections.camera}-camera.webp`}
                                             alt="Camera" fill style={{objectFit: 'contain'}}
-                                            onError={(e) => { (e.target as HTMLImageElement).src = `https://resurgent.co.in/room-configurator/images/${selections.roomType}/camera/${selections.camera}-camera.webp`}}
                                             />
                                         </motion.div>
                                     )}
@@ -846,6 +1049,26 @@ const QuoteForm = ({ onBack, onSubmit, selections, setFormValue, formValues, tot
                                             />
                                         </motion.div>
                                     )}
+                                    {selections.boothType && (
+                                        <motion.div key="booth" className="absolute w-full h-full" {...animationVariants.table}>
+                                            <Image 
+                                                src="https://resurgent.co.in/room-configurator/images/booth/table/dual.webp"
+                                                alt="Booth" 
+                                                fill
+                                                style={{objectFit:"contain"}}
+                                            />
+                                        </motion.div>
+                                    )}
+                                    {selections.desktop && (
+                                        <motion.div key="desktop" className="absolute w-full h-full" {...animationVariants.camera}>
+                                            <Image 
+                                                src={`https://resurgent.co.in/room-configurator/images/booth/desktop-conferencing/${selections.desktop}.webp`}
+                                                alt="Desktop Conferencing" 
+                                                fill
+                                                style={{objectFit:"contain"}}
+                                            />
+                                        </motion.div>
+                                    )}
                                 </AnimatePresence>
                             </div>
                         </Card>
@@ -864,8 +1087,14 @@ const QuoteForm = ({ onBack, onSubmit, selections, setFormValue, formValues, tot
                                 {selectedVCs.length > 0 && (
                                     <div className="font-bold">VC System: <span className="font-normal text-muted-foreground">{selectedVCs.join(', ')}</span></div>
                                 )}
+                                {selections.boothType && (
+                                    <div className="font-bold">Booth Type: <span className="font-normal text-muted-foreground">Dual Seater</span></div>
+                                )}
+                                {selections.desktop && (
+                                    <div className="font-bold">Desktop Solution: <span className="font-normal text-muted-foreground">{selections.desktop.charAt(0).toUpperCase() + selections.desktop.slice(1)}</span></div>
+                                )}
                                 {Object.entries(selections).map(([key, value]) => {
-                                   if (!value || typeof value === 'object' || ['roomType', 'vc'].includes(key)) return null;
+                                   if (!value || typeof value === 'object' || ['roomType', 'vc', 'boothType', 'desktop'].includes(key)) return null;
                                    if (key === 'speaker' && selections.roomType === 'medium') return null; // Hide speaker for medium rooms
                                    
                                    let item;
@@ -916,12 +1145,14 @@ const QuoteForm = ({ onBack, onSubmit, selections, setFormValue, formValues, tot
 
 export default function RoomConfiguratorPage() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
-  const [step, setStep] = useState(0); // 0:home, 1:room, 2:vc, 3:config, 4:quote
+  const [step, setStep] = useState(0); // 0:home, 1:room, 2:vc, 3:booth-type, 4:desktop, 5:config, 6:quote
   const { toast } = useToast();
 
   const [selections, setSelections] = useState({
     roomType: "",
     vc: [],
+    boothType: "",
+    desktop: "",
     table: "",
     display: "",
     displayMode: "Single" as 'Single' | 'Dual',
@@ -944,15 +1175,20 @@ export default function RoomConfiguratorPage() {
   }, []);
 
   const getTotalSteps = () => {
-    const baseSteps = 3; // Home, Room, VC
-    if (!selections.roomType) return 4;
+    const baseSteps = 2; // Home, Room
+    if (!selections.roomType) return 3;
     const roomType = selections.roomType;
+    
+    if (roomType === 'booth') {
+      return 5; // Home, Room, VC, Booth Type, Desktop, Quote
+    }
+    
     let configSteps = 0;
     if (roomType === 'large') configSteps = 6;
-    else if (roomType === 'medium') configSteps = 4; // Reduced from 5 to 4 (skip speaker)
+    else if (roomType === 'medium') configSteps = 4;
     else if (roomType === 'huddle') configSteps = 4;
-    else if (roomType === 'booth') configSteps = 2;
-    return baseSteps + configSteps;
+    
+    return baseSteps + 1 + configSteps; // +1 for VC step
   };
 
   const totalSteps = getTotalSteps();
@@ -967,18 +1203,28 @@ export default function RoomConfiguratorPage() {
 
   const handleNext = () => {
     let nextStep = step + 1;
-    if(selections.roomType === 'booth' && nextStep === 3) {
-        nextStep = 4; // Skip config for booth
+    
+    // For booth, handle special flow
+    if (selections.roomType === 'booth') {
+      if (step === 2) nextStep = 3; // VC to Booth Type
+      if (step === 3) nextStep = 4; // Booth Type to Desktop
+      if (step === 4) nextStep = 5; // Desktop to Quote
     }
-    setStep(Math.min(nextStep, 4));
+    
+    setStep(Math.min(nextStep, 5));
     window.scrollTo(0, 0);
   };
 
   const handleBack = () => {
     let prevStep = step - 1;
-    if (selections.roomType === 'booth' && prevStep === 3){
-        prevStep = 2; // Skip back to vc selection from quote form
+    
+    // For booth, handle back navigation properly
+    if (selections.roomType === 'booth') {
+      if (step === 5) prevStep = 4; // Quote to Desktop
+      if (step === 4) prevStep = 3; // Desktop to Booth Type
+      if (step === 3) prevStep = 2; // Booth Type to VC
     }
+    
     setStep(Math.max(prevStep, 0));
     window.scrollTo(0, 0);
   };
@@ -994,7 +1240,7 @@ export default function RoomConfiguratorPage() {
     });
     // Reset state
     setStep(0);
-    setSelections({ roomType: "", vc: [], table: "", display: "", displayMode: 'Single', camera: "", projector: "", speaker: "", microphone: "", touchpad: ""});
+    setSelections({ roomType: "", vc: [], boothType: "", desktop: "", table: "", display: "", displayMode: 'Single', camera: "", projector: "", speaker: "", microphone: "", touchpad: ""});
     setFormValues({ name: "", email: "", company: "", notes: ""});
   };
 
@@ -1003,7 +1249,7 @@ export default function RoomConfiguratorPage() {
   }
 
   const handleConfigNext = () => {
-      setStep(4);
+      setStep(5);
   }
 
   return (
@@ -1032,7 +1278,7 @@ export default function RoomConfiguratorPage() {
                         onNext={handleNext}
                         onBack={handleBack}
                         selected={selections.roomType}
-                        setSelected={(value) => handleSetSelections({roomType: value, table: '', display: '', camera: '', touchpad: '', speaker: '', microphone: ''})}
+                        setSelected={(value) => handleSetSelections({roomType: value, boothType: '', desktop: '', table: '', display: '', camera: '', touchpad: '', speaker: '', microphone: ''})}
                         totalSteps={totalSteps}
                     />
                 )}
@@ -1046,9 +1292,29 @@ export default function RoomConfiguratorPage() {
                         totalSteps={totalSteps}
                     />
                 )}
-                {step === 3 && (
+                {step === 3 && selections.roomType === 'booth' && (
+                    <BoothTypeSelector 
+                        key="step3-booth"
+                        onNext={handleNext}
+                        onBack={handleBack}
+                        selected={selections.boothType}
+                        setSelected={(value) => handleSetSelections({boothType: value})}
+                        totalSteps={totalSteps}
+                    />
+                )}
+                {step === 4 && selections.roomType === 'booth' && (
+                    <DesktopConferencingSelector 
+                        key="step4-desktop"
+                        onNext={handleNext}
+                        onBack={handleBack}
+                        selected={selections.desktop}
+                        setSelected={(value) => handleSetSelections({desktop: value})}
+                        totalSteps={totalSteps}
+                    />
+                )}
+                {step === 3 && selections.roomType !== 'booth' && (
                     <Configurator 
-                        key="step3" 
+                        key="step3-config" 
                         onNext={handleConfigNext} 
                         onBack={handleBack} 
                         selections={selections}
@@ -1056,9 +1322,9 @@ export default function RoomConfiguratorPage() {
                         totalSteps={totalSteps}
                     />
                 )}
-                {step === 4 && (
+                {step === 5 && (
                     <QuoteForm 
-                        key="step4" 
+                        key="step5" 
                         onBack={handleBack} 
                         onSubmit={handleSubmit}
                         selections={selections}
