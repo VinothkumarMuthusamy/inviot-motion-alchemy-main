@@ -303,7 +303,7 @@ const BoothTypeSelector = ({ onNext, onBack, selected, setSelected, totalSteps }
                     ))}
                 </div>
                 
-                {/* Image Preview */}
+                {/* Image Preview
                 <div className="mt-8 relative w-full max-w-2xl mx-auto aspect-video bg-gray-100 rounded-lg overflow-hidden">
                     <div className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
                         <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
@@ -322,7 +322,7 @@ const BoothTypeSelector = ({ onNext, onBack, selected, setSelected, totalSteps }
                         style={{objectFit: 'contain'}} 
                         className="relative z-1"
                     />
-                </div>
+                </div> */}
 
                 <div className="mt-8 flex justify-center gap-4">
                     <Button onClick={onBack} size="lg" variant="outline">Back</Button>
@@ -365,7 +365,7 @@ const DesktopConferencingSelector = ({ onNext, onBack, selected, setSelected, to
                     ))}
                 </div>
                 
-                {/* Image Preview */}
+                {/* Image Preview
                 <div className="mt-8 relative w-full max-w-2xl mx-auto aspect-video bg-gray-100 rounded-lg overflow-hidden">
                     <div className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
                         <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
@@ -393,7 +393,7 @@ const DesktopConferencingSelector = ({ onNext, onBack, selected, setSelected, to
                             className="relative z-2"
                         />
                     )}
-                </div>
+                </div> */}
 
                 <div className="mt-8 flex justify-center gap-4">
                     <Button onClick={onBack} size="lg" variant="outline">Back</Button>
@@ -553,7 +553,7 @@ const CameraSelector = ({ onNext, onBack, selected, setSelected, roomType, vc, s
                 ))}
             </div>
             
-            {/* Image Preview for Huddle Room */}
+            {/* Image Preview for Huddle Room
             {roomType === 'huddle' && (
                 <div className="mt-8 relative w-full max-w-2xl mx-auto aspect-video bg-gray-100 rounded-lg overflow-hidden">
                     <div className="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
@@ -594,7 +594,7 @@ const CameraSelector = ({ onNext, onBack, selected, setSelected, roomType, vc, s
                         />
                     )}
                 </div>
-            )}
+            )} */}
 
             <div className="mt-8 flex justify-center gap-4">
                 <Button onClick={onBack} size="lg" variant="outline">Back</Button>
